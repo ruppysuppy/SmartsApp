@@ -1,0 +1,25 @@
+{
+  "name": "smartsapp",
+  "version": "1.0.0",
+  "description": "SmartApp: Cross-Platform Messenger",
+  "main": "./dist/main.js",
+  "scripts": {
+    "start": "nodemon --exec electron .",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "electron",
+    "cross-platform",
+    "desktop-app",
+    "messenger-app"
+  ],
+  "author": "Tapajyoti Bose",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.6",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "electron": "^11.0.2"
+  }
+}

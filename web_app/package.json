@@ -1,5 +1,6 @@
 {
   "name": "web-app",
+  "description": "SmartApp: Cross-Platform Messenger",
   "homepage": ".",
   "version": "0.1.0",
   "private": true,
@@ -40,5 +41,7 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "license": "MIT",
+  "author": "Tapajyoti Bose"
 }
