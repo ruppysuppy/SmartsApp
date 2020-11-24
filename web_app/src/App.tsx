@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
+
+import LoadingScreen from "./components/pages/LoadingScreen/LoadingScreen";
 
 function App() {
-  return (
-    <div className="App">
-      <h1>
-        SMARTSAPP
-      </h1>
-    </div>
-  );
+	return (
+		<>
+			<LoadingScreen />
+		</>
+	);
 }
 
 export default App;
