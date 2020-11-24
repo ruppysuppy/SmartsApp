@@ -2,6 +2,8 @@ import React from "react";
 
 import Navbar from "../Navbar/Navbar";
 
+import styles from "./layout.module.css";
+
 interface Props {
 	children?: React.ReactNode;
 }
@@ -12,7 +14,8 @@ function Layout(props: Props) {
 	return (
 		<>
 			<Navbar />
-			{children}
+			<span className={styles.Spacer} />
+			<div className="container">{children}</div>
 		</>
 	);
 }
