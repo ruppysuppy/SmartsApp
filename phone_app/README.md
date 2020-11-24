@@ -1,16 +1,17 @@
-# smartsapp
+# Smartsapp Phone App
 
-SmartApp - Cross-Platform Messenger
+Phone App for Smartsapp messenger.
 
-## Getting Started
+## Tools used
 
-This project is a starting point for a Flutter application.
+1. **Firebase SDK:** For DataBase & Auth Handling
+2. **Flutter:** To create the Phone App
 
-A few resources to get you started if this is your first Flutter project:
+## How to Use
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+To use the project follow the steps given below:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Install the necessary modules with the command `pub get`
+2. Setup Firebase Project
+3. Open up a virtual device
+4. Use `flutter run` to run the phone app
