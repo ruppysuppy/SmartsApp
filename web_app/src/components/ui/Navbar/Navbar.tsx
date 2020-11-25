@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import Navlinks from "./NavLinks/Navlinks";
+
 import ChatIcon from "../../../assets/img/ChatIcon.svg";
 import styles from "./navbar.module.css";
 
@@ -17,7 +19,7 @@ export default function Navbar() {
 					</Link>
 				</div>
 				<div className={`ml-auto my-auto ${styles.NavLinkHolder}`}>
-					<h5>Nav Links</h5>
+					<Navlinks />
 				</div>
 				<button
 					className={`ml-auto my-auto ${styles.Toggler}`}

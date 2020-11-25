@@ -34,8 +34,12 @@
 	color: #7905ff;
 }
 
-.Toggler {
+.NavLinkHolder {
 	display: none;
+}
+
+.Toggler {
+	display: inline-block;
 	border: none;
 	background-color: transparent;
 	height: 40px;
@@ -58,7 +62,7 @@
 .Toggler:hover .Bar1,
 .Toggler:hover .Bar2,
 .Toggler:hover .Bar3 {
-	margin: 3px 0;
+	margin: 6px 0;
 }
 
 .CrossBar1 {
@@ -75,17 +79,11 @@
 	transform: rotate(45deg) translate(-8px, -4px);
 }
 
-/* media queries */
-@media (max-width: 992px) {
+@media (min-width: 992px) {
 	.NavLinkHolder {
-		display: none;
+		display: block;
 	}
 	.Toggler {
-		display: inline-block;
-	}
-	.Toggler:hover .Bar1,
-	.Toggler:hover .Bar2,
-	.Toggler:hover .Bar3 {
-		margin: 6px 0;
+		display: none;
 	}
 }

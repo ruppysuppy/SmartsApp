@@ -1,0 +1,63 @@
+.NavLinkHolder {
+	display: flex;
+	flex-direction: column;
+}
+
+.NavLink {
+	color: #7905ff;
+	margin: 12px 0;
+	font-weight: 700;
+	text-decoration: none;
+	position: relative;
+	width: max-content;
+}
+
+.NavLink:hover {
+	color: #7905ff;
+}
+
+.NavLink::after {
+	content: "";
+	background-color: #7905ff;
+	height: 2px;
+	width: 0;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	border-radius: 2px;
+	transition: 0.2s;
+}
+
+.NavLink:hover::after {
+	width: 100%;
+}
+
+.NavLinkActive {
+	color: #0112a5;
+}
+
+.NavLinkActive:hover {
+	color: #0112a5;
+}
+
+.NavLinkActive::after {
+	background-color: #0112a5;
+	width: 100%;
+}
+
+.Spacer {
+	display: inline-block;
+	width: 12px;
+}
+
+@media (min-width: 992px) {
+	.NavLinkHolder {
+		flex-direction: row;
+	}
+	.NavLink {
+		margin: 0 8px;
+	}
+	.Spacer {
+		width: 6px;
+	}
+}
