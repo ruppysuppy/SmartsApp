@@ -5,9 +5,10 @@ import styles from "./navlinks.module.css";
 
 interface Props {
 	user?: object;
+	sidebarClose: () => void;
 }
 
-export default function Navlinks({ user }: Props) {
+export default function Navlinks({ user, sidebarClose }: Props) {
 	return (
 		<div className={`ml-auto my-auto ${styles.NavLinkHolder}`}>
 			{user ? (
@@ -17,6 +18,7 @@ export default function Navlinks({ user }: Props) {
 						to="/"
 						className={styles.NavLink}
 						activeClassName={styles.NavLinkActive}
+						onClick={sidebarClose}
 					>
 						Chats
 						<span className={styles.Spacer} />
@@ -27,6 +29,7 @@ export default function Navlinks({ user }: Props) {
 						to="/settings"
 						className={styles.NavLink}
 						activeClassName={styles.NavLinkActive}
+						onClick={sidebarClose}
 					>
 						Settings
 						<span className={styles.Spacer} />
@@ -37,6 +40,7 @@ export default function Navlinks({ user }: Props) {
 						to="/logout"
 						className={styles.NavLink}
 						activeClassName={styles.NavLinkActive}
+						onClick={sidebarClose}
 					>
 						Log Out
 						<span className={styles.Spacer} />
@@ -50,6 +54,7 @@ export default function Navlinks({ user }: Props) {
 						to="/login"
 						className={styles.NavLink}
 						activeClassName={styles.NavLinkActive}
+						onClick={sidebarClose}
 					>
 						Log In
 						<span className={styles.Spacer} />
@@ -60,6 +65,7 @@ export default function Navlinks({ user }: Props) {
 						to="/register"
 						className={styles.NavLink}
 						activeClassName={styles.NavLinkActive}
+						onClick={sidebarClose}
 					>
 						Register
 						<span className={styles.Spacer} />

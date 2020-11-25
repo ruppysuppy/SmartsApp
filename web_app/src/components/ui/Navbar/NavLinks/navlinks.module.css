@@ -47,7 +47,7 @@
 
 .Spacer {
 	display: inline-block;
-	width: 12px;
+	width: 4px;
 }
 
 @media (min-width: 992px) {
