@@ -6,6 +6,7 @@ import LoadingScreen from "./components/pages/LoadingScreen/LoadingScreen";
 
 const Home = lazy(() => import("./components/pages/Home/Home"));
 const Login = lazy(() => import("./components/pages/Login/Login"));
+const Register = lazy(() => import("./components/pages/Register/Register"));
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 					<Switch>
 						<Route path="/" exact component={Home} />
 						<Route path="/login" component={Login} />
+						<Route path="/register" component={Register} />
 					</Switch>
 				</Layout>
 			</Suspense>

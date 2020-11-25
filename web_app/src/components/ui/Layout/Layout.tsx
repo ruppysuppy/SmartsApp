@@ -6,16 +6,15 @@ import styles from "./layout.module.css";
 
 interface Props {
 	children?: React.ReactNode;
+	user?: object;
 }
 
-function Layout(props: Props) {
-	const { children } = props;
-
+function Layout({ children, user }: Props) {
 	return (
 		<>
 			<Navbar />
-			<span className={styles.Spacer} />
-			<div className="container">{children}</div>
+			{user && <span className={styles.Spacer} />}
+			{user ? <div className="container">{children}</div> : children}
 		</>
 	);
 }
