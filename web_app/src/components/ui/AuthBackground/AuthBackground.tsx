@@ -15,7 +15,9 @@ export default function AuthBackground({ children }: Props) {
 			style={{ backgroundImage: `url(${BackgroundImg})` }}
 		>
 			<img className={styles.ChatHover} src={ChatHover} />
-			<div className={styles.AuthFormCard}>{children}</div>
+			<div className={styles.AuthFormCard}>
+				<div className="container"> {children} </div>
+			</div>
 		</div>
 	);
 }

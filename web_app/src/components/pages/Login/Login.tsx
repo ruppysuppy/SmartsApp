@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import AuthBackground from "../../ui/AuthBackground/AuthBackground";
 import Input from "../../ui/Input/Input";
 
-import styles from "./login.module.css";
+import styles from "../../common/auth/auth.module.css";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ export default function Login() {
 		<AuthBackground>
 			<div className={styles.Body}>
 				<h1>LOGIN</h1>
+				<hr className="mt-0" />
 				<form className="py-2">
 					<Input
 						placeholder="Email"
@@ -27,7 +29,9 @@ export default function Login() {
 						}
 						type="password"
 					/>
-					{/* <button>Submit</button> */}
+					<p className={styles.RedirectText}>
+						Not a member yet? <Link to="/register">Register</Link>
+					</p>
 				</form>
 			</div>
 		</AuthBackground>

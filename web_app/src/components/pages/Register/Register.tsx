@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import AuthBackground from "../../ui/AuthBackground/AuthBackground";
 import Input from "../../ui/Input/Input";
 
-import styles from "./register.module.css";
+import styles from "../../common/auth/auth.module.css";
 
 export default function Register() {
 	const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ export default function Register() {
 		<AuthBackground>
 			<div className={styles.Body}>
 				<h1>REGISTER</h1>
+				<hr className="mt-0" />
 				<form className="py-2">
 					<Input
 						placeholder="Email"
@@ -42,7 +44,9 @@ export default function Register() {
 						}
 						type="password"
 					/>
-					{/* <button>Submit</button> */}
+					<p className={styles.RedirectText}>
+						Already a member? <Link to="/login">Login</Link>
+					</p>
 				</form>
 			</div>
 		</AuthBackground>
