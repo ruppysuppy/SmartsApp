@@ -3,12 +3,12 @@
 	left: 0;
 	top: 0;
 	z-index: 20;
-	background-color: #fff;
+	background-color: var(--white);
 	width: 100vw;
 	border-radius: 0 0 4px 4px;
-	-webkit-box-shadow: 0px 0px 24px -6px rgba(0, 0, 0, 0.75);
-	-moz-box-shadow: 0px 0px 24px -6px rgba(0, 0, 0, 0.75);
-	box-shadow: 0px 0px 24px -6px rgba(0, 0, 0, 0.75);
+	-webkit-box-shadow: 0px 0px 24px -6px var(--shadow-black);
+	-moz-box-shadow: 0px 0px 24px -6px var(--shadow-black);
+	box-shadow: 0px 0px 24px -6px var(--shadow-black);
 }
 
 .NavContainer {
@@ -31,7 +31,7 @@
 	display: inline-block;
 	margin-left: 8px;
 	font-weight: bold;
-	color: #7905ff;
+	color: var(--primary);
 }
 
 .NavLinkHolder {

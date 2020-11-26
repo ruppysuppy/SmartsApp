@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Layout from "./components/ui/Layout/Layout";
 import LoadingScreen from "./components/pages/LoadingScreen/LoadingScreen";
 
+import "./components/common/variables/color.css";
+
 const Home = lazy(() => import("./components/pages/Home/Home"));
 const Login = lazy(() => import("./components/pages/Login/Login"));
 const Register = lazy(() => import("./components/pages/Register/Register"));

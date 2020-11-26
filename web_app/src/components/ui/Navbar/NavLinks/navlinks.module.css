@@ -4,7 +4,7 @@
 }
 
 .NavLink {
-	color: #7905ff;
+	color: var(--primary);
 	margin: 12px 0;
 	font-weight: 700;
 	text-decoration: none;
@@ -13,12 +13,12 @@
 }
 
 .NavLink:hover {
-	color: #7905ff;
+	color: var(--primary);
 }
 
 .NavLink::after {
 	content: "";
-	background-color: #7905ff;
+	background-color: var(--primary);
 	height: 2px;
 	width: 0;
 	position: absolute;
@@ -33,15 +33,15 @@
 }
 
 .NavLinkActive {
-	color: #0112a5;
+	color: var(--secondary);
 }
 
 .NavLinkActive:hover {
-	color: #0112a5;
+	color: var(--secondary);
 }
 
 .NavLinkActive::after {
-	background-color: #0112a5;
+	background-color: var(--secondary);
 	width: 100%;
 }
 

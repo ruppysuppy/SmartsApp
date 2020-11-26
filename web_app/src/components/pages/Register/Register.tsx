@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import AuthBackground from "../../ui/AuthBackground/AuthBackground";
 import Input from "../../ui/Input/Input";
+import Button from "../../ui/Button/Button";
 
 import styles from "../../common/auth/auth.module.css";
 
@@ -47,6 +48,7 @@ export default function Register() {
 					<p className={styles.RedirectText}>
 						Already a member? <Link to="/login">Login</Link>
 					</p>
+					<Button>Register</Button>
 				</form>
 			</div>
 		</AuthBackground>

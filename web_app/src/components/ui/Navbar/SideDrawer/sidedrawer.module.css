@@ -4,7 +4,7 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: var(--shadow-black);
 	z-index: 25;
 }
 
@@ -20,7 +20,7 @@
 	position: fixed;
 	width: 70vw;
 	height: 100vh;
-	background-color: white;
+	background-color: var(--white);
 	transition: 0.2s ease-out transform, 0.2s ease-out width;
 	z-index: 30;
 }

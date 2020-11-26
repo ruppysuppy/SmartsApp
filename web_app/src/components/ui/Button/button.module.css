@@ -1,0 +1,14 @@
+.Btn {
+	color: white;
+	background-color: var(--primary);
+	border: none;
+	outline: none !important;
+	border-radius: 8px;
+	padding: 8px 16px;
+	font-size: large;
+	transition: 0.15s ease-in-out;
+}
+
+.Btn:hover {
+	filter: drop-shadow(0 0 8px var(--primary));
+}
