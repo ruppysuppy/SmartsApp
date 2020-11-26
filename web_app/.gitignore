@@ -6,6 +6,9 @@
 # testing
 /coverage
 
+# firebase config
+/src/firebase/config.ts
+
 # production
 /build
 
