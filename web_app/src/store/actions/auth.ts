@@ -1,8 +1,8 @@
 import { Dispatch } from "redux";
 
-import firebase, { auth } from "../../firebase/firebase";
+import firebase, { auth, firestore } from "../../firebase/firebase";
 import * as actionTypes from "./actionTypes";
-import { Action as AuthAction } from "../reducers/authReducer";
+import { IAction } from "../../shared/interfaces/Interfaces";
 
 export const authChangedHandler = (user: firebase.User) => {
 	return {
@@ -34,12 +34,38 @@ export const emailRegisterFail = (error: string) => {
 	};
 };
 
-export const emailRegister = (email: string, password: string) => {
-	return (dispatch: Dispatch<AuthAction>) => {
+export const emailRegister = (
+	email: string,
+	username: string,
+	password: string
+) => {
+	return async (dispatch: Dispatch<IAction>) => {
 		dispatch(emailAuthInit());
-		auth.createUserWithEmailAndPassword(email, password)
-			.then(() => dispatch(emailRegisterSuccess()))
-			.catch((error) => dispatch(emailAuthFail(error.message)));
+		try {
+			const userRef = firestore.collection("users").doc(username);
+			const doc = await userRef.get();
+			if (doc.exists) {
+				dispatch(
+					emailAuthFail(
+						"This username already in use by another account"
+					)
+				);
+				return;
+			}
+			const userData = await auth.createUserWithEmailAndPassword(
+				email,
+				password
+			);
+			await userRef.set({
+				uid: userData.user?.uid,
+				photoURL: `https://avatars.dicebear.com/api/human/${Math.floor(
+					Math.random() * 250
+				)}.svg`,
+			});
+			dispatch(emailRegisterSuccess());
+		} catch (error) {
+			dispatch(emailAuthFail(error.message));
+		}
 	};
 };
 
@@ -59,10 +85,12 @@ export const emailAuthFail = (error: string) => {
 };
 
 export const emailAuth = (email: string, password: string) => {
-	return (dispatch: Dispatch<AuthAction>) => {
+	return async (dispatch: Dispatch<IAction>) => {
 		dispatch(emailAuthInit());
-		auth.signInWithEmailAndPassword(email, password).catch((error) =>
-			dispatch(emailAuthFail(error.message))
-		);
+		try {
+			await auth.signInWithEmailAndPassword(email, password);
+		} catch (error) {
+			dispatch(emailAuthFail(error.message));
+		}
 	};
 };

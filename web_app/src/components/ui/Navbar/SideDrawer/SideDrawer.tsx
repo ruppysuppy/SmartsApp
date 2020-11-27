@@ -7,12 +7,12 @@ import style from "./sidedrawer.module.css";
 
 import ChatIcon from "../../../../assets/img/ChatIcon.svg";
 
-interface Props {
+interface IProps {
 	sidebarClose: () => void;
 	sidebarShown: boolean;
 }
 
-function SideDrawer({ sidebarClose, sidebarShown }: Props) {
+function SideDrawer({ sidebarClose, sidebarShown }: IProps) {
 	return (
 		<>
 			<div

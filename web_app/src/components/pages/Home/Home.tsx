@@ -1,11 +1,11 @@
 import React from "react";
 import { Redirect } from "react-router";
 
-interface Props {
+interface IProps {
 	user?: object;
 }
 
-export default function Home({ user }: Props) {
+export default function Home({ user }: IProps) {
 	if (!user) {
 		return <Redirect to="/login" />;
 	}

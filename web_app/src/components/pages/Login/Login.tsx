@@ -5,7 +5,7 @@ import AuthBackground from "../../ui/AuthBackground/AuthBackground";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 
-import styles from "../../common/auth/auth.module.css";
+import styles from "../../../shared/auth/auth.module.css";
 
 export default function Login() {
 	const [email, setEmail] = useState("");

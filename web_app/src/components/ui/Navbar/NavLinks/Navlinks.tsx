@@ -3,12 +3,12 @@ import { NavLink } from "react-router-dom";
 
 import styles from "./navlinks.module.css";
 
-interface Props {
+interface IProps {
 	user?: object;
 	sidebarClose: () => void;
 }
 
-export default function Navlinks({ user, sidebarClose }: Props) {
+export default function Navlinks({ user, sidebarClose }: IProps) {
 	return (
 		<div className={`ml-auto my-auto ${styles.NavLinkHolder}`}>
 			{user ? (

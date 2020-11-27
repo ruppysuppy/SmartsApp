@@ -1,30 +1,13 @@
-import firebase from "firebase";
-
 import * as actionTypes from "../actions/actionTypes";
+import { IAuthState, IAction } from "../../shared/interfaces/Interfaces";
 
-interface State {
-	user: null;
-	isLoading: boolean;
-	registered: boolean;
-	error: null;
-}
-
-export interface Action {
-	type: string;
-	payload?: {
-		error?: string;
-		user?: firebase.User;
-	};
-}
-
-const initialState: State = {
-	user: null,
+const initialState: IAuthState = {
+	user: undefined,
 	isLoading: false,
-	registered: false,
-	error: null,
+	error: "",
 };
 
-const reducer = (state: State = initialState, action: Action) => {
+const reducer = (state: IAuthState = initialState, action: IAction) => {
 	const { type, payload } = action;
 
 	switch (type) {
@@ -50,7 +33,6 @@ const reducer = (state: State = initialState, action: Action) => {
 			return {
 				...state,
 				isLoading: false,
-				registered: true,
 			};
 
 		case actionTypes.EMAIL_REGISTER_FAIL:

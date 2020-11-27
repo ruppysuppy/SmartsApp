@@ -2,14 +2,19 @@ import React from "react";
 
 import styles from "./input.module.css";
 
-interface Props {
+interface IProps {
 	onChangeFunc: (param: string) => void;
 	placeholder: string;
 	val: string;
-	type?: "text" | "password";
+	type?: "email" | "password" | "text";
 }
 
-export default function Input({ onChangeFunc, placeholder, val, type }: Props) {
+export default function Input({
+	onChangeFunc,
+	placeholder,
+	val,
+	type,
+}: IProps) {
 	const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		onChangeFunc(e.currentTarget.value);
 	};

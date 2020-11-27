@@ -4,12 +4,12 @@ import Navbar from "../Navbar/Navbar";
 
 import styles from "./layout.module.css";
 
-interface Props {
+interface IProps {
 	children?: React.ReactNode;
 	user?: object;
 }
 
-function Layout({ children, user }: Props) {
+function Layout({ children, user }: IProps) {
 	return (
 		<>
 			<Navbar />

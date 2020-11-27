@@ -9,6 +9,11 @@
 	padding-top: 8px;
 }
 
+.ErrorText {
+	color: var(--error);
+	font-weight: bold;
+}
+
 @media (min-width: 992px) and (min-height: 600px) {
 	.Body {
 		width: 400px;
