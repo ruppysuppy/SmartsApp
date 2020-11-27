@@ -13,11 +13,13 @@
 	top: 140px;
 	filter: drop-shadow(0 0 6px var(--black));
 	animation: hover-anim 4s ease-in-out infinite;
+	z-index: 5;
 }
 
 .AuthFormCard {
 	height: max-content;
 	animation: fade-in 0.4s ease-in-out;
+	z-index: 10;
 }
 
 @keyframes hover-anim {
@@ -43,7 +45,7 @@
 	}
 }
 
-@media (min-width: 992px) {
+@media (min-width: 992px) and (min-height: 600px) {
 	.Body {
 		background-size: 720px;
 		background-position: -150px -150px;
@@ -62,11 +64,10 @@
 		box-shadow: 0px 0px 8px 0px var(--shadow-black);
 		border-radius: 8px;
 		background-color: var(--white);
-		z-index: 10;
 	}
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1200px) and (min-height: 600px) {
 	.Body {
 		background-size: 800px;
 		background-position: -160px -200px;
@@ -77,11 +78,17 @@
 		height: 400px;
 	}
 	.AuthFormCard {
-		margin-right: 24px;
+		margin-right: 28px;
 	}
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1400px) and (min-height: 600px) {
+	.AuthFormCard {
+		margin-right: 48px;
+	}
+}
+
+@media (min-width: 1600px) and (min-height: 600px) {
 	.Body {
 		background-size: 1000px;
 		background-position: -100px -200px;
@@ -92,6 +99,12 @@
 		height: 600px;
 	}
 	.AuthFormCard {
-		margin-right: 32px;
+		margin-right: 64px;
+	}
+}
+
+@media (min-width: 1800px) and (min-height: 600px) {
+	.AuthFormCard {
+		margin-right: 96px;
 	}
 }

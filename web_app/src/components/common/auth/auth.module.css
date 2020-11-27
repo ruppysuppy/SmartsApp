@@ -9,19 +9,19 @@
 	padding-top: 8px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 992px) and (min-height: 600px) {
 	.Body {
 		width: 400px;
 	}
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1200px) and (min-height: 600px) {
 	.Body {
 		width: 500px;
 	}
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1600px) and (min-height: 600px) {
 	.Body {
 		width: 600px;
 	}
