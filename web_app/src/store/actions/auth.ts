@@ -4,7 +4,7 @@ import firebase, { auth, firestore } from "../../firebase/firebase";
 import * as actionTypes from "./actionTypes";
 import { IAction } from "../../shared/interfaces/Interfaces";
 
-export const authChangedHandler = (user: firebase.User) => {
+export const authChangedHandler = (user?: firebase.User) => {
 	return {
 		type: actionTypes.AUTH_CHANGED,
 		payload: {
@@ -92,5 +92,11 @@ export const emailAuth = (email: string, password: string) => {
 		} catch (error) {
 			dispatch(emailAuthFail(error.message));
 		}
+	};
+};
+
+export const logout = () => {
+	return {
+		type: actionTypes.LOGOUT,
 	};
 };

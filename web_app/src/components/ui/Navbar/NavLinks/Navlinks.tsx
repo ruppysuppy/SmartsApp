@@ -1,14 +1,18 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+
+import firebase from "../../../../firebase/firebase";
+import { IState } from "../../../../shared/interfaces/Interfaces";
 
 import styles from "./navlinks.module.css";
 
 interface IProps {
-	user?: object;
+	user?: firebase.User;
 	sidebarClose: () => void;
 }
 
-export default function Navlinks({ user, sidebarClose }: IProps) {
+function Navlinks({ user, sidebarClose }: IProps) {
 	return (
 		<div className={`ml-auto my-auto ${styles.NavLinkHolder}`}>
 			{user ? (
@@ -76,3 +80,9 @@ export default function Navlinks({ user, sidebarClose }: IProps) {
 		</div>
 	);
 }
+
+const mapStateToProps = (state: IState) => ({
+	user: state.auth.user,
+});
+
+export default connect(mapStateToProps)(Navlinks);

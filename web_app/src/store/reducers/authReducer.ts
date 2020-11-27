@@ -62,6 +62,9 @@ const reducer = (state: IAuthState = initialState, action: IAction) => {
 			}
 			return { ...state };
 
+		case actionTypes.LOGOUT:
+			return { ...initialState };
+
 		default:
 			return state;
 	}

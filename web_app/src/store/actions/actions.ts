@@ -4,4 +4,5 @@ export {
 	emailAuth,
 	emailRegister,
 	emailRegisterFail,
+	logout,
 } from "./auth";

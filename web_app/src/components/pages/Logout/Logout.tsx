@@ -1,14 +1,34 @@
 import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { Redirect } from "react-router";
+import { Dispatch } from "redux";
 
-import { auth } from "../../../firebase/firebase";
+import firebase, { auth } from "../../../firebase/firebase";
+import { IState } from "../../../shared/interfaces/Interfaces";
+import * as actions from "../../../store/actions/actions";
 
-function Logout() {
+interface IProps {
+	logout: () => void;
+	user?: firebase.User;
+}
+
+function Logout({ logout, user }: IProps) {
 	useEffect(() => {
-		auth.signOut();
+		if (user) {
+			auth.signOut();
+			logout();
+		}
 	}, []);
 
 	return <Redirect to="/" />;
 }
 
-export default Logout;
+const mapStateToProps = (state: IState) => ({
+	user: state.auth.user,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	logout: () => dispatch(actions.logout()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

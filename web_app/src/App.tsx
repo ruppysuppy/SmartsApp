@@ -18,15 +18,13 @@ const Register = lazy(() => import("./components/pages/Register/Register"));
 const Error404 = lazy(() => import("./components/pages/Error404/Error404"));
 
 interface IProps {
-	authChangedHandler: (user: firebase.User) => void;
+	authChangedHandler: (user?: firebase.User) => void;
 }
 
 function App({ authChangedHandler }: IProps) {
 	useEffect(() => {
 		auth.onAuthStateChanged((user) => {
-			if (user) {
-				authChangedHandler(user);
-			}
+			authChangedHandler(user ? user : undefined);
 		});
 	}, []);
 
@@ -48,7 +46,7 @@ function App({ authChangedHandler }: IProps) {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	authChangedHandler: (user: firebase.User) =>
+	authChangedHandler: (user?: firebase.User) =>
 		dispatch(actions.authChangedHandler(user)),
 });
 
