@@ -4,7 +4,7 @@
     <img src="./readme_img/logo.svg" style="width: 200px" />
 </div>
 
-A fully cross-platform messenger app.
+A fully **cross-platform messenger** app with **End to End Encryption**.
 
 ## Platforms Supported
 
