@@ -4,7 +4,7 @@
     <img src="./readme_img/logo.svg" style="width: 200px" />
 </div>
 
-A fully **cross-platform messenger** app with **End to End Encryption**.
+A fully **cross-platform messenger** app with **End to End Encryption (E2EE)**.
 
 ## Platforms Supported
 
@@ -26,3 +26,7 @@ The back-end of the app is handled by `Firebase`.
 1. Go to the project `Authentication` section
 2. Select `Sign-in method` tab
 3. Enable `Email/Password` and `Google` sign in
+
+### Note
+
+Running the E2EE Key Generator Server is necessary for all Platform

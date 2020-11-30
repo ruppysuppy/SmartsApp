@@ -12,6 +12,7 @@
 .ErrorText {
 	color: var(--error);
 	font-weight: bold;
+	display: flex;
 }
 
 @media (min-width: 992px) and (min-height: 600px) {

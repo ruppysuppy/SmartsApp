@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -17,18 +17,36 @@ interface IProps {
 	user?: firebase.User;
 	isLoading: boolean;
 	error: string;
-	emailRegister: (email: string, username: string, password: string) => void;
+	emailRegister: (email: string, password: string) => void;
+	emailRegisterFail: (message: string) => void;
 }
 
-function Register({ user, isLoading, error, emailRegister }: IProps) {
+function Register({
+	user,
+	isLoading,
+	error,
+	emailRegister,
+	emailRegisterFail,
+}: IProps) {
 	const [email, setEmail] = useState("");
-	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
 	const onSubmitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
-		emailRegister(email, username, password);
+		if (email.length === 0) {
+			emailRegisterFail("Enter a valid Email Address");
+			return;
+		}
+		if (password.length < 6) {
+			emailRegisterFail("Password length must be greater than 6");
+			return;
+		}
+		if (password !== confirmPassword) {
+			emailRegisterFail("Password and Confirm Password must match");
+			return;
+		}
+		emailRegister(email, password);
 	};
 
 	if (user) {
@@ -46,11 +64,6 @@ function Register({ user, isLoading, error, emailRegister }: IProps) {
 						val={email}
 						onChangeFunc={(email: string) => setEmail(email)}
 						type="email"
-					/>
-					<Input
-						placeholder="Username"
-						val={username}
-						onChangeFunc={(email: string) => setUsername(email)}
 					/>
 					<Input
 						placeholder="Password"
@@ -74,8 +87,10 @@ function Register({ user, isLoading, error, emailRegister }: IProps) {
 					{error && (
 						<>
 							<div className={styles.ErrorText}>
-								<i className="fa fa-exclamation-circle" />
-								{error}
+								<i className="fa fa-exclamation-circle d-inline-block pt-1" />
+								<span className="d-inline-block pl-1 pb-2 text-wrap">
+									{error}
+								</span>
 							</div>
 						</>
 					)}
@@ -93,8 +108,10 @@ const mapStateToProps = (state: IState) => ({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-	emailRegister: (email: string, username: string, password: string) =>
-		dispatch(actions.emailRegister(email, username, password)),
+	emailRegister: (email: string, password: string) =>
+		dispatch(actions.emailRegister(email, password)),
+	emailRegisterFail: (message: string) =>
+		dispatch(actions.emailRegisterFail(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);

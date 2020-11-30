@@ -34,34 +34,30 @@ export const emailRegisterFail = (error: string) => {
 	};
 };
 
-export const emailRegister = (
-	email: string,
-	username: string,
-	password: string
-) => {
+export const emailRegister = (email: string, password: string) => {
 	return async (dispatch: Dispatch<IAction>) => {
 		dispatch(emailAuthInit());
 		try {
-			const userRef = firestore.collection("users").doc(username);
-			const doc = await userRef.get();
-			if (doc.exists) {
-				dispatch(
-					emailAuthFail(
-						"This username already in use by another account"
-					)
-				);
-				return;
-			}
+			// const userRef = firestore.collection("users").doc(username);
+			// const doc = await userRef.get();
+			// if (doc.exists) {
+			// 	dispatch(
+			// 		emailAuthFail(
+			// 			"This username already in use by another account"
+			// 		)
+			// 	);
+			// 	return;
+			// }
 			const userData = await auth.createUserWithEmailAndPassword(
 				email,
 				password
 			);
-			await userRef.set({
-				uid: userData.user?.uid,
-				photoURL: `https://avatars.dicebear.com/api/human/${Math.floor(
-					Math.random() * 250
-				)}.svg`,
-			});
+			// await userRef.set({
+			// 	uid: userData.user?.uid,
+			// 	photoURL: `https://avatars.dicebear.com/api/human/${Math.floor(
+			// 		Math.random() * 250
+			// 	)}.svg`,
+			// });
 			dispatch(emailRegisterSuccess());
 		} catch (error) {
 			dispatch(emailAuthFail(error.message));

@@ -18,14 +18,23 @@ interface IProps {
 	isLoading: boolean;
 	error: string;
 	emailAuth: (email: string, password: string) => void;
+	emailAuthFail: (message: string) => void;
 }
 
-function Login({ user, isLoading, error, emailAuth }: IProps) {
+function Login({ user, isLoading, error, emailAuth, emailAuthFail }: IProps) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
 	const onSubmitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
+		if (email.length === 0) {
+			emailAuthFail("Enter a valid Email Address");
+			return;
+		}
+		if (password.length < 6) {
+			emailAuthFail("Password length must be greater than 6");
+			return;
+		}
 		emailAuth(email, password);
 	};
 
@@ -43,6 +52,7 @@ function Login({ user, isLoading, error, emailAuth }: IProps) {
 						placeholder="Email"
 						val={email}
 						onChangeFunc={(email: string) => setEmail(email)}
+						type="email"
 					/>
 					<Input
 						placeholder="Password"
@@ -58,8 +68,10 @@ function Login({ user, isLoading, error, emailAuth }: IProps) {
 					{error && (
 						<>
 							<div className={styles.ErrorText}>
-								<i className="fa fa-exclamation-circle" />
-								{error}
+								<i className="fa fa-exclamation-circle d-inline-block pt-1" />
+								<span className="d-inline-block pl-1 pb-2 text-wrap">
+									{error}
+								</span>
 							</div>
 						</>
 					)}
@@ -79,6 +91,8 @@ const mapStateToProps = (state: IState) => ({
 const mapDispatchToProps = (dispatch: any) => ({
 	emailAuth: (email: string, password: string) =>
 		dispatch(actions.emailAuth(email, password)),
+	emailAuthFail: (message: string) =>
+		dispatch(actions.emailAuthFail(message)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
