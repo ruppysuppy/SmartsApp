@@ -32,6 +32,10 @@ function Register({
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 
+	useEffect(() => {
+		emailRegisterFail("");
+	}, []);
+
 	const onSubmitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
 		if (email.length === 0) {

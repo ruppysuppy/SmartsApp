@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 
 import AuthBackground from "../../ui/AuthBackground/AuthBackground";
@@ -24,6 +24,10 @@ interface IProps {
 function Login({ user, isLoading, error, emailAuth, emailAuthFail }: IProps) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+
+	useEffect(() => {
+		emailAuthFail("");
+	}, []);
 
 	const onSubmitHandler = async (event: React.FormEvent) => {
 		event.preventDefault();
