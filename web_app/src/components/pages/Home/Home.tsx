@@ -3,15 +3,19 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 
 import firebase from "../../../firebase/firebase";
-import { IState } from "../../../shared/interfaces/Interfaces";
+import { IUserData, IState } from "../../../shared/interfaces/Interfaces";
 
 interface IProps {
 	user?: firebase.User;
+	userData?: IUserData;
 }
 
-function Home({ user }: IProps) {
+function Home({ user, userData }: IProps) {
 	if (!user) {
 		return <Redirect to="/login" />;
+	}
+	if (!userData) {
+		return <Redirect to="/user-details" />;
 	}
 
 	return (
@@ -30,6 +34,7 @@ function Home({ user }: IProps) {
 
 const mapStateToProps = (state: IState) => ({
 	user: state.auth.user,
+	userData: state.auth.userData,
 });
 
 export default connect(mapStateToProps)(Home);

@@ -5,4 +5,7 @@ export {
 	emailRegister,
 	emailRegisterFail,
 	logout,
+	getUserData,
+	setUserData,
+	setUserDataFail,
 } from "./auth";
