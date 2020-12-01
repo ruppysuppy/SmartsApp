@@ -121,8 +121,8 @@ def main():
     print()
 
     # generating shared key using static methods
-    alice_shared = alice.gen_shared_key_static(alice_private, bob_public)
-    bob_shared = bob.gen_shared_key_static(bob_private, alice_public)
+    alice_shared = DiffieHellman.gen_shared_key_static(alice_private, bob_public)
+    bob_shared = DiffieHellman.gen_shared_key_static(bob_private, alice_public)
 
     print(alice_shared == bob_shared)
     print(alice_shared)

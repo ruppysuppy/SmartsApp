@@ -12,7 +12,7 @@ To use the project follow the steps given below:
 
 1. Install the necessary modules with the command `pip install -r requirements.txt`
 2. Use `flask run` to run the server
-3. The server will start running on port `127:0.0.1:8000` (end points: `/generate-keys` and `/generate-shared-key`)
+3. The server will start running on port `127:0.0.1:5000` (end points: `/generate-keys` and `/generate-shared-key`)
 
 ## Why an additional server?
 
