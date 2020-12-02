@@ -1,6 +1,5 @@
 .Btn {
 	color: white;
-	background-color: var(--primary);
 	border: none;
 	outline: none !important;
 	border-radius: 8px;
@@ -9,6 +8,20 @@
 	transition: 0.15s ease-in-out;
 }
 
-.Btn:hover {
+.Normal {
+	background-color: var(--primary);
+}
+
+.Normal:hover {
+	background-color: var(--primary);
 	filter: drop-shadow(0 0 8px var(--primary));
+}
+
+.Secondary {
+	background-color: var(--secondary-grey);
+}
+
+.Secondary:hover {
+	background-color: var(--secondary-grey);
+	filter: drop-shadow(0 0 8px var(--secondary-grey));
 }

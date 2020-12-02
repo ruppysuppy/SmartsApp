@@ -2,8 +2,10 @@
 	--black: #000000;
 	--primary: #7905ff;
 	--primary-grey: #f0f0f0;
+	--secondary-grey: #808080;
 	--error: #ff0000;
 	--secondary: #0112a5;
+	--success: #008000;
 	--shadow-black: #000000bf;
 	--white: #ffffff;
 }

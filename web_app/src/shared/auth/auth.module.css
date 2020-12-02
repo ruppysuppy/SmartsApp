@@ -15,6 +15,11 @@
 	display: flex;
 }
 
+.OverflowContainer{
+	overflow-y: scroll;
+	height: 100vh;
+}
+
 @media (min-width: 992px) and (min-height: 600px) {
 	.Body {
 		width: 400px;

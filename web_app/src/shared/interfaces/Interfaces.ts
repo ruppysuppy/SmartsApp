@@ -32,3 +32,10 @@ export interface IKeys {
 	private_key: string;
 	public_key: string;
 }
+
+export interface ICrop {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
