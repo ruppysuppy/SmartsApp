@@ -18,5 +18,5 @@ To use the project follow the steps given below:
 
 -   To enable cross-platform **E2EE**, an uniform algorithm is required to ensure that key mismatch doesn't occour.
 -   Dart lacks properly implemented `Diffie Hellman Algorithm` (its difficult to store the `hex value` for the ones that are available)
--   TypeScript/JavaScript stores number `IEEE 754 standard` rendering it difficult to store large number **with high precision** and storing Numbers in `BigNumber` format, slows down the algorithm significantly (_20mins_ for key generation on `i5 8700k`)
+-   TypeScript/JavaScript stores number `IEEE 754 standard` rendering it difficult to store large number **with high precision** and storing Numbers in `BigNumber` format, slows down the algorithm significantly (_20mins_ for key generation on `i5 8600k`)
 -   So this server provides the `api end points` for the `key pair` & `shared key` generation
