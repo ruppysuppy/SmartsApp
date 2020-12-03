@@ -19,5 +19,5 @@
 }
 
 .Input:focus::placeholder {
-	color: var(--white);
+	color: white;
 }

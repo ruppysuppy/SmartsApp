@@ -11,7 +11,7 @@
 	position: absolute;
 	left: 180px;
 	top: 140px;
-	filter: drop-shadow(0 0 6px var(--black));
+	filter: drop-shadow(0 0 6px var(--color-dark));
 	animation: hover-anim 4s ease-in-out infinite;
 	z-index: 5;
 }
@@ -59,11 +59,11 @@
 	.AuthFormCard {
 		margin-right: 12px;
 		overflow: hidden;
-		-webkit-box-shadow: 0px 0px 8px 0px var(--shadow-black);
-		-moz-box-shadow: 0px 0px 8px 0px var(--shadow-black);
-		box-shadow: 0px 0px 8px 0px var(--shadow-black);
+		-webkit-box-shadow: 0px 0px 8px 0px var(--color-shadow);
+		-moz-box-shadow: 0px 0px 8px 0px var(--color-shadow);
+		box-shadow: 0px 0px 8px 0px var(--color-shadow);
 		border-radius: 8px;
-		background-color: var(--white);
+		background-color: var(--color-light);
 	}
 }
 

@@ -3,12 +3,12 @@
 	left: 0;
 	top: 0;
 	z-index: 20;
-	background-color: var(--white);
+	background-color: var(--color-light);
 	width: 100vw;
 	border-radius: 0 0 4px 4px;
-	-webkit-box-shadow: 0px 0px 24px -6px var(--shadow-black);
-	-moz-box-shadow: 0px 0px 24px -6px var(--shadow-black);
-	box-shadow: 0px 0px 24px -6px var(--shadow-black);
+	-webkit-box-shadow: 0px 0px 24px -6px var(--color-shadow);
+	-moz-box-shadow: 0px 0px 24px -6px var(--color-shadow);
+	box-shadow: 0px 0px 24px -6px var(--color-shadow);
 }
 
 .NavContainer {
@@ -54,7 +54,7 @@
 .Bar3 {
 	width: 28px;
 	height: 2px;
-	background-color: #333;
+	background-color: var(--color-dark);
 	margin: 6px 0;
 	transition: 0.2s;
 }

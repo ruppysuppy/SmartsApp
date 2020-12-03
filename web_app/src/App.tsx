@@ -9,8 +9,6 @@ import Logout from "./components/pages/Logout/Logout";
 import firebase, { auth } from "./firebase/firebase";
 import * as actions from "./store/actions/actions";
 
-import "./shared/variables/color.css";
-
 const Home = lazy(() => import("./components/pages/Home/Home"));
 const Login = lazy(() => import("./components/pages/Login/Login"));
 const Register = lazy(() => import("./components/pages/Register/Register"));
