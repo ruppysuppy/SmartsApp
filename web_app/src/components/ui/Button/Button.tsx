@@ -21,9 +21,9 @@ export default function Button({
 
 	return (
 		<button
-			className={`${styles.Btn} ${btnType == "NORMAL" && styles.Normal} ${
-				btnType == "SECONDARY" && styles.Secondary
-			} ${className}`}
+			className={`${styles.Btn} ${
+				btnType === "NORMAL" && styles.Normal
+			} ${btnType === "SECONDARY" && styles.Secondary} ${className}`}
 			{...props}
 		>
 			{children}

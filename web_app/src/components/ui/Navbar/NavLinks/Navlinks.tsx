@@ -3,16 +3,17 @@ import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import firebase from "../../../../firebase/firebase";
-import { IState } from "../../../../shared/interfaces/Interfaces";
+import { IState, IUserData } from "../../../../shared/interfaces/Interfaces";
 
 import styles from "./navlinks.module.css";
 
 interface IProps {
 	user?: firebase.User;
+	userData?: IUserData;
 	sidebarClose: () => void;
 }
 
-function Navlinks({ user, sidebarClose }: IProps) {
+function Navlinks({ userData, user, sidebarClose }: IProps) {
 	return (
 		<div className={`ml-auto my-auto ${styles.NavLinkHolder}`}>
 			{user ? (
@@ -28,17 +29,19 @@ function Navlinks({ user, sidebarClose }: IProps) {
 						<span className={styles.Spacer} />
 						<i className="fa fa-comments" aria-hidden="true" />
 					</NavLink>
-					<NavLink
-						exact
-						to="/settings"
-						className={styles.NavLink}
-						activeClassName={styles.NavLinkActive}
-						onClick={sidebarClose}
-					>
-						Settings
-						<span className={styles.Spacer} />
-						<i className="fa fa-cogs" aria-hidden="true" />
-					</NavLink>
+					{userData && (
+						<NavLink
+							exact
+							to="/settings"
+							className={styles.NavLink}
+							activeClassName={styles.NavLinkActive}
+							onClick={sidebarClose}
+						>
+							Settings
+							<span className={styles.Spacer} />
+							<i className="fa fa-cogs" aria-hidden="true" />
+						</NavLink>
+					)}
 					<NavLink
 						exact
 						to="/logout"
@@ -83,6 +86,7 @@ function Navlinks({ user, sidebarClose }: IProps) {
 
 const mapStateToProps = (state: IState) => ({
 	user: state.auth.user,
+	userData: state.auth.userData,
 });
 
 export default connect(mapStateToProps)(Navlinks);

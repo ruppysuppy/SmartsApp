@@ -1,3 +1,23 @@
 .Tick{
     color: var(--success);
 }
+
+.Container{
+    display: flex;
+    flex-direction: column;
+}
+
+.AuxilaryContainer{
+    margin-top: 12px;
+    display: inline-block;
+}
+
+@media (min-width: 576px){
+    .Container{
+        flex-direction: row;
+        align-items: center;
+    }
+    .AuxilaryContainer{
+        margin-left: auto;
+    }
+}

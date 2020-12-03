@@ -39,10 +39,7 @@ export const emailRegister = (email: string, password: string) => {
 	return async (dispatch: Dispatch<IAction>) => {
 		dispatch(emailAuthInit());
 		try {
-			const userData = await auth.createUserWithEmailAndPassword(
-				email,
-				password
-			);
+			await auth.createUserWithEmailAndPassword(email, password);
 			dispatch(emailRegisterSuccess());
 		} catch (error) {
 			dispatch(emailAuthFail(error.message));

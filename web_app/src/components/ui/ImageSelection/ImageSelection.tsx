@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent } from "react";
 import { v4 as uuid } from "uuid";
 
-import firebase from "../../../firebase/firebase";
+import { storage } from "../../../firebase/firebase";
 
 import Button from "../Button/Button";
 import Loader from "../Loader/Loader";
@@ -12,9 +12,14 @@ import styles from "./imageSelection.module.css";
 interface IProps {
 	setImgUrl: (url: string) => void;
 	setUserDataFail: (message: string) => void;
+	uid?: string;
 }
 
-export default function ImageSelection({ setImgUrl, setUserDataFail }: IProps) {
+export default function ImageSelection({
+	uid,
+	setImgUrl,
+	setUserDataFail,
+}: IProps) {
 	const [blob, setBlob] = useState<Blob>();
 	const [inputImg, setInputImg] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
@@ -52,10 +57,9 @@ export default function ImageSelection({ setImgUrl, setUserDataFail }: IProps) {
 	) => {
 		event.preventDefault();
 		setIsLoading(true);
-		const uploadTask = firebase
-			.storage()
+		const uploadTask = storage
 			.ref("images")
-			.child(uuid())
+			.child(uid || uuid())
 			.put(blob!, { contentType: blob!.type });
 
 		uploadTask.on(
@@ -79,27 +83,37 @@ export default function ImageSelection({ setImgUrl, setUserDataFail }: IProps) {
 
 	return (
 		<>
-			<div className="d-flex align-items-center mb-2">
-				<input type="file" accept="image/*" onChange={onInputChange} />
-				{inputImg &&
-					(isLoading ? (
-						<span className="d-inline-block ml-auto">
+			<div className={`${styles.Container} mb-2`}>
+				<div>
+					<label htmlFor="profile-pic" className="fw-bold">
+						Select Profile Picture
+					</label>
+					<br />
+					<input
+						type="file"
+						accept="image/*"
+						onChange={onInputChange}
+						id="profile-pic"
+					/>
+				</div>
+				<span className={styles.AuxilaryContainer}>
+					{inputImg &&
+						(isLoading ? (
 							<Loader />
-						</span>
-					) : done ? (
-						<i
-							className={`fa fa-check d-inline-block ml-auto ${styles.Tick}`}
-							aria-hidden="true"
-						/>
-					) : (
-						<Button
-							className="d-inline-block ml-auto"
-							onClick={handleSubmitImage}
-							btnType="SECONDARY"
-						>
-							Select
-						</Button>
-					))}
+						) : done ? (
+							<i
+								className={`fa fa-check ${styles.Tick}`}
+								aria-hidden="true"
+							/>
+						) : (
+							<Button
+								onClick={handleSubmitImage}
+								btnType="SECONDARY"
+							>
+								Select
+							</Button>
+						))}
+				</span>
 			</div>
 			{inputImg && <ImageCropper getBlob={getBlob} inputImg={inputImg} />}
 		</>

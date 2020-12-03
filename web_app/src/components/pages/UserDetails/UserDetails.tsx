@@ -55,18 +55,20 @@ function UserDetails({
 			setUserDataFail("About field is mandatory");
 			return;
 		}
+		if (imgUrl.length === 0) {
+			setUserDataFail("Add a profile picture");
+			return;
+		}
 		setUserData({
 			username: username,
 			uid: user.uid,
-			photoUrl:
-				imgUrl.length !== 0
-					? imgUrl
-					: `https://avatars.dicebear.com/api/human/${Math.floor(
-							Math.random() * 250
-					  )}.svg`,
+			photoUrl: imgUrl,
 			about: about,
 			publicKey: "",
 		});
+		// `https://avatars.dicebear.com/api/human/${Math.floor(
+		// 	Math.random() * 250
+		// 	)}.svg`
 	};
 
 	return (
@@ -88,6 +90,7 @@ function UserDetails({
 					<ImageSelection
 						setImgUrl={setImgUrl}
 						setUserDataFail={setUserDataFail}
+						uid={user.uid}
 					/>
 					{error && error !== "User data not found" && (
 						<>
