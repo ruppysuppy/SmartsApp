@@ -26,6 +26,7 @@ interface IProps {
 
 function App({ authChangedHandler, getUserData }: IProps) {
 	useEffect(() => {
+		auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 		auth.onAuthStateChanged((user) => {
 			if (user) {
 				getUserData(user.uid);

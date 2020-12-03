@@ -1,0 +1,30 @@
+.Body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.OAuthContainer{
+    border: 3px solid var(--black);
+    border-radius: 28px;
+    font-size: large;
+    font-weight: bolder;
+    padding: 8px 12px;
+    transition: 0.1s;
+}
+
+.OAuthContainer i{
+    display: inline-block;
+    margin-right: 4px;
+    margin-left: 2px;
+}
+
+.OAuthContainer:hover{
+    background-color: var(--black);
+    color: var(--white);
+    font-weight: normal;
+    cursor: pointer;
+}

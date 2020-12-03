@@ -6,6 +6,7 @@ import AuthBackground from "../../ui/AuthBackground/AuthBackground";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import Loader from "../../ui/Loader/Loader";
+import GoogleAuth from "../../ui/GoogleAuth/GoogleAuth";
 
 import firebase from "../../../firebase/firebase";
 import { IState } from "../../../shared/interfaces/Interfaces";
@@ -100,6 +101,7 @@ function Register({
 					)}
 					{isLoading ? <Loader /> : <Button>Register</Button>}
 				</form>
+				<GoogleAuth />
 			</div>
 		</AuthBackground>
 	);

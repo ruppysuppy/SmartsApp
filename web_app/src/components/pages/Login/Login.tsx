@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 import AuthBackground from "../../ui/AuthBackground/AuthBackground";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import Loader from "../../ui/Loader/Loader";
+import GoogleAuth from "../../ui/GoogleAuth/GoogleAuth";
 
 import firebase from "../../../firebase/firebase";
 import { IState } from "../../../shared/interfaces/Interfaces";
 import * as actions from "../../../store/actions/actions";
 
 import styles from "../../../shared/auth/auth.module.css";
-import { connect } from "react-redux";
 
 interface IProps {
 	user?: firebase.User;
@@ -81,6 +82,7 @@ function Login({ user, isLoading, error, emailAuth, emailAuthFail }: IProps) {
 					)}
 					{isLoading ? <Loader /> : <Button>Login</Button>}
 				</form>
+				<GoogleAuth />
 			</div>
 		</AuthBackground>
 	);
