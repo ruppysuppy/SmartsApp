@@ -13,6 +13,8 @@
 	--color-dark: #ffffff;
 	--color-light: #121212;
 	--background: #222222;
+	--error: #ff3e3e;
+	--success: #31a831;
 }
 
 * {

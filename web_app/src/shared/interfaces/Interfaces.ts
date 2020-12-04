@@ -7,7 +7,7 @@ export interface IAuthState {
 	error: string;
 }
 
-export interface IAction {
+export interface IAuthAction {
 	type: string;
 	payload?: {
 		error?: string;
@@ -18,6 +18,7 @@ export interface IAction {
 
 export interface IState {
 	auth: IAuthState;
+	ui: IUIState;
 }
 
 export interface IUserData {
@@ -38,4 +39,15 @@ export interface ICrop {
 	y: number;
 	width: number;
 	height: number;
+}
+
+export interface IUIState {
+	isDarkModeEnabled: boolean;
+}
+
+export interface IUIAction {
+	type: string;
+	payload: {
+		isDarkModeEnabled: boolean;
+	};
 }

@@ -9,3 +9,4 @@ export {
 	setUserData,
 	setUserDataFail,
 } from "./auth";
+export { setIsDarkModeEnabled } from "./ui";

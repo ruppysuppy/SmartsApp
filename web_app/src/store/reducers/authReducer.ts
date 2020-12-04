@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { IAuthState, IAction } from "../../shared/interfaces/Interfaces";
+import { IAuthState, IAuthAction } from "../../shared/interfaces/Interfaces";
 
 const initialState: IAuthState = {
 	user: undefined,
@@ -8,7 +8,7 @@ const initialState: IAuthState = {
 	error: "",
 };
 
-const reducer = (state: IAuthState = initialState, action: IAction) => {
+const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 	const { type, payload } = action;
 
 	switch (type) {

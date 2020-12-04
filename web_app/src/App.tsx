@@ -7,6 +7,7 @@ import LoadingScreen from "./components/pages/LoadingScreen/LoadingScreen";
 import Logout from "./components/pages/Logout/Logout";
 
 import firebase, { auth } from "./firebase/firebase";
+import { IState } from "./shared/interfaces/Interfaces";
 import * as actions from "./store/actions/actions";
 
 const Home = lazy(() => import("./components/pages/Home/Home"));
@@ -19,11 +20,12 @@ const UserDetails = lazy(
 const Error404 = lazy(() => import("./components/pages/Error404/Error404"));
 
 interface IProps {
+	isDarkModeEnabled: boolean;
 	authChangedHandler: (user?: firebase.User) => void;
 	getUserData: (uid: string) => Promise<void>;
 }
 
-function App({ authChangedHandler, getUserData }: IProps) {
+function App({ isDarkModeEnabled, authChangedHandler, getUserData }: IProps) {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -39,7 +41,7 @@ function App({ authChangedHandler, getUserData }: IProps) {
 	}, []);
 
 	return (
-		<div id="root-container">
+		<div className={isDarkModeEnabled ? "dark" : ""} id="root-container">
 			{isLoading ? (
 				<LoadingScreen />
 			) : (
@@ -66,6 +68,10 @@ function App({ authChangedHandler, getUserData }: IProps) {
 	);
 }
 
+const mapStateToProps = (state: IState) => ({
+	isDarkModeEnabled: state.ui.isDarkModeEnabled,
+});
+
 const mapDispatchToProps = (dispatch: any) => ({
 	authChangedHandler: (user?: firebase.User) =>
 		dispatch(actions.authChangedHandler(user)),
@@ -73,4 +79,4 @@ const mapDispatchToProps = (dispatch: any) => ({
 		await dispatch(actions.getUserData(uid)),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

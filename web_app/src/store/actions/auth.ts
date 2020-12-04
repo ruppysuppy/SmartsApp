@@ -3,7 +3,11 @@ import axios from "axios";
 
 import firebase, { auth, firestore } from "../../firebase/firebase";
 import * as actionTypes from "./actionTypes";
-import { IAction, IUserData, IKeys } from "../../shared/interfaces/Interfaces";
+import {
+	IAuthAction,
+	IUserData,
+	IKeys,
+} from "../../shared/interfaces/Interfaces";
 
 export const authChangedHandler = (user?: firebase.User) => {
 	return {
@@ -36,7 +40,7 @@ export const emailRegisterFail = (error: string) => {
 };
 
 export const emailRegister = (email: string, password: string) => {
-	return async (dispatch: Dispatch<IAction>) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
 		dispatch(emailAuthInit());
 		try {
 			await auth.createUserWithEmailAndPassword(email, password);
@@ -63,7 +67,7 @@ export const emailAuthFail = (error: string) => {
 };
 
 export const emailAuth = (email: string, password: string) => {
-	return async (dispatch: Dispatch<IAction>) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
 		dispatch(emailAuthInit());
 		try {
 			await auth.signInWithEmailAndPassword(email, password);
@@ -104,7 +108,7 @@ export const getUserDataFail = (error: string) => {
 };
 
 export const getUserData = (uid: string) => {
-	return async (dispatch: Dispatch<IAction>) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
 		dispatch(getUserDataInit());
 		const userRef = firestore.collection("users").doc(uid);
 		const doc = await userRef.get();
@@ -141,7 +145,7 @@ export const setUserDataFail = (error: string) => {
 };
 
 export const setUserData = (userData: IUserData) => {
-	return async (dispatch: Dispatch<IAction>) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
 		dispatch(setUserDataInit());
 		const userRef = firestore
 			.collection("users")
