@@ -13,14 +13,13 @@
 	font-size: large;
 	font-weight: bolder;
 	padding: 8px 12px;
-	transition: 0.2s;
 }
 
 .OAuthContainer i {
 	display: inline-block;
 	margin-right: 4px;
 	margin-left: 2px;
-	transition: 0.2s;
+	transition: 0.1s;
 }
 
 .OAuthContainer:hover {

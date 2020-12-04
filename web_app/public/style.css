@@ -5,7 +5,7 @@
 	--background: #f0f0f0;
 	--color-shadow: #111111;
 	--error: #ff0000;
-	--secondary: #0112a5;
+	--secondary: #008080;
 	--success: #008000;
 }
 
@@ -32,7 +32,6 @@ body,
 
 a {
 	color: var(--primary);
-	transition: 0.2s;
 	text-decoration: none !important;
 }
 

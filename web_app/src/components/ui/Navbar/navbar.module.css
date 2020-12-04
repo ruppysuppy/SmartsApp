@@ -56,7 +56,6 @@
 	height: 2px;
 	background-color: var(--color-dark);
 	margin: 6px 0;
-	transition: 0.2s;
 }
 
 .Toggler:hover .Bar1,

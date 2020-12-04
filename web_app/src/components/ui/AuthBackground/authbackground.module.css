@@ -4,6 +4,7 @@
 	background-repeat: no-repeat;
 	background-size: 0;
 	padding-top: 72px;
+	transition: 0s;
 }
 
 .ChatHover {
@@ -14,6 +15,7 @@
 	filter: drop-shadow(0 0 6px var(--color-shadow));
 	animation: hover-anim 4s ease-in-out infinite;
 	z-index: 5;
+	transition: 0s;
 }
 
 .AuthFormCard {

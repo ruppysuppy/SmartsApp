@@ -21,7 +21,7 @@
 	width: 70vw;
 	height: 100vh;
 	background-color: var(--color-light);
-	transition: 0.2s ease-out transform, 0.2s ease-out width;
+	transition: 0.2s ease-out;
 	z-index: 30;
 }
 

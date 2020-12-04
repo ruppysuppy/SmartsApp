@@ -5,13 +5,13 @@ import { Redirect } from "react-router";
 import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
 import Loader from "../../ui/Loader/Loader";
+import ImageSelection from "../../ui/ImageSelection/ImageSelection";
 
 import firebase from "../../../firebase/firebase";
 import * as actions from "../../../store/actions/actions";
 import { IUserData, IState } from "../../../shared/interfaces/Interfaces";
 
 import styles from "../../../shared/styles/auth.module.css";
-import ImageSelection from "../../ui/ImageSelection/ImageSelection";
 
 interface IProps {
 	user?: firebase.User;
