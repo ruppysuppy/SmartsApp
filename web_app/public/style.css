@@ -1,0 +1,51 @@
+:root {
+	--color-dark: #000000;
+	--color-light: #ffffff;
+	--primary: #7905ff;
+	--background: #f0f0f0;
+	--color-shadow: #111111;
+	--error: #ff0000;
+	--secondary: #0112a5;
+	--success: #008000;
+}
+
+.dark {
+	--color-dark: #ffffff;
+	--color-light: #121212;
+	--background: #222222;
+}
+
+* {
+	font-family: "Lato", sans-serif;
+	transition: 0.2s;
+}
+
+html,
+body,
+#root-container {
+	padding: 0;
+	margin: 0;
+	background-color: var(--background);
+	width: 100vw;
+	overflow: hidden;
+}
+
+a {
+	color: var(--primary);
+	transition: 0.2s;
+	text-decoration: none !important;
+}
+
+a:hover,
+a:focus,
+a:active {
+	color: var(--secondary);
+}
+
+hr {
+	background-color: var(--color-dark);
+}
+
+.text {
+	color: var(--color-dark);
+}

@@ -10,7 +10,7 @@ import firebase from "../../../firebase/firebase";
 import * as actions from "../../../store/actions/actions";
 import { IUserData, IState } from "../../../shared/interfaces/Interfaces";
 
-import styles from "../../../shared/auth/auth.module.css";
+import styles from "../../../shared/styles/auth.module.css";
 import ImageSelection from "../../ui/ImageSelection/ImageSelection";
 
 interface IProps {
@@ -74,7 +74,7 @@ function UserDetails({
 	return (
 		<div className={styles.OverflowContainer}>
 			<div className="container mt-5 pt-4 pb-2">
-				<h1>DETAILS</h1>
+				<h1 className="text">DETAILS</h1>
 				<hr className="mt-0" />
 				<form className="py-2" onSubmit={onSubmitHandler}>
 					<Input

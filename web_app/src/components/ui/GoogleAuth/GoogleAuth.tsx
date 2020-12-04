@@ -23,8 +23,11 @@ function GoogleAuth({ authChangedHandler }: IProps) {
 
 	return (
 		<div className={styles.Body}>
-			<h5>OR</h5>
-			<div className={styles.OAuthContainer} onClick={OAuthHalder}>
+			<h5 className="text">OR</h5>
+			<div
+				className={`text ${styles.OAuthContainer}`}
+				onClick={OAuthHalder}
+			>
 				<i className="fa fa-google" aria-hidden="true" />
 				Sign In with Google
 			</div>

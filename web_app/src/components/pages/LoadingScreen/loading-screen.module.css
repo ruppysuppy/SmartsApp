@@ -39,7 +39,7 @@
 	height: 24px;
 	width: 24px;
 	opacity: 0;
-	background-color: var(--color-light);
+	background-color: white;
 	border-radius: 50%;
 	margin: 16px;
 	position: relative;

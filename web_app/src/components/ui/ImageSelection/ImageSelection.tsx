@@ -85,11 +85,12 @@ export default function ImageSelection({
 		<>
 			<div className={`${styles.Container} mb-2`}>
 				<div>
-					<label htmlFor="profile-pic" className="fw-bold">
+					<label htmlFor="profile-pic" className="fw-bold text">
 						Select Profile Picture
 					</label>
 					<br />
 					<input
+						className="text"
 						type="file"
 						accept="image/*"
 						onChange={onInputChange}

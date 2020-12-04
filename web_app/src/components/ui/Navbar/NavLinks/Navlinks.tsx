@@ -80,6 +80,15 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					</NavLink>
 				</>
 			)}
+			<button
+				onClick={() => {
+					document
+						.querySelector("#root-container")
+						?.classList.toggle("dark");
+				}}
+			>
+				Dark Mode
+			</button>
 		</div>
 	);
 }

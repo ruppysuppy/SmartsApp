@@ -34,20 +34,25 @@ function App({ authChangedHandler, getUserData }: IProps) {
 	}, []);
 
 	return (
-		<BrowserRouter>
-			<Suspense fallback={<LoadingScreen />}>
-				<Layout>
-					<Switch>
-						<Route path="/" exact component={Home} />
-						<Route path="/login" component={Login} />
-						<Route path="/register" component={Register} />
-						<Route path="/user-details" component={UserDetails} />
-						<Route path="/logout" component={Logout} />
-						<Route component={Error404} />
-					</Switch>
-				</Layout>
-			</Suspense>
-		</BrowserRouter>
+		<div id="root-container">
+			<BrowserRouter>
+				<Suspense fallback={<LoadingScreen />}>
+					<Layout>
+						<Switch>
+							<Route path="/" exact component={Home} />
+							<Route path="/login" component={Login} />
+							<Route path="/register" component={Register} />
+							<Route
+								path="/user-details"
+								component={UserDetails}
+							/>
+							<Route path="/logout" component={Logout} />
+							<Route component={Error404} />
+						</Switch>
+					</Layout>
+				</Suspense>
+			</BrowserRouter>
+		</div>
 	);
 }
 

@@ -11,7 +11,7 @@
 	position: absolute;
 	left: 180px;
 	top: 140px;
-	filter: drop-shadow(0 0 6px var(--color-dark));
+	filter: drop-shadow(0 0 6px var(--color-shadow));
 	animation: hover-anim 4s ease-in-out infinite;
 	z-index: 5;
 }

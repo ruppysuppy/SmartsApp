@@ -12,7 +12,7 @@ import firebase from "../../../firebase/firebase";
 import { IState } from "../../../shared/interfaces/Interfaces";
 import * as actions from "../../../store/actions/actions";
 
-import styles from "../../../shared/auth/auth.module.css";
+import styles from "../../../shared/styles/auth.module.css";
 
 interface IProps {
 	user?: firebase.User;
@@ -50,7 +50,7 @@ function Login({ user, isLoading, error, emailAuth, emailAuthFail }: IProps) {
 	return (
 		<AuthBackground>
 			<div className={styles.Body}>
-				<h1>LOGIN</h1>
+				<h1 className="text">LOGIN</h1>
 				<hr className="mt-0" />
 				<form className="py-2" onSubmit={onSubmitHandler}>
 					<Input
@@ -67,7 +67,7 @@ function Login({ user, isLoading, error, emailAuth, emailAuthFail }: IProps) {
 						}
 						type="password"
 					/>
-					<p className={styles.RedirectText}>
+					<p className={`text ${styles.RedirectText}`}>
 						Not a member yet? <Link to="/register">Register</Link>
 					</p>
 					{error && (
