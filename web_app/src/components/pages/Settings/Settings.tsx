@@ -56,8 +56,10 @@ const mapStateToProps = (state: IState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-	setIsDarkModeEnabled: (value: boolean) =>
-		dispatch(actions.setIsDarkModeEnabled(value)),
+	setIsDarkModeEnabled: (value: boolean) => {
+		dispatch(actions.setIsDarkModeEnabled(value));
+		window.localStorage.setItem("isDarkModeEnabled", `${value}`);
+	},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

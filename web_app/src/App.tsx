@@ -23,9 +23,15 @@ interface IProps {
 	isDarkModeEnabled: boolean;
 	authChangedHandler: (user?: firebase.User) => void;
 	getUserData: (uid: string) => Promise<void>;
+	setIsDarkModeEnabled: (value: boolean) => void;
 }
 
-function App({ isDarkModeEnabled, authChangedHandler, getUserData }: IProps) {
+function App({
+	isDarkModeEnabled,
+	authChangedHandler,
+	getUserData,
+	setIsDarkModeEnabled,
+}: IProps) {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -39,6 +45,14 @@ function App({ isDarkModeEnabled, authChangedHandler, getUserData }: IProps) {
 			getUserData(user.uid).then(() => setIsLoading(false));
 			authChangedHandler(user ? user : undefined);
 		});
+		const isDarkModeEnabled = window.localStorage.getItem(
+			"isDarkModeEnabled"
+		);
+		if (isDarkModeEnabled === "true") {
+			setIsDarkModeEnabled(true);
+		} else {
+			setIsDarkModeEnabled(false);
+		}
 	}, []);
 
 	return (
@@ -78,6 +92,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 		dispatch(actions.authChangedHandler(user)),
 	getUserData: async (uid: string) =>
 		await dispatch(actions.getUserData(uid)),
+	setIsDarkModeEnabled: (value: boolean) =>
+		dispatch(actions.setIsDarkModeEnabled(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
