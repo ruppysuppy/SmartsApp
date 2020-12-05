@@ -38,7 +38,7 @@ function Settings({
 				<h1 className="text">Settings</h1>
 				<hr />
 				<div className={styles.Row}>
-					<h4 className="text"> Dark Mode </h4>
+					<h4 className="text mb-0"> Dark Mode </h4>
 					<ToggleSwitch
 						isEnabled={isDarkModeEnabled}
 						onUpdate={setIsDarkModeEnabled}

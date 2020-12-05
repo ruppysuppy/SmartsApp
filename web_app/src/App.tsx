@@ -31,6 +31,7 @@ function App({ isDarkModeEnabled, authChangedHandler, getUserData }: IProps) {
 	useEffect(() => {
 		auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 		auth.onAuthStateChanged((user) => {
+			setIsLoading(true);
 			if (!user) {
 				setIsLoading(false);
 				return;

@@ -3,6 +3,9 @@
 	display: inline-block;
 	width: 60px;
 	height: 34px;
+	-webkit-transform: scale(0.75);
+	-ms-transform: scale(0.75);
+	transform: scale(0.75);
 }
 
 .Switch input {
@@ -19,6 +22,9 @@
 	right: 0;
 	bottom: 0;
 	background-color: gray;
+	-webkit-transform: scale(0.75);
+	-ms-transform: scale(0.75);
+	transform: scale(0.75);
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
 }
@@ -31,6 +37,9 @@
 	left: 4px;
 	bottom: 4px;
 	background-color: var(--color-light);
+	-webkit-transform: scale(0.75);
+	-ms-transform: scale(0.75);
+	transform: scale(0.75);
 	-webkit-transition: 0.4s;
 	transition: 0.4s;
 }
@@ -44,15 +53,63 @@ input:focus + .Slider {
 }
 
 input:checked + .Slider:before {
-	-webkit-transform: translateX(26px);
-	-ms-transform: translateX(26px);
-	transform: translateX(26px);
+	-webkit-transform: translateX(26px) scale(0.75);
+	-ms-transform: translateX(26px) scale(0.75);
+	transform: translateX(26px) scale(0.75);
 }
 
 .Slider.Round {
+	-webkit-transform: scale(0.75);
+	-ms-transform: scale(0.75);
+	transform: scale(0.75);
 	border-radius: 34px;
 }
 
 .Slider.Round:before {
 	border-radius: 50%;
+}
+
+@media (min-width: 567px) {
+	.Switch,
+	.Slider,
+	.Slider.Round {
+		-webkit-transform: scale(0.8);
+		-ms-transform: scale(0.8);
+		transform: scale(0.8);
+	}
+	input:checked + .Slider:before {
+		-webkit-transform: translateX(26px) scale(0.8);
+		-ms-transform: translateX(26px) scale(0.8);
+		transform: translateX(26px) scale(0.8);
+	}
+}
+
+@media (min-width: 992px) {
+	.Switch,
+	.Slider,
+	.Slider.Round {
+		-webkit-transform: scale(0.9);
+		-ms-transform: scale(0.9);
+		transform: scale(0.9);
+	}
+	input:checked + .Slider:before {
+		-webkit-transform: translateX(26px) scale(0.9);
+		-ms-transform: translateX(26px) scale(0.9);
+		transform: translateX(26px) scale(0.9);
+	}
+}
+
+@media (min-width: 1600px) {
+	.Switch,
+	.Slider,
+	.Slider.Round {
+		-webkit-transform: scale(1);
+		-ms-transform: scale(1);
+		transform: scale(1);
+	}
+	input:checked + .Slider:before {
+		-webkit-transform: translateX(26px) scale(1);
+		-ms-transform: translateX(26px) scale(1);
+		transform: translateX(26px) scale(1);
+	}
 }
