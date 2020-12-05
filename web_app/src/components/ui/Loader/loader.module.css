@@ -5,7 +5,7 @@
 	border-radius: 50%;
 	background-color: transparent;
 	border: 8px solid grey;
-	border-top: 8px solid black;
+	border-top: 8px solid var(--color-dark);
 	animation: spin 0.6s linear infinite;
 }
 

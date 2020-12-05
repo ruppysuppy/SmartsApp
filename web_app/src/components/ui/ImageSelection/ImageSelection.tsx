@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, createRef } from "react";
 import { v4 as uuid } from "uuid";
 
 import { storage } from "../../../firebase/firebase";
@@ -22,8 +22,10 @@ export default function ImageSelection({
 }: IProps) {
 	const [blob, setBlob] = useState<Blob>();
 	const [inputImg, setInputImg] = useState("");
+	const [inputImgName, setInputImgName] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [done, setDone] = useState(false);
+	const inputRef = createRef<HTMLInputElement>();
 
 	const getBlob = (blob: any) => {
 		setBlob(blob);
@@ -37,6 +39,7 @@ export default function ImageSelection({
 			return;
 		}
 		const file = files[0];
+		setInputImgName(file.name);
 		const reader = new FileReader();
 
 		reader.addEventListener(
@@ -81,21 +84,38 @@ export default function ImageSelection({
 		);
 	};
 
+	const selectImageHandler = (
+		event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+	) => {
+		event.preventDefault();
+		inputRef.current?.click();
+	};
+
 	return (
 		<>
 			<div className={`${styles.Container} mb-2`}>
 				<div>
-					<label htmlFor="profile-pic" className="fw-bold text">
-						Select Profile Picture
-					</label>
-					<br />
-					<input
-						className="text"
-						type="file"
-						accept="image/*"
-						onChange={onInputChange}
-						id="profile-pic"
-					/>
+					<span className={styles.File}>
+						<input
+							ref={inputRef}
+							className="text"
+							type="file"
+							accept="image/*"
+							onChange={onInputChange}
+							id="profile-pic"
+						/>
+					</span>
+					<span className="d-inline-block mt-2">
+						<Button
+							btnType="SECONDARY"
+							onClick={selectImageHandler}
+						>
+							Select Profile Picture
+						</Button>
+						<span className={`text text-break ${styles.ImageName}`}>
+							{inputImgName}
+						</span>
+					</span>
 				</div>
 				<span className={styles.AuxilaryContainer}>
 					{inputImg &&

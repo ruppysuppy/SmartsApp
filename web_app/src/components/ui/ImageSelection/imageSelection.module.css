@@ -1,23 +1,35 @@
-.Tick{
-    color: var(--success);
+.Tick {
+	color: var(--success);
 }
 
-.Container{
-    display: flex;
-    flex-direction: column;
+.Container {
+	display: flex;
+	flex-direction: column;
 }
 
-.AuxilaryContainer{
-    margin-top: 12px;
-    display: inline-block;
+.AuxilaryContainer {
+	margin-top: 12px;
+	display: inline-block;
 }
 
-@media (min-width: 576px){
-    .Container{
-        flex-direction: row;
-        align-items: center;
-    }
-    .AuxilaryContainer{
-        margin-left: auto;
-    }
+.File {
+	display: none;
+}
+
+.ImageName {
+	width: 500px;
+	height: 32px;
+	padding-left: 8px;
+	overflow: hidden;
+}
+
+@media (min-width: 576px) {
+	.Container {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+	.AuxilaryContainer {
+		margin-left: auto;
+	}
 }
