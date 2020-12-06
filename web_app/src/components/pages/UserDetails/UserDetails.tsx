@@ -9,7 +9,7 @@ import ImageSelection from "../../ui/ImageSelection/ImageSelection";
 
 import firebase from "../../../firebase/firebase";
 import * as actions from "../../../store/actions/actions";
-import { IUserData, IState } from "../../../shared/interfaces/Interfaces";
+import { IUserData, IState } from "../../../shared/interfaces/interfaces";
 
 import styles from "../../../shared/styles/auth.module.css";
 

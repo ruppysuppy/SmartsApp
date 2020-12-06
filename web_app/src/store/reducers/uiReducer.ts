@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { IUIState, IUIAction } from "../../shared/interfaces/Interfaces";
+import { IUIState, IUIAction } from "../../shared/interfaces/interfaces";
 
 const initialState: IUIState = {
 	isDarkModeEnabled: false,

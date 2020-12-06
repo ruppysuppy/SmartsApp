@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import firebase from "../../../../firebase/firebase";
-import { IState, IUserData } from "../../../../shared/interfaces/Interfaces";
+import { IState, IUserData } from "../../../../shared/interfaces/interfaces";
 
 import styles from "./navlinks.module.css";
 

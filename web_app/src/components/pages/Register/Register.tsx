@@ -9,7 +9,7 @@ import Loader from "../../ui/Loader/Loader";
 import GoogleAuth from "../../ui/GoogleAuth/GoogleAuth";
 
 import firebase from "../../../firebase/firebase";
-import { IState } from "../../../shared/interfaces/Interfaces";
+import { IState } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
 
 import styles from "../../../shared/styles/auth.module.css";

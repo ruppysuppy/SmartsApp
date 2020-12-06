@@ -1,4 +1,4 @@
-import { ICrop } from "../../../../shared/interfaces/Interfaces";
+import { ICrop } from "../../../../shared/interfaces/interfaces";
 
 const createImage = (url: string) =>
 	new Promise((resolve, reject) => {

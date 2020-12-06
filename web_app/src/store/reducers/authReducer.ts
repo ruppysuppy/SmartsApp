@@ -1,5 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
-import { IAuthState, IAuthAction } from "../../shared/interfaces/Interfaces";
+import { IAuthState, IAuthAction } from "../../shared/interfaces/interfaces";
 
 const initialState: IAuthState = {
 	user: undefined,

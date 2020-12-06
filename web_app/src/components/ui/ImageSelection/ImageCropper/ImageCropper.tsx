@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Cropper from "react-easy-crop";
 
 import { getCroppedImg } from "./cropImage";
-import { ICrop } from "../../../../shared/interfaces/Interfaces";
+import { ICrop } from "../../../../shared/interfaces/interfaces";
 
 import styles from "./cropper.module.css";
 

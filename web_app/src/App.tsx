@@ -7,7 +7,7 @@ import LoadingScreen from "./components/pages/LoadingScreen/LoadingScreen";
 import Logout from "./components/pages/Logout/Logout";
 
 import firebase, { auth } from "./firebase/firebase";
-import { IState } from "./shared/interfaces/Interfaces";
+import { IState } from "./shared/interfaces/interfaces";
 import * as actions from "./store/actions/actions";
 
 const Home = lazy(() => import("./components/pages/Home/Home"));

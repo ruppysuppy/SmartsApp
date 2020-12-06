@@ -36,7 +36,7 @@
 	width: 26px;
 	left: 4px;
 	bottom: 4px;
-	background-color: var(--color-light);
+	background-color: var(--background);
 	-webkit-transform: scale(0.75);
 	-ms-transform: scale(0.75);
 	transform: scale(0.75);

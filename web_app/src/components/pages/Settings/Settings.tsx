@@ -6,7 +6,7 @@ import { Dispatch } from "redux";
 import ToggleSwitch from "../../ui/ToggleSwitch/ToggleSwitch";
 
 import firebase from "../../../firebase/firebase";
-import { IUserData, IState } from "../../../shared/interfaces/Interfaces";
+import { IUserData, IState } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
 
 import sharedStyles from "../../../shared/styles/auth.module.css";

@@ -4,7 +4,7 @@ import { Redirect } from "react-router";
 import { Dispatch } from "redux";
 
 import firebase, { auth } from "../../../firebase/firebase";
-import { IState } from "../../../shared/interfaces/Interfaces";
+import { IState } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
 
 interface IProps {

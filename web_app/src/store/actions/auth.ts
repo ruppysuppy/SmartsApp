@@ -7,7 +7,7 @@ import {
 	IAuthAction,
 	IUserData,
 	IKeys,
-} from "../../shared/interfaces/Interfaces";
+} from "../../shared/interfaces/interfaces";
 
 export const authChangedHandler = (user?: firebase.User) => {
 	return {

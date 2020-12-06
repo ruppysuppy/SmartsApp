@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router";
 
 import firebase from "../../../firebase/firebase";
-import { IUserData, IState } from "../../../shared/interfaces/Interfaces";
+import { IUserData, IState } from "../../../shared/interfaces/interfaces";
 
 import sharedStyles from "../../../shared/styles/auth.module.css";
 
