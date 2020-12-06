@@ -92,7 +92,7 @@ function Register({
 					{error && (
 						<>
 							<div className={styles.ErrorText}>
-								<i className="fa fa-exclamation-circle d-inline-block pt-1" />
+								<i className="material-icons">error_outline</i>
 								<span className="d-inline-block pl-1 pb-2 text-wrap">
 									{error}
 								</span>

@@ -27,7 +27,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					>
 						Chats
 						<span className={styles.Spacer} />
-						<i className="fa fa-comments" aria-hidden="true" />
+						<i className="material-icons">chat</i>
 					</NavLink>
 					{userData && (
 						<NavLink
@@ -39,7 +39,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 						>
 							Settings
 							<span className={styles.Spacer} />
-							<i className="fa fa-cogs" aria-hidden="true" />
+							<i className="material-icons">settings</i>
 						</NavLink>
 					)}
 					<NavLink
@@ -51,7 +51,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					>
 						Log Out
 						<span className={styles.Spacer} />
-						<i className="fa fa-sign-out" aria-hidden="true" />
+						<i className="material-icons">power_settings_new</i>
 					</NavLink>
 				</>
 			) : (
@@ -65,7 +65,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					>
 						Log In
 						<span className={styles.Spacer} />
-						<i className="fa fa-sign-in" aria-hidden="true" />
+						<i className="material-icons">login</i>
 					</NavLink>
 					<NavLink
 						exact
@@ -76,7 +76,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					>
 						Register
 						<span className={styles.Spacer} />
-						<i className="fa fa-user-plus" aria-hidden="true" />
+						<i className="material-icons">person_add</i>
 					</NavLink>
 				</>
 			)}

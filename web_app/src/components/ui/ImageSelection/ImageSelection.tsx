@@ -123,9 +123,11 @@ export default function ImageSelection({
 							<Loader />
 						) : done ? (
 							<i
-								className={`fa fa-check ${styles.Tick}`}
+								className={`material-icons ${styles.Tick}`}
 								aria-hidden="true"
-							/>
+							>
+								done
+							</i>
 						) : (
 							<Button
 								onClick={handleSubmitImage}

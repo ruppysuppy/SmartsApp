@@ -51,6 +51,12 @@ hr {
 	color: var(--color-dark);
 }
 
+.material-icons {
+	font-size: medium;
+	position: relative;
+	bottom: -2px;
+}
+
 /* Scrollbar styles */
 
 ::-webkit-scrollbar {
