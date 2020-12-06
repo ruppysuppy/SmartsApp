@@ -50,3 +50,22 @@ hr {
 .text {
 	color: var(--color-dark);
 }
+
+/* Scrollbar styles */
+
+::-webkit-scrollbar {
+	width: 2px;
+	border-radius: 1px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--color-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #808080;
+}
