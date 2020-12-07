@@ -213,6 +213,7 @@ export const setImg = (userData: IUserData) => {
 		const userRef = firestore.collection("users").doc(userData.uid);
 		try {
 			await userRef.update({ photoUrl: userData.photoUrl });
+			dispatch(setImgSuccess(userData));
 		} catch (error) {
 			dispatch(setImgFail(error.message));
 		}

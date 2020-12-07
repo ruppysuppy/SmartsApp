@@ -12,7 +12,8 @@
 	overflow: hidden;
 	margin: auto;
 	margin-bottom: 12px;
-	background-color: var(--color-dark);
+	background-position: center;
+	background-size: cover;
 }
 
 .ProfilePic::after {

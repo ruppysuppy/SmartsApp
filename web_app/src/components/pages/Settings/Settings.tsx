@@ -12,6 +12,8 @@ import * as actions from "../../../store/actions/actions";
 import sharedStyles from "../../../shared/styles/auth.module.css";
 import styles from "./settings.module.css";
 
+import backgroundLoader from "../../../assets/img/Loading.gif";
+
 interface IProps {
 	user?: firebase.User;
 	userData?: IUserData;
@@ -61,6 +63,7 @@ function Settings({
 					<div
 						className={styles.ProfilePic}
 						onClick={() => setIsImgSelectShown(true)}
+						style={{ backgroundImage: `url(${backgroundLoader})` }}
 					>
 						<img src={userData.photoUrl} alt="Profile Pic" />
 					</div>
