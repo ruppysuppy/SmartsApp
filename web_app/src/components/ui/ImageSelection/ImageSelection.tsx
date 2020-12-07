@@ -110,10 +110,10 @@ export default function ImageSelection({
 							btnType="SECONDARY"
 							onClick={selectImageHandler}
 						>
-							Select Profile Picture
+							Profile Picture
 						</Button>
 						<span className={`text text-break ${styles.ImageName}`}>
-							{inputImgName}
+							{inputImgName ? inputImgName : "No file chosen"}
 						</span>
 					</span>
 				</div>

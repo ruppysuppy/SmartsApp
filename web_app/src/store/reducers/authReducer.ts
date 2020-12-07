@@ -120,6 +120,33 @@ const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 			}
 			return { ...state };
 
+		case actionTypes.SET_IMG_INIT:
+			return {
+				...state,
+				isLoading: true,
+				error: null,
+			};
+
+		case actionTypes.SET_IMG_SUCCESS:
+			if (payload?.userData) {
+				return {
+					...state,
+					isLoading: false,
+					userData: payload.userData,
+				};
+			}
+			return { ...state };
+
+		case actionTypes.SET_IMG_FAIL:
+			if (payload?.error !== undefined) {
+				return {
+					...state,
+					error: payload.error,
+					isLoading: false,
+				};
+			}
+			return { ...state };
+
 		default:
 			return state;
 	}

@@ -8,5 +8,7 @@ export {
 	getUserData,
 	setUserData,
 	setUserDataFail,
+	setImg,
+	setImgFail,
 } from "./auth";
 export { setIsDarkModeEnabled } from "./ui";

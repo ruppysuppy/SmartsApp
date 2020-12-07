@@ -15,11 +15,6 @@
 	display: flex;
 }
 
-.ErrorText i {
-	display: inline-block;
-	padding-top: 3px;
-}
-
 .OverflowContainer {
 	overflow-y: scroll;
 	height: 100vh;

@@ -182,3 +182,39 @@ export const setUserData = (userData: IUserData) => {
 		}
 	};
 };
+
+export const setImgInit = () => {
+	return {
+		type: actionTypes.SET_IMG_INIT,
+	};
+};
+
+export const setImgSuccess = (userData: IUserData) => {
+	return {
+		type: actionTypes.SET_IMG_SUCCESS,
+		payload: {
+			userData: userData,
+		},
+	};
+};
+
+export const setImgFail = (error: string) => {
+	return {
+		type: actionTypes.SET_IMG_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const setImg = (userData: IUserData) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
+		dispatch(setImgInit());
+		const userRef = firestore.collection("users").doc(userData.uid);
+		try {
+			await userRef.update({ photoUrl: userData.photoUrl });
+		} catch (error) {
+			dispatch(setImgFail(error.message));
+		}
+	};
+};

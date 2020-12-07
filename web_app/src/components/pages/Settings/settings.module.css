@@ -3,3 +3,51 @@
 	justify-content: space-between;
 	align-items: center;
 }
+
+.ProfilePic {
+	position: relative;
+	height: 180px;
+	width: 180px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: auto;
+	margin-bottom: 12px;
+	background-color: var(--color-dark);
+}
+
+.ProfilePic::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: transparent;
+	transition: 0.2s;
+}
+
+.ProfilePic:hover::after {
+	background-color: #80808080;
+	cursor: pointer;
+}
+
+.ProfilePic img {
+	height: 100%;
+	width: 100%;
+}
+
+@media (min-width: 1200px) {
+	.ProfilePic {
+		height: 240px;
+		width: 240px;
+		margin-bottom: 28px;
+	}
+}
+
+@media (min-width: 1600px) {
+	.ProfilePic {
+		height: 280px;
+		width: 280px;
+		margin-bottom: 40px;
+	}
+}
