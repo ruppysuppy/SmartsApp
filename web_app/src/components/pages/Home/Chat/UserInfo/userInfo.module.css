@@ -1,0 +1,33 @@
+.Body {
+	background-color: var(--primary);
+	padding: 24px 16px 12px 16px;
+	height: 70px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+.Body i:hover,
+.UserDetails:hover {
+	cursor: pointer;
+}
+
+.UserDetails {
+	display: flex;
+	align-items: center;
+}
+
+.ProfilePicure {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ProfilePicure img {
+	height: 40px;
+	width: 40px;
+}
