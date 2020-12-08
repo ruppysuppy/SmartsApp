@@ -219,3 +219,40 @@ export const setImg = (userData: IUserData) => {
 		}
 	};
 };
+
+export const setAboutInit = () => {
+	return {
+		type: actionTypes.SET_ABOUT_INIT,
+	};
+};
+
+export const setAboutSuccess = (userData: IUserData) => {
+	return {
+		type: actionTypes.SET_ABOUT_SUCCESS,
+		payload: {
+			userData: userData,
+		},
+	};
+};
+
+export const setAboutFail = (error: string) => {
+	return {
+		type: actionTypes.SET_ABOUT_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const setAbout = (userData: IUserData) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
+		dispatch(setAboutInit());
+		const userRef = firestore.collection("users").doc(userData.uid);
+		try {
+			await userRef.update({ about: userData.about });
+			dispatch(setAboutSuccess(userData));
+		} catch (error) {
+			dispatch(setAboutFail(error.message));
+		}
+	};
+};

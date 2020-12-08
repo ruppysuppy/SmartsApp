@@ -14,6 +14,9 @@ export const SET_USER_DATA_FAIL = "SET_USER_DATA_FAIL";
 export const SET_IMG_INIT = "SET_IMG_INIT";
 export const SET_IMG_SUCCESS = "SET_IMG_SUCCESS";
 export const SET_IMG_FAIL = "SET_IMG_FAIL";
+export const SET_ABOUT_INIT = "SET_ABOUT_INIT";
+export const SET_ABOUT_SUCCESS = "SET_ABOUT_SUCCESS";
+export const SET_ABOUT_FAIL = "SET_ABOUT_FAIL";
 export const LOGOUT = "LOGOUT";
 
 // UI ACTIONS

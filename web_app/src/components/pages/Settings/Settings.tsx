@@ -4,6 +4,7 @@ import { Redirect } from "react-router";
 
 import ToggleSwitch from "../../ui/ToggleSwitch/ToggleSwitch";
 import ImageSelection from "../../ui/ImageSelection/ImageSelection";
+import UpdateAboutInput from "./UpdateAboutInput/UpdateAboutInput";
 
 import firebase from "../../../firebase/firebase";
 import { IUserData, IState } from "../../../shared/interfaces/interfaces";
@@ -68,6 +69,7 @@ function Settings({
 						<img src={userData.photoUrl} alt="Profile Pic" />
 					</div>
 				)}
+				<UpdateAboutInput />
 				<div className={styles.Row}>
 					<h4 className="text mb-0"> Dark Mode </h4>
 					<ToggleSwitch

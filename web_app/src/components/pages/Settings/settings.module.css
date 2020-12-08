@@ -28,7 +28,12 @@
 }
 
 .ProfilePic:hover::after {
-	background-color: #80808080;
+	content: "Change Image";
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #44444480;
 	cursor: pointer;
 }
 

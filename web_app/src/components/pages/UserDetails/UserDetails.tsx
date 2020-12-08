@@ -47,12 +47,12 @@ function UserDetails({
 
 	const onSubmitHandler = (event: React.FormEvent) => {
 		event.preventDefault();
-		if (username.length === 0) {
-			setUserDataFail("Username field is mandatory");
+		if (username.trim().length === 0) {
+			setUserDataFail("Invalid Username");
 			return;
 		}
-		if (about.length === 0) {
-			setUserDataFail("About field is mandatory");
+		if (about.trim().length === 0) {
+			setUserDataFail("Invalid About");
 			return;
 		}
 		if (imgUrl.length === 0) {

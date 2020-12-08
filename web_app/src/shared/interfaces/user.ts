@@ -3,5 +3,5 @@ export interface IUserData {
 	uid: string;
 	photoUrl: string;
 	publicKey: string;
-	about: String;
+	about: string;
 }
