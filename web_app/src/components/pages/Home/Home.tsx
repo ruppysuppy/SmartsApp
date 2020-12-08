@@ -2,10 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 
+import Contacts from "./Contacts/Contacts";
+import Chat from "./Chat/Chat";
+
 import firebase from "../../../firebase/firebase";
 import { IUserData, IState } from "../../../shared/interfaces/interfaces";
-
-import sharedStyles from "../../../shared/styles/auth.module.css";
 
 interface IProps {
 	user?: firebase.User;
@@ -21,15 +22,10 @@ function Home({ user, userData }: IProps) {
 	}
 
 	return (
-		<div className={sharedStyles.OverflowContainer}>
-			{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
-				(elem, index) => (
-					<h1 className="text" key={index}>
-						HOME {elem}
-					</h1>
-				)
-			)}
-		</div>
+		<>
+			<Contacts />
+			<Chat />
+		</>
 	);
 }
 

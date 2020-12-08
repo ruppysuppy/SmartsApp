@@ -1,0 +1,41 @@
+.Body {
+	background-color: gray;
+	padding: 24px 16px 12px 16px;
+	display: flex;
+	align-items: center;
+}
+
+.Body input[type="text"] {
+	background-color: transparent !important;
+	outline: none !important;
+	border: none !important;
+	border-bottom: 1px solid var(--color-dark) !important;
+	color: var(--color-dark);
+	flex: 1;
+}
+
+.Body input[type="text"]:hover,
+.Body input[type="text"]:focus {
+	filter: invert(15%);
+}
+
+input[type="text"]::placeholder {
+	color: var(--color-dark);
+	transition: 0.2s;
+}
+
+.Body i {
+	font-size: larger;
+	padding-left: 12px;
+	color: var(--color-dark);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.CloseBtn {
+	cursor: pointer;
+}
