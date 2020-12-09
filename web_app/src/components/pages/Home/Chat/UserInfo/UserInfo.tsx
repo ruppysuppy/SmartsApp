@@ -11,7 +11,7 @@ interface IProps {
 export default function UserInfo({ userData }: IProps) {
 	return (
 		<>
-			<div className={`mt-5 ${styles.Body}`}>
+			<div className={styles.Body}>
 				<i className="material-icons mr-3 fs-6 text">
 					keyboard_backspace
 				</i>

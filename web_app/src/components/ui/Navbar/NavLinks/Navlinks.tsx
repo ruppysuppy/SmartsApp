@@ -8,20 +8,25 @@ import { IState, IUserData } from "../../../../shared/interfaces/interfaces";
 import styles from "./navlinks.module.css";
 
 interface IProps {
+	isSideBar?: boolean;
 	user?: firebase.User;
 	userData?: IUserData;
 	sidebarClose: () => void;
 }
 
-function Navlinks({ userData, user, sidebarClose }: IProps) {
+function Navlinks({ isSideBar, userData, user, sidebarClose }: IProps) {
 	return (
-		<div className={`ml-auto my-auto ${styles.NavLinkHolder}`}>
+		<div
+			className={`ml-auto my-auto ${
+				isSideBar ? styles.SideLinkHolder : styles.NavLinkHolder
+			}`}
+		>
 			{user ? (
 				<>
 					<NavLink
 						exact
 						to="/"
-						className={styles.NavLink}
+						className={isSideBar ? styles.SideLink : styles.NavLink}
 						activeClassName={styles.NavLinkActive}
 						onClick={sidebarClose}
 					>
@@ -33,7 +38,9 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 						<NavLink
 							exact
 							to="/settings"
-							className={styles.NavLink}
+							className={
+								isSideBar ? styles.SideLink : styles.NavLink
+							}
 							activeClassName={styles.NavLinkActive}
 							onClick={sidebarClose}
 						>
@@ -45,7 +52,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					<NavLink
 						exact
 						to="/logout"
-						className={styles.NavLink}
+						className={isSideBar ? styles.SideLink : styles.NavLink}
 						activeClassName={styles.NavLinkActive}
 						onClick={sidebarClose}
 					>
@@ -59,7 +66,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					<NavLink
 						exact
 						to="/login"
-						className={styles.NavLink}
+						className={isSideBar ? styles.SideLink : styles.NavLink}
 						activeClassName={styles.NavLinkActive}
 						onClick={sidebarClose}
 					>
@@ -70,7 +77,7 @@ function Navlinks({ userData, user, sidebarClose }: IProps) {
 					<NavLink
 						exact
 						to="/register"
-						className={styles.NavLink}
+						className={isSideBar ? styles.SideLink : styles.NavLink}
 						activeClassName={styles.NavLinkActive}
 						onClick={sidebarClose}
 					>

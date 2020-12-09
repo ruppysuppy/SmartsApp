@@ -13,4 +13,4 @@ export {
 	setAbout,
 	setAboutFail,
 } from "./auth";
-export { setIsDarkModeEnabled } from "./ui";
+export { setIsDarkModeEnabled, setIsSideDrawerShown } from "./ui";

@@ -34,7 +34,7 @@ function SideDrawer({ sidebarClose, sidebarShown }: IProps) {
 					</Link>
 				</div>
 				<div className="container px-3">
-					<Navlinks sidebarClose={sidebarClose} />
+					<Navlinks sidebarClose={sidebarClose} isSideBar={true} />
 				</div>
 			</div>
 		</>

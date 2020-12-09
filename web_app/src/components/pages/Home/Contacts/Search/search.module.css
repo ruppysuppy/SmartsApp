@@ -6,23 +6,8 @@
 	align-items: center;
 }
 
-.Body input[type="text"] {
-	background-color: transparent !important;
-	outline: none !important;
-	border: none !important;
-	border-bottom: 1px solid var(--color-dark) !important;
-	color: var(--color-dark);
+.InputHolder {
 	flex: 1;
-}
-
-.Body input[type="text"]:hover,
-.Body input[type="text"]:focus {
-	filter: invert(15%);
-}
-
-input[type="text"]::placeholder {
-	color: var(--color-dark);
-	transition: 0.2s;
 }
 
 .Body i {
@@ -39,4 +24,10 @@ input[type="text"]::placeholder {
 
 .CloseBtn {
 	cursor: pointer;
+}
+
+.Toggler {
+	position: relative;
+	right: -4px;
+	bottom: -2px;
 }

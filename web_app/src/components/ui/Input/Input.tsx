@@ -7,6 +7,7 @@ interface IProps {
 	placeholder: string;
 	val: string;
 	type?: "email" | "password" | "text";
+	inputType?: "NORMAL" | "TRANSPARENT";
 }
 
 export default function Input({
@@ -14,18 +15,32 @@ export default function Input({
 	placeholder,
 	val,
 	type,
+	inputType,
 }: IProps) {
 	const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		onChangeFunc(e.currentTarget.value);
 	};
+	switch (inputType) {
+		case "TRANSPARENT":
+			return (
+				<input
+					type={type ? type : "text"}
+					onChange={onChangeHandler}
+					value={val}
+					placeholder={placeholder}
+					className={styles.InputTransparent}
+				/>
+			);
 
-	return (
-		<input
-			type={type ? type : "text"}
-			onChange={onChangeHandler}
-			value={val}
-			placeholder={placeholder}
-			className={styles.Input}
-		/>
-	);
+		default:
+			return (
+				<input
+					type={type ? type : "text"}
+					onChange={onChangeHandler}
+					value={val}
+					placeholder={placeholder}
+					className={styles.Input}
+				/>
+			);
+	}
 }

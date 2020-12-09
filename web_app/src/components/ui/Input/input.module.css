@@ -21,3 +21,24 @@
 .Input:focus::placeholder {
 	color: white;
 }
+
+.InputTransparent {
+	width: 100%;
+	background-color: transparent !important;
+	outline: none !important;
+	border: none;
+	border-bottom: 1px solid var(--color-dark);
+	color: grey;
+}
+
+.Input:focus::placeholder {
+	color: grey;
+	transition: 0.2s;
+}
+
+.InputTransparent:hover::placeholder,
+.InputTransparent:focus::placeholder,
+.InputTransparent:hover,
+.InputTransparent:focus {
+	color: var(--color-dark);
+}

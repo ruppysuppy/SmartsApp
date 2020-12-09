@@ -4,8 +4,9 @@ import { connect } from "react-redux";
 import Search from "./Search/Search";
 import ContactCard from "./Contact/ContactCard";
 
-import styles from "./contacts.module.css";
 import { IState, IUserData } from "../../../../shared/interfaces/interfaces";
+
+import styles from "./contacts.module.css";
 
 interface IProps {
 	userData?: IUserData;

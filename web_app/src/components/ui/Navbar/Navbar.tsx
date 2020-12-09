@@ -1,54 +1,73 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
 
 import Navlinks from "./NavLinks/Navlinks";
 import SideDrawer from "./SideDrawer/SideDrawer";
 
+import { IState } from "../../../shared/interfaces/interfaces";
+import * as actions from "../../../store/actions/actions";
+
 import ChatIcon from "../../../assets/img/ChatIcon.svg";
 import styles from "./navbar.module.css";
+import MenuBtn from "../MenuBtn/MenuBtn";
 
-export default function Navbar() {
-	const [sidebarShown, setSidebarShown] = useState(false);
+interface IProps {
+	location: {
+		pathname: string;
+	};
+	isSideDrawerShown: boolean;
+	setIsSideDrawerShown: (value: boolean) => void;
+}
+
+function Navbar({ location, isSideDrawerShown, setIsSideDrawerShown }: IProps) {
+	const { pathname } = location;
 
 	return (
 		<>
-			<div className={styles.NavBar}>
-				<div className={`container ${styles.NavContainer}`}>
-					<div className={styles.NavIcon}>
-						<Link to="/">
-							<img src={ChatIcon} alt="Logo" />
-							<span>SmartsApp</span>
-						</Link>
+			{pathname !== "/" && (
+				<div className={styles.NavBar}>
+					<div className={`container ${styles.NavContainer}`}>
+						<div className={styles.NavIcon}>
+							<Link to="/">
+								<img src={ChatIcon} alt="Logo" />
+								<span>SmartsApp</span>
+							</Link>
+						</div>
+						<div
+							className={`ml-auto my-auto ${styles.NavLinkHolder}`}
+						>
+							<Navlinks
+								sidebarClose={() => setIsSideDrawerShown(false)}
+							/>
+						</div>
+						<span className={styles.Toggler}>
+							<MenuBtn
+								onClick={() =>
+									setIsSideDrawerShown(!isSideDrawerShown)
+								}
+								isCross={isSideDrawerShown}
+							/>
+						</span>
 					</div>
-					<div className={`ml-auto my-auto ${styles.NavLinkHolder}`}>
-						<Navlinks sidebarClose={() => setSidebarShown(false)} />
-					</div>
-					<button
-						className={`ml-auto my-auto ${styles.Toggler}`}
-						onClick={() => setSidebarShown(!sidebarShown)}
-					>
-						<div
-							className={`${styles.Bar1} ${
-								sidebarShown && styles.CrossBar1
-							}`}
-						/>
-						<div
-							className={`${styles.Bar2} ${
-								sidebarShown && styles.CrossBar2
-							}`}
-						/>
-						<div
-							className={`${styles.Bar3} ${
-								sidebarShown && styles.CrossBar3
-							}`}
-						/>
-					</button>
 				</div>
-			</div>
+			)}
 			<SideDrawer
-				sidebarClose={() => setSidebarShown(false)}
-				sidebarShown={sidebarShown}
+				sidebarClose={() => setIsSideDrawerShown(false)}
+				sidebarShown={isSideDrawerShown}
 			/>
 		</>
 	);
 }
+
+const mapStateToProps = (state: IState) => ({
+	isSideDrawerShown: state.ui.isSideDrawerShown,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+	setIsSideDrawerShown: (value: boolean) =>
+		dispatch(actions.setIsSideDrawerShown(value)),
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));
