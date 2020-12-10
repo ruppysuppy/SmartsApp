@@ -1,13 +1,13 @@
 import React from "react";
 
-import { IUserData } from "../../../../../shared/interfaces/interfaces";
+import { IContactData } from "../../../../../shared/interfaces/interfaces";
 
 import styles from "./contactCard.module.css";
 
 import Loader from "../../../../../assets/img/Loading.gif";
 
 interface IProps {
-	userData: IUserData;
+	userData: IContactData;
 }
 
 export default function ContactCard({ userData }: IProps) {

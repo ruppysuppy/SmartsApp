@@ -3,7 +3,7 @@
 	width: 100vw;
 	border-right: 1px solid grey;
 	overflow-y: scroll;
-	/* overflow-x: hidden; */
+	overflow-x: hidden;
 	position: relative;
 	z-index: 5;
 }
@@ -12,6 +12,13 @@
 	position: fixed;
 	bottom: 12px;
 	left: calc(100vw - 52px);
+}
+
+.LoaderContainer {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
 }
 
 @media (min-width: 768px) {

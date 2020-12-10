@@ -1,7 +1,9 @@
-import * as authInterfaces from "./auth";
-import * as uiInterfaces from "./ui";
+import { IAuthState } from "./auth";
+import { IUIState } from "./ui";
+import { IContactState } from "./contacts";
 
 export interface IState {
-	auth: authInterfaces.IAuthState;
-	ui: uiInterfaces.IUIState;
+	auth: IAuthState;
+	contact: IContactState;
+	ui: IUIState;
 }

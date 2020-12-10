@@ -65,6 +65,7 @@ function UserDetails({
 			photoUrl: imgUrl,
 			about: about,
 			publicKey: "",
+			privateKey: "",
 		});
 		// `https://avatars.dicebear.com/api/human/${Math.floor(
 		// 	Math.random() * 250

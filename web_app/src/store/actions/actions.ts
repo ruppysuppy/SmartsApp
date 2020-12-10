@@ -13,4 +13,5 @@ export {
 	setAbout,
 	setAboutFail,
 } from "./auth";
+export { getContacts } from "./contact";
 export { setIsDarkModeEnabled, setIsSideDrawerShown } from "./ui";

@@ -8,8 +8,7 @@ import {
 	IUserData,
 	IKeys,
 } from "../../shared/interfaces/interfaces";
-
-const BASE_URL = "http://127.0.0.1:5000";
+import BASE_URL from "./baseUrl";
 
 export const authChangedHandler = (user?: firebase.User) => {
 	return {
@@ -112,13 +111,30 @@ export const getUserDataFail = (error: string) => {
 export const getUserData = (uid: string) => {
 	return async (dispatch: Dispatch<IAuthAction>) => {
 		dispatch(getUserDataInit());
-		const userRef = firestore.collection("users").doc(uid);
-		const doc = await userRef.get();
-		if (!doc.exists) {
-			dispatch(getUserDataFail("User data not found"));
-			return;
+		try {
+			const userRef = firestore.collection("users").doc(uid);
+			const doc = await userRef.get();
+			if (!doc.exists) {
+				dispatch(getUserDataFail("User data not found"));
+				return;
+			}
+
+			const privateKeyRef = firestore.collection("keys").doc(uid);
+			const keyDoc = await privateKeyRef.get();
+			if (!keyDoc.exists) {
+				dispatch(getUserDataFail("Key not found"));
+				return;
+			}
+
+			dispatch(
+				getUserDataSuccess({
+					...(doc.data() as IUserData),
+					privateKey: keyDoc.data()!.privateKey,
+				})
+			);
+		} catch (error) {
+			dispatch(getUserDataFail(error.message));
 		}
-		dispatch(getUserDataSuccess(doc.data() as IUserData));
 	};
 };
 
@@ -149,24 +165,27 @@ export const setUserDataFail = (error: string) => {
 export const setUserData = (userData: IUserData) => {
 	return async (dispatch: Dispatch<IAuthAction>) => {
 		dispatch(setUserDataInit());
-		const userRef = firestore
-			.collection("users")
-			.where("username", "==", userData.username);
-		const doc = await userRef.get();
-		if (!doc.empty) {
-			dispatch(setUserDataFail("Username already in use"));
+		try {
+			const userRef = firestore
+				.collection("users")
+				.where("username", "==", userData.username);
+			const doc = await userRef.get();
+			if (!doc.empty) {
+				dispatch(setUserDataFail("Username already in use"));
+				return;
+			}
+		} catch (error) {
+			dispatch(setUserDataFail(error.message));
 			return;
 		}
-		let keys: IKeys;
-		console.log("resquesting");
 
+		let keys: IKeys;
 		try {
 			const response = await axios.get(`${BASE_URL}/generate-keys`);
-
 			keys = response.data as IKeys;
-			console.log(keys);
 
 			userData.publicKey = keys.public_key;
+			userData.privateKey = keys.private_key;
 		} catch (error) {
 			dispatch(setUserDataFail(error.message));
 			return;
