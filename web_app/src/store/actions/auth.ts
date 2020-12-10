@@ -9,6 +9,8 @@ import {
 	IKeys,
 } from "../../shared/interfaces/interfaces";
 
+const BASE_URL = "http://127.0.0.1:5000";
+
 export const authChangedHandler = (user?: firebase.User) => {
 	return {
 		type: actionTypes.AUTH_CHANGED,
@@ -159,9 +161,7 @@ export const setUserData = (userData: IUserData) => {
 		console.log("resquesting");
 
 		try {
-			const response = await axios.get(
-				"http://127.0.0.1:5000/generate-keys"
-			);
+			const response = await axios.get(`${BASE_URL}/generate-keys`);
 
 			keys = response.data as IKeys;
 			console.log(keys);

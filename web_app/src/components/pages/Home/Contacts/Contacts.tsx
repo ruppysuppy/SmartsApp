@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import Search from "./Search/Search";
 import ContactCard from "./Contact/ContactCard";
+import AddBtn from "./AddBtn/AddBtn";
 
 import { IState, IUserData } from "../../../../shared/interfaces/interfaces";
 
@@ -16,7 +17,7 @@ function Contacts({ userData }: IProps) {
 	const [query, setQuery] = useState("");
 
 	return (
-		<div className={styles.Body}>
+		<div className={styles.Body} id="contacts">
 			<Search query={query} setQuery={setQuery} />
 			{userData && <ContactCard userData={userData} />}
 			{userData && <ContactCard userData={userData} />}
@@ -27,6 +28,9 @@ function Contacts({ userData }: IProps) {
 			{userData && <ContactCard userData={userData} />}
 			{userData && <ContactCard userData={userData} />}
 			{userData && <ContactCard userData={userData} />}
+			<span className={styles.BtnHolder}>
+				<AddBtn />
+			</span>
 		</div>
 	);
 }
