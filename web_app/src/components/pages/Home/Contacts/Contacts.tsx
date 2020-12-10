@@ -31,6 +31,10 @@ function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
 		}
 	}, []);
 
+	const filteredContacts = query
+		? contacts.filter((contact) => contact.username.includes(query))
+		: contacts;
+
 	return (
 		<div className={styles.Body} id="contacts">
 			<Search query={query} setQuery={setQuery} />
@@ -38,10 +42,14 @@ function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
 				<div className={styles.LoaderContainer}>
 					<Loader />
 				</div>
-			) : (
-				contacts.map((contactData) => (
+			) : filteredContacts.length > 0 ? (
+				filteredContacts.map((contactData) => (
 					<ContactCard userData={contactData} key={contactData.uid} />
 				))
+			) : (
+				<div className={`text ${styles.LoaderContainer}`}>
+					No match found
+				</div>
 			)}
 			<span className={styles.BtnHolder}>
 				<AddBtn />
