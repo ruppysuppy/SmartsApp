@@ -6,9 +6,12 @@ import * as actionTypes from "./actionTypes";
 import {
 	IContactAction,
 	IContactData,
+	IMessage,
 	IUserData,
 } from "../../shared/interfaces/interfaces";
 import BASE_URL from "./baseUrl";
+
+let previousData: IContactData[] = [];
 
 export const getContactsInit = () => {
 	return {
@@ -62,25 +65,47 @@ export const getContacts = (uid: string, privateKey: string) => {
 						const userDataArr = users.map(
 							(user) => user.data() as IUserData
 						);
-						const keyPromiseArr: Promise<AxiosResponse<any>>[] = [];
-						userDataArr.map((user) => {
-							keyPromiseArr.push(
-								axios.get(
-									`${BASE_URL}/generate-shared-key?local_private_key=${privateKey}&remote_public_key=${user.publicKey}`
-								)
-							);
+						const keyPromiseArr: Promise<
+							| AxiosResponse<{ shared_key: string }>
+							| { data: { shared_key: string } }
+						>[] = [];
+						const messagesArr: IMessage[][] = [];
+						userDataArr.map((user, index) => {
+							if (
+								previousData.length > index &&
+								previousData[index].uid === user.uid
+							) {
+								keyPromiseArr.push(
+									Promise.resolve({
+										data: {
+											shared_key:
+												previousData[index].sharedKey,
+										},
+									})
+								);
+								messagesArr.push([
+									...previousData[index].messages,
+								]);
+							} else {
+								keyPromiseArr.push(
+									axios.get(
+										`${BASE_URL}/generate-shared-key?local_private_key=${privateKey}&remote_public_key=${user.publicKey}`
+									)
+								);
+								messagesArr.push([]);
+							}
 						});
 						const keys = (await Promise.all(keyPromiseArr)).map(
 							(value) => value.data
 						);
-						console.log(keys);
 						userDataArr.map((user, index) => {
 							contacts.push({
 								...user,
 								sharedKey: keys[index].shared_key,
-								messages: [],
+								messages: messagesArr[index],
 							} as IContactData);
 						});
+						previousData = contacts;
 						dispatch(getContactsSuccess(contacts));
 					} catch (error) {
 						dispatch(getContactsFail(error.message));
