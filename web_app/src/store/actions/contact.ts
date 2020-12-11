@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-import firebase, { auth, firestore } from "../../firebase/firebase";
+import firebase, { firestore } from "../../firebase/firebase";
 import * as actionTypes from "./actionTypes";
 import {
 	IContactAction,
@@ -34,7 +34,7 @@ export const getContactsFail = (error: string) => {
 	};
 };
 
-export const getContacts = (uid: string) => {
+export const getContacts = (uid: string, privateKey: string) => {
 	return async (dispatch: Dispatch<IContactAction>) => {
 		dispatch(getContactsInit());
 		try {
@@ -47,16 +47,44 @@ export const getContacts = (uid: string) => {
 
 			contactsRef.onSnapshot(
 				async (docSnapshot) => {
-					const contacts = [];
-					const userId = docSnapshot.data()!["0"];
-					const userRef = firestore.collection("users").doc(userId);
-					const userData = (await userRef.get()).data() as IUserData;
-					const contactData = {
-						...userData,
-						messages: [],
-					} as IContactData;
-					contacts.push(contactData);
-					dispatch(getContactsSuccess(contacts));
+					const contacts: IContactData[] = [];
+					const contactList: string[] = docSnapshot.data()!.contacts;
+					const userPromiseArr: Promise<
+						firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>
+					>[] = [];
+					try {
+						contactList.map((uid) => {
+							userPromiseArr.push(
+								firestore.collection("users").doc(uid).get()
+							);
+						});
+						const users = await Promise.all(userPromiseArr);
+						const userDataArr = users.map(
+							(user) => user.data() as IUserData
+						);
+						const keyPromiseArr: Promise<AxiosResponse<any>>[] = [];
+						userDataArr.map((user) => {
+							keyPromiseArr.push(
+								axios.get(
+									`${BASE_URL}/generate-shared-key?local_private_key=${privateKey}&remote_public_key=${user.publicKey}`
+								)
+							);
+						});
+						const keys = (await Promise.all(keyPromiseArr)).map(
+							(value) => value.data
+						);
+						console.log(keys);
+						userDataArr.map((user, index) => {
+							contacts.push({
+								...user,
+								sharedKey: keys[index].shared_key,
+								messages: [],
+							} as IContactData);
+						});
+						dispatch(getContactsSuccess(contacts));
+					} catch (error) {
+						dispatch(getContactsFail(error.message));
+					}
 				},
 				(error) => {
 					dispatch(getContactsFail(error.message));
@@ -64,6 +92,67 @@ export const getContacts = (uid: string) => {
 			);
 		} catch (error) {
 			dispatch(getContactsFail(error.message));
+		}
+	};
+};
+
+export const addContactInit = () => {
+	return {
+		type: actionTypes.ADD_CONTACT_INIT,
+	};
+};
+
+export const addContactSuccess = () => {
+	return {
+		type: actionTypes.ADD_CONTACT_SUCCESS,
+	};
+};
+
+export const addContactFail = (error: string) => {
+	return {
+		type: actionTypes.ADD_CONTACT_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const addContact = (userId: string, username: string) => {
+	return async (dispatch: Dispatch<IContactAction>) => {
+		dispatch(addContactInit());
+		try {
+			const userRef = firestore
+				.collection("users")
+				.where("username", "==", username);
+			const userData = await userRef.get();
+			if (userData.empty) {
+				dispatch(addContactFail("User does not exist"));
+				return;
+			}
+			const uid = (userData.docs[0].data() as IUserData).uid;
+			const userContactsRef = firestore
+				.collection("contacts")
+				.doc(userId);
+			const contactContactsRef = firestore
+				.collection("contacts")
+				.doc(uid);
+			if (!(await userContactsRef.get()).exists) {
+				await userContactsRef.set({ contacts: [uid] });
+			} else {
+				await userContactsRef.update({
+					contacts: firebase.firestore.FieldValue.arrayUnion(uid),
+				});
+			}
+			if (!(await contactContactsRef.get()).exists) {
+				await contactContactsRef.set({ contacts: [userId] });
+			} else {
+				await contactContactsRef.update({
+					contacts: firebase.firestore.FieldValue.arrayUnion(userId),
+				});
+			}
+			dispatch(addContactSuccess());
+		} catch (error) {
+			dispatch(addContactFail(error.message));
 		}
 	};
 };

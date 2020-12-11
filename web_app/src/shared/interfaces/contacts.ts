@@ -3,6 +3,7 @@ export interface IContactData {
 	uid: string;
 	photoUrl: string;
 	publicKey: string;
+	sharedKey: string;
 	about: string;
 	messages: IMessage[];
 }

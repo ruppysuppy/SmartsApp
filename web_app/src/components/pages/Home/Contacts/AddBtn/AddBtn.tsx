@@ -1,13 +1,60 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 
+import Button from "../../../../ui/Button/Button";
 import Input from "../../../../ui/Input/Input";
 import Modal from "../../../../ui/Modal/Modal";
 
-import styles from "./addBtn.module.css";
+import {
+	IContactData,
+	IState,
+	IUserData,
+} from "../../../../../shared/interfaces/interfaces";
+import * as actions from "../../../../../store/actions/actions";
 
-export default function AddBtn() {
+import styles from "./addBtn.module.css";
+import sharedStyles from "../../../../../shared/styles/auth.module.css";
+
+interface IProps {
+	error: string;
+	contacts: IContactData[];
+	userData?: IUserData;
+	addContact: (userId: string, username: string) => Promise<void>;
+	addContactFail: (error: string) => void;
+	getContacts: (uid: string, privateKey: string) => void;
+}
+
+function AddBtn({
+	error,
+	contacts,
+	userData,
+	addContact,
+	addContactFail,
+	getContacts,
+}: IProps) {
 	const [username, setUsername] = useState("");
 	const [isShown, setIsShown] = useState(false);
+
+	const onSubmitHandler = async () => {
+		if (!username) {
+			addContactFail("Enter a valid username");
+			return;
+		}
+		if (username === userData!.username) {
+			addContactFail("You cannot add yourself to your contact");
+			return;
+		}
+		if (userData!.uid) {
+			await addContact(userData!.uid, username);
+			if (error === "") {
+				setIsShown(false);
+				setUsername("");
+				if (contacts.length === 0) {
+					getContacts(userData!.uid, userData!.privateKey);
+				}
+			}
+		}
+	};
 
 	return (
 		<>
@@ -30,7 +77,36 @@ export default function AddBtn() {
 						onChangeFunc={(param: string) => setUsername(param)}
 					/>
 				</div>
+				{error && (
+					<>
+						<div className={sharedStyles.ErrorText}>
+							<i className="fa fa-exclamation-circle d-inline-block pt-1" />
+							<span className="d-inline-block pl-1 pb-2 text-wrap">
+								{error}
+							</span>
+						</div>
+					</>
+				)}
+				<Button btnType="NORMAL" onClick={onSubmitHandler}>
+					Add Contact
+				</Button>
 			</Modal>
 		</>
 	);
 }
+
+const mapStateToProps = (state: IState) => ({
+	error: state.contact.error,
+	contacts: state.contact.contacts,
+	userData: state.auth.userData,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+	addContact: async (userId: string, username: string) =>
+		await dispatch(actions.addContact(userId, username)),
+	addContactFail: (error: string) => dispatch(actions.addContactFail(error)),
+	getContacts: (uid: string, privateKey: string) =>
+		dispatch(actions.getContacts(uid, privateKey)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBtn);

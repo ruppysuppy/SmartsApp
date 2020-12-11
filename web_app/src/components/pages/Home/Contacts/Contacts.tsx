@@ -19,7 +19,7 @@ interface IProps {
 	userData?: IUserData;
 	contacts: IContactData[];
 	isLoading: boolean;
-	getContacts: (uid: string) => void;
+	getContacts: (uid: string, privateKey: string) => void;
 }
 
 function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
@@ -27,7 +27,7 @@ function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
 
 	useEffect(() => {
 		if (userData) {
-			getContacts(userData.uid);
+			getContacts(userData.uid, userData.privateKey);
 		}
 	}, []);
 
@@ -41,6 +41,10 @@ function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
 			{isLoading ? (
 				<div className={styles.LoaderContainer}>
 					<Loader />
+				</div>
+			) : contacts.length === 0 ? (
+				<div className={`text ${styles.LoaderContainer}`}>
+					You don't have any contact
 				</div>
 			) : filteredContacts.length > 0 ? (
 				filteredContacts.map((contactData) => (
@@ -64,8 +68,9 @@ const mapStateToProps = (state: IState) => ({
 	isLoading: state.contact.isLoading,
 });
 
-const mapDispatchToPRops = (dispatch: any) => ({
-	getContacts: (uid: string) => dispatch(actions.getContacts(uid)),
+const mapDispatchToProps = (dispatch: any) => ({
+	getContacts: (uid: string, privateKey: string) =>
+		dispatch(actions.getContacts(uid, privateKey)),
 });
 
-export default connect(mapStateToProps, mapDispatchToPRops)(Contacts);
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

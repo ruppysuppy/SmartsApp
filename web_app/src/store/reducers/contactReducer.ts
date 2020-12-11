@@ -18,7 +18,7 @@ const reducer = (
 
 	switch (type) {
 		case actionTypes.GET_CONTACTS_INIT:
-			return { ...state, isLoading: true, error: false };
+			return { ...state, isLoading: true, error: "" };
 
 		case actionTypes.GET_CONTACTS_FAIL:
 			if (payload?.error !== undefined) {
@@ -35,6 +35,18 @@ const reducer = (
 				};
 			}
 			return { ...state };
+
+		case actionTypes.ADD_CONTACT_INIT:
+			return { ...state, isLoading: true, error: "" };
+
+		case actionTypes.ADD_CONTACT_FAIL:
+			if (payload?.error !== undefined) {
+				return { ...state, error: payload.error, isLoading: false };
+			}
+			return { ...state };
+
+		case actionTypes.ADD_CONTACT_SUCCESS:
+			return { ...state, isLoading: false };
 
 		default:
 			return { ...state };
