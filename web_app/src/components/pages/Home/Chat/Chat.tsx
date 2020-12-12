@@ -5,6 +5,7 @@ import UserInfo from "./UserInfo/UserInfo";
 import ChatInput from "./ChatInput/ChatInput";
 
 import { IContactData, IState } from "../../../../shared/interfaces/interfaces";
+import { decrypt } from "../../../../cryptography/cipher";
 
 import styles from "./chat.module.css";
 
@@ -14,46 +15,20 @@ interface IProps {
 }
 
 function Chat({ contacts, selectedContact }: IProps) {
+	console.log(contacts[selectedContact].messages);
+
 	return (
 		<div className={styles.Body}>
 			<UserInfo userData={contacts[selectedContact]} />
 			<div className={styles.ChatContainer}>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
-				<h1 className="text">Chat</h1>
+				{contacts[selectedContact].messages.map((message) => (
+					<h1 className="text" key={Math.random()}>
+						{decrypt(
+							message.text,
+							contacts[selectedContact].sharedKey
+						)}
+					</h1>
+				))}
 			</div>
 			<ChatInput />
 		</div>

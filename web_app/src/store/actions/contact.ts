@@ -13,6 +13,8 @@ import BASE_URL from "./baseUrl";
 import { encrypt } from "../../cryptography/cipher";
 
 let previousData: IContactData[] = [];
+const userIndexMap: { [key: string]: number } = {};
+const messageSnapshotListeners = new Set<string>();
 
 export const getContactsInit = () => {
 	return {
@@ -105,9 +107,31 @@ export const getContacts = (uid: string, privateKey: string) => {
 								sharedKey: keys[index].shared_key,
 								messages: messagesArr[index],
 							} as IContactData);
+							userIndexMap[user.uid] = index;
+							previousData = contacts;
+							dispatch(getContactsSuccess(contacts));
+
+							if (!(user.uid in messageSnapshotListeners)) {
+								const users = [user.uid, uid];
+								users.sort();
+								const usersList = users.join(",");
+								firestore
+									.collection("messages")
+									.where("users", "==", usersList)
+									.orderBy("timestamp", "desc")
+									.limit(1)
+									.onSnapshot((docSnapshot) => {
+										docSnapshot.forEach((snapshot) => {
+											dispatch(
+												updateMessageSuccess(
+													snapshot.data() as IMessage,
+													userIndexMap[user.uid]
+												)
+											);
+										});
+									});
+							}
 						});
-						previousData = contacts;
-						dispatch(getContactsSuccess(contacts));
 					} catch (error) {
 						dispatch(getContactsFail(error.message));
 					}
@@ -228,9 +252,11 @@ export const sendMessage = (
 	return async (dispatch: Dispatch<IContactAction>) => {
 		dispatch(sendMessageInit());
 		const encryptedMessage = encrypt(message, sharedKey);
+		const users = [otherId, uid];
+		users.sort();
 		const messageData: IMessage = {
 			sender: uid,
-			receiver: otherId,
+			users: users.join(","),
 			text: encryptedMessage,
 			timestamp: new Date().getTime(),
 		};
@@ -240,5 +266,33 @@ export const sendMessage = (
 		} catch (error) {
 			dispatch(sendMessageFail(error.message));
 		}
+	};
+};
+
+export const updateMessageInit = () => {
+	return {
+		type: actionTypes.UPDATE_MESSAGE_INIT,
+	};
+};
+
+export const updateMessageFail = (error: string) => {
+	return {
+		type: actionTypes.UPDATE_MESSAGE_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const updateMessageSuccess = (
+	message: IMessage,
+	selectionIndex: number
+) => {
+	return {
+		type: actionTypes.UPDATE_MESSAGE_SUCCESS,
+		payload: {
+			message: message,
+			selectionIndex: selectionIndex,
+		},
 	};
 };

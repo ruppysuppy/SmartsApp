@@ -17,7 +17,7 @@ export interface IContactState {
 
 export interface IMessage {
 	sender: string;
-	receiver: string;
+	users: string;
 	text: string;
 	timestamp: number;
 }
@@ -28,5 +28,6 @@ export interface IContactAction {
 		contacts?: IContactData[];
 		error?: string;
 		selectionIndex?: number;
+		message?: IMessage;
 	};
 }

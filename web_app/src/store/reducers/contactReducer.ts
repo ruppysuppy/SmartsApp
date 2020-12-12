@@ -72,6 +72,32 @@ const reducer = (
 				...state,
 			};
 
+		case actionTypes.UPDATE_MESSAGE_INIT:
+			return { ...state, error: "" };
+
+		case actionTypes.UPDATE_MESSAGE_FAIL:
+			if (payload?.error !== undefined) {
+				return { ...state, error: payload.error };
+			}
+			return { ...state };
+
+		case actionTypes.UPDATE_MESSAGE_SUCCESS:
+			if (
+				payload?.message !== undefined &&
+				payload?.selectionIndex !== undefined
+			) {
+				const stateCopy = {
+					...state,
+					contacts: [...state.contacts],
+				};
+				stateCopy.contacts[payload.selectionIndex].messages = [
+					...stateCopy.contacts[payload.selectionIndex].messages,
+					payload.message,
+				];
+				return stateCopy;
+			}
+			return { ...state };
+
 		default:
 			return { ...state };
 	}

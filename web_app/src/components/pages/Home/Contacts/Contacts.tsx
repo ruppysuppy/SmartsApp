@@ -47,8 +47,7 @@ function Contacts({
 
 	const onClickHandler = (i: number) => {
 		const uid = filteredContacts[i].uid;
-
-		selectContact(contacts.findIndex((contact) => contact.uid == uid));
+		selectContact(contacts.findIndex((contact) => contact.uid === uid));
 	};
 
 	return (
@@ -72,13 +71,15 @@ function Contacts({
 					You don't have any contact
 				</div>
 			) : filteredContacts.length > 0 ? (
-				filteredContacts.map((contactData, index) => (
-					<ContactCard
-						userData={contactData}
-						key={contactData.uid}
-						onClickHandler={() => onClickHandler(index)}
-					/>
-				))
+				filteredContacts.map((contactData, index) => {
+					return (
+						<ContactCard
+							userData={contactData}
+							key={contactData.uid}
+							onClickHandler={() => onClickHandler(index)}
+						/>
+					);
+				})
 			) : (
 				<div className={`text ${styles.LoaderContainer}`}>
 					No match found
