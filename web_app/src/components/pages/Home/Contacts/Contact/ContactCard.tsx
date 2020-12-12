@@ -8,11 +8,12 @@ import Loader from "../../../../../assets/img/Loading.gif";
 
 interface IProps {
 	userData: IContactData;
+	onClickHandler: () => void;
 }
 
-export default function ContactCard({ userData }: IProps) {
+export default function ContactCard({ userData, onClickHandler }: IProps) {
 	return (
-		<div className={styles.Body}>
+		<div className={styles.Body} onClick={onClickHandler}>
 			<div
 				className={styles.ProfilePic}
 				style={{ backgroundImage: `url(${Loader})` }}

@@ -11,9 +11,10 @@ import { IUserData, IState } from "../../../shared/interfaces/interfaces";
 interface IProps {
 	user?: firebase.User;
 	userData?: IUserData;
+	selectedContact?: number;
 }
 
-function Home({ user, userData }: IProps) {
+function Home({ user, userData, selectedContact }: IProps) {
 	if (!user) {
 		return <Redirect to="/login" />;
 	}
@@ -24,7 +25,7 @@ function Home({ user, userData }: IProps) {
 	return (
 		<>
 			<Contacts />
-			<Chat />
+			{selectedContact !== undefined && <Chat />}
 		</>
 	);
 }
@@ -32,6 +33,7 @@ function Home({ user, userData }: IProps) {
 const mapStateToProps = (state: IState) => ({
 	user: state.auth.user,
 	userData: state.auth.userData,
+	selectedContact: state.contact.selectedContact,
 });
 
 export default connect(mapStateToProps)(Home);

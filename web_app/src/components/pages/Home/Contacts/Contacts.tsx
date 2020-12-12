@@ -14,15 +14,25 @@ import {
 import * as actions from "../../../../store/actions/actions";
 
 import styles from "./contacts.module.css";
+import sharedStyles from "../../../../shared/styles/auth.module.css";
 
 interface IProps {
 	userData?: IUserData;
 	contacts: IContactData[];
 	isLoading: boolean;
+	error: string;
 	getContacts: (uid: string, privateKey: string) => void;
+	selectContact: (index: number) => void;
 }
 
-function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
+function Contacts({
+	error,
+	userData,
+	contacts,
+	isLoading,
+	getContacts,
+	selectContact,
+}: IProps) {
 	const [query, setQuery] = useState("");
 
 	useEffect(() => {
@@ -35,10 +45,25 @@ function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
 		? contacts.filter((contact) => contact.username.includes(query))
 		: contacts;
 
+	const onClickHandler = (i: number) => {
+		const uid = filteredContacts[i].uid;
+
+		selectContact(contacts.findIndex((contact) => contact.uid == uid));
+	};
+
 	return (
 		<div className={styles.Body} id="contacts">
 			<Search query={query} setQuery={setQuery} />
-			{isLoading ? (
+			{error ? (
+				<div className={styles.LoaderContainer}>
+					<div className={sharedStyles.ErrorText}>
+						<i className="fa fa-exclamation-circle d-inline-block pt-1" />
+						<span className="d-inline-block pl-1 pb-2 text-wrap">
+							{error}
+						</span>
+					</div>
+				</div>
+			) : isLoading ? (
 				<div className={styles.LoaderContainer}>
 					<Loader />
 				</div>
@@ -47,8 +72,12 @@ function Contacts({ userData, contacts, isLoading, getContacts }: IProps) {
 					You don't have any contact
 				</div>
 			) : filteredContacts.length > 0 ? (
-				filteredContacts.map((contactData) => (
-					<ContactCard userData={contactData} key={contactData.uid} />
+				filteredContacts.map((contactData, index) => (
+					<ContactCard
+						userData={contactData}
+						key={contactData.uid}
+						onClickHandler={() => onClickHandler(index)}
+					/>
 				))
 			) : (
 				<div className={`text ${styles.LoaderContainer}`}>
@@ -66,11 +95,13 @@ const mapStateToProps = (state: IState) => ({
 	userData: state.auth.userData,
 	contacts: state.contact.contacts,
 	isLoading: state.contact.isLoading,
+	error: state.contact.error,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
 	getContacts: (uid: string, privateKey: string) =>
 		dispatch(actions.getContacts(uid, privateKey)),
+	selectContact: (index: number) => dispatch(actions.selectContact(index)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

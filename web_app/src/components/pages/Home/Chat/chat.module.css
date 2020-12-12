@@ -8,6 +8,7 @@
 	right: 0;
 	animation: fade-in 0.2s ease-in-out;
 	z-index: 10;
+	background-color: var(--background);
 }
 
 @keyframes fade-in {

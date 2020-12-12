@@ -1,7 +1,7 @@
 .Body {
 	background-color: var(--primary);
 	padding: 24px 16px 12px 16px;
-	height: 70px;
+	height: 65px;
 	display: flex;
 	align-items: center;
 }

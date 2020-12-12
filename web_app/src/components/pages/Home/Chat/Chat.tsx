@@ -3,25 +3,27 @@ import { connect } from "react-redux";
 
 import UserInfo from "./UserInfo/UserInfo";
 
-import { IState, IUserData } from "../../../../shared/interfaces/interfaces";
+import { IContactData, IState } from "../../../../shared/interfaces/interfaces";
 
 import styles from "./chat.module.css";
 
 interface IProps {
-	userData?: IUserData;
+	contacts: IContactData[];
+	selectedContact: number;
 }
 
-function Chat({ userData }: IProps) {
+function Chat({ contacts, selectedContact }: IProps) {
 	return (
 		<div className={styles.Body}>
-			<UserInfo userData={userData!} />
+			<UserInfo userData={contacts[selectedContact]} />
 			<h1 className="text">Chat</h1>
 		</div>
 	);
 }
 
 const mapStateToProps = (state: IState) => ({
-	userData: state.auth.userData,
+	contacts: state.contact.contacts,
+	selectedContact: state.contact.selectedContact!,
 });
 
 export default connect(mapStateToProps)(Chat);
