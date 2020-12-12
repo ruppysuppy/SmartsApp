@@ -58,6 +58,20 @@ const reducer = (
 		case actionTypes.CLEAR_SELECTED_CONTACT:
 			return { ...state, selectedContact: undefined };
 
+		case actionTypes.SEND_MESSAGE_INIT:
+			return { ...state, error: "" };
+
+		case actionTypes.SEND_MESSAGE_FAIL:
+			if (payload?.error !== undefined) {
+				return { ...state, error: payload.error };
+			}
+			return { ...state };
+
+		case actionTypes.SEND_MESSAGE_SUCCESS:
+			return {
+				...state,
+			};
+
 		default:
 			return { ...state };
 	}

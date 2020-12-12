@@ -19,5 +19,7 @@ export {
 	addContactFail,
 	selectContact,
 	clearSelectContact,
+	sendMessage,
+	sendMessageFail,
 } from "./contact";
 export { setIsDarkModeEnabled, setIsSideDrawerShown } from "./ui";

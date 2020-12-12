@@ -10,6 +10,7 @@ import {
 	IUserData,
 } from "../../shared/interfaces/interfaces";
 import BASE_URL from "./baseUrl";
+import { encrypt } from "../../cryptography/cipher";
 
 let previousData: IContactData[] = [];
 
@@ -194,5 +195,50 @@ export const selectContact = (index: number) => {
 export const clearSelectContact = () => {
 	return {
 		type: actionTypes.CLEAR_SELECTED_CONTACT,
+	};
+};
+
+export const sendMessageInit = () => {
+	return {
+		type: actionTypes.SEND_MESSAGE_INIT,
+	};
+};
+
+export const sendMessageFail = (error: string) => {
+	return {
+		type: actionTypes.SEND_MESSAGE_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const sendMessageSuccess = () => {
+	return {
+		type: actionTypes.SEND_MESSAGE_SUCCESS,
+	};
+};
+
+export const sendMessage = (
+	uid: string,
+	otherId: string,
+	message: string,
+	sharedKey: string
+) => {
+	return async (dispatch: Dispatch<IContactAction>) => {
+		dispatch(sendMessageInit());
+		const encryptedMessage = encrypt(message, sharedKey);
+		const messageData: IMessage = {
+			sender: uid,
+			receiver: otherId,
+			text: encryptedMessage,
+			timestamp: new Date().getTime(),
+		};
+		try {
+			await firestore.collection("messages").add(messageData);
+			dispatch(sendMessageSuccess());
+		} catch (error) {
+			dispatch(sendMessageFail(error.message));
+		}
 	};
 };
