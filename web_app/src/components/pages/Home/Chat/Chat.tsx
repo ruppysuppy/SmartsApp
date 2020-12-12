@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 
 import UserInfo from "./UserInfo/UserInfo";
+import ChatInput from "./ChatInput/ChatInput";
 
 import { IContactData, IState } from "../../../../shared/interfaces/interfaces";
 
@@ -16,7 +17,45 @@ function Chat({ contacts, selectedContact }: IProps) {
 	return (
 		<div className={styles.Body}>
 			<UserInfo userData={contacts[selectedContact]} />
-			<h1 className="text">Chat</h1>
+			<div className={styles.ChatContainer}>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+				<h1 className="text">Chat</h1>
+			</div>
+			<ChatInput />
 		</div>
 	);
 }
