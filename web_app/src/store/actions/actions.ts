@@ -13,5 +13,11 @@ export {
 	setAbout,
 	setAboutFail,
 } from "./auth";
-export { getContacts, addContact, addContactFail } from "./contact";
+export {
+	getContacts,
+	addContact,
+	addContactFail,
+	selectContact,
+	clearSelectContact,
+} from "./contact";
 export { setIsDarkModeEnabled, setIsSideDrawerShown } from "./ui";

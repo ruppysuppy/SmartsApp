@@ -8,6 +8,7 @@ const initialState: IContactState = {
 	contacts: [],
 	isLoading: false,
 	error: "",
+	selectedContact: undefined,
 };
 
 const reducer = (
@@ -47,6 +48,15 @@ const reducer = (
 
 		case actionTypes.ADD_CONTACT_SUCCESS:
 			return { ...state, isLoading: false };
+
+		case actionTypes.SELECT_CONTACT:
+			if (payload?.selectionIndex !== undefined) {
+				return { ...state, selectedContact: payload.selectionIndex };
+			}
+			return { ...state };
+
+		case actionTypes.CLEAR_SELECTED_CONTACT:
+			return { ...state, selectedContact: undefined };
 
 		default:
 			return { ...state };

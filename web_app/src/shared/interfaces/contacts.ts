@@ -12,6 +12,7 @@ export interface IContactState {
 	contacts: IContactData[];
 	isLoading: boolean;
 	error: string;
+	selectedContact?: number;
 }
 
 export interface IMessage {
@@ -26,5 +27,6 @@ export interface IContactAction {
 	payload?: {
 		contacts?: IContactData[];
 		error?: string;
+		selectionIndex?: number;
 	};
 }

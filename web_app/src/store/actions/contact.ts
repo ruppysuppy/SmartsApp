@@ -181,3 +181,18 @@ export const addContact = (userId: string, username: string) => {
 		}
 	};
 };
+
+export const selectContact = (index: number) => {
+	return {
+		type: actionTypes.SELECT_CONTACT,
+		payload: {
+			selectionIndex: index,
+		},
+	};
+};
+
+export const clearSelectContact = () => {
+	return {
+		type: actionTypes.CLEAR_SELECTED_CONTACT,
+	};
+};
