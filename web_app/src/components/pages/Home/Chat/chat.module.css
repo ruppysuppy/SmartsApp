@@ -15,6 +15,9 @@
 .ChatContainer {
 	flex: 1;
 	overflow-y: scroll;
+	padding: 8px 4px;
+	display: flex;
+	flex-direction: column;
 }
 
 @keyframes fade-in {

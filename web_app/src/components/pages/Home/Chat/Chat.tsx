@@ -3,31 +3,35 @@ import { connect } from "react-redux";
 
 import UserInfo from "./UserInfo/UserInfo";
 import ChatInput from "./ChatInput/ChatInput";
+import ChatMessage from "./ChatMessage/ChatMessage";
 
-import { IContactData, IState } from "../../../../shared/interfaces/interfaces";
-import { decrypt } from "../../../../cryptography/cipher";
+import {
+	IContactData,
+	IState,
+	IUserData,
+} from "../../../../shared/interfaces/interfaces";
 
 import styles from "./chat.module.css";
 
 interface IProps {
 	contacts: IContactData[];
 	selectedContact: number;
+	userData: IUserData;
 }
 
-function Chat({ contacts, selectedContact }: IProps) {
-	console.log(contacts[selectedContact].messages);
-
+function Chat({ contacts, selectedContact, userData }: IProps) {
 	return (
 		<div className={styles.Body}>
 			<UserInfo userData={contacts[selectedContact]} />
 			<div className={styles.ChatContainer}>
 				{contacts[selectedContact].messages.map((message) => (
-					<h1 className="text" key={Math.random()}>
-						{decrypt(
-							message.text,
-							contacts[selectedContact].sharedKey
-						)}
-					</h1>
+					<ChatMessage
+						isUserSent={message.sender === userData.uid}
+						text={message.text}
+						sharedKey={contacts[selectedContact].sharedKey}
+						timestamp={message.timestamp}
+						key={Math.random()}
+					/>
 				))}
 			</div>
 			<ChatInput />
@@ -38,6 +42,7 @@ function Chat({ contacts, selectedContact }: IProps) {
 const mapStateToProps = (state: IState) => ({
 	contacts: state.contact.contacts,
 	selectedContact: state.contact.selectedContact!,
+	userData: state.auth.userData!,
 });
 
 export default connect(mapStateToProps)(Chat);

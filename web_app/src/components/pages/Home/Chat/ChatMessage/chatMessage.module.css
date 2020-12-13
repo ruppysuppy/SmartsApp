@@ -1,0 +1,51 @@
+.Body {
+	display: inline-block;
+	padding: 8px 16px;
+	margin: 6px;
+	border-radius: 8px;
+	width: max-content;
+	max-width: 60vw;
+}
+
+.Sent {
+	background-color: var(--primary);
+	align-self: flex-end;
+	filter: saturate(0.6);
+	-webkit-box-shadow: 0px 0px 4px 0px var(--primary);
+	-moz-box-shadow: 0px 0px 4px 0px var(--primary);
+	box-shadow: 0px 0px 4px 0px var(--primary);
+	color: white;
+}
+
+.Received {
+	background-color: var(--color-light);
+	align-self: flex-start;
+	-webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
+	box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
+}
+
+.Time {
+	display: block;
+	text-align: right;
+	font-size: xx-small;
+	color: gray;
+}
+
+@media (min-width: 768px) {
+	.Body {
+		max-width: 45vw;
+	}
+}
+
+@media (min-width: 992px) {
+	.Body {
+		max-width: 40vw;
+	}
+}
+
+@media (min-width: 1200px) {
+	.Body {
+		max-width: 35vw;
+	}
+}
