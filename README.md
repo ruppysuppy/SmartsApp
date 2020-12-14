@@ -36,12 +36,54 @@ The back-end of the app is handled by `Firebase`.
 
 1. Go to the project `Firestore` section
 2. Create firestore provisions for the project (choose the server nearest to your location)
+3. Go to the rules tab and use the fillowing rules:
+    ```javascript
+    rules_version = '2';
+    service cloud.firestore {
+        match /databases/{database}/documents {
+            match /contacts/{uid} {
+                allow read, create, update: if request.auth != null;
+            }
+            match /keys/{uid} {
+                allow read, create: if request.auth != null && request.auth.uid == uid;
+            }
+            match /messages/{msg} {
+                allow read, create: if request.auth != null;
+            }
+            match /users/{uid} {
+                allow read: if request.auth != null;
+                allow create, update: if request.auth != null && request.auth.uid == uid;
+            }
+        }
+    }
+    ```
 
 ### Storage Setup
 
 1. Go to the project `Storage` section
 2. Create storage provisions for the project (choose the server nearest to your location)
+3. Go to the rules tab and use the fillowing rules:
+    ```javascript
+    rules_version = '2';
+    service firebase.storage {
+        match /b/{bucket}/o {
+            match /profilepic/{uid} {
+            allow read: if request.auth != null;
+            allow create, update: if request.auth != null
+                && request.auth.uid == uid
+                && request.resource.size < 1024 * 1024
+                && request.resource.contentType.matches('image/.*');
+            }
+            match /media/{media} {
+            allow read: if request.auth != null;
+            allow create: if request.auth != null
+                && request.resource.size < 1024 * 1024
+                && request.resource.contentType.matches('image/.*');
+            }
+        }
+    }
+    ```
 
 ### Note
 
-Running the E2EE Key Generator Server is necessary for all Platform
+Running the E2EE Key Generator Server is necessary for all Platforms

@@ -1,7 +1,9 @@
 import React, { useState, ChangeEvent, createRef } from "react";
-import { v4 as uuid } from "uuid";
+import { connect } from "react-redux";
+// import { v4 as uuid } from "uuid";
 
 import { storage } from "../../../firebase/firebase";
+import { IState } from "../../../shared/interfaces/state";
 
 import Button from "../Button/Button";
 import Loader from "../Loader/Loader";
@@ -12,14 +14,10 @@ import styles from "./imageSelection.module.css";
 interface IProps {
 	setImgUrl: (url: string) => void;
 	setUserDataFail: (message: string) => void;
-	uid?: string;
+	uid: string;
 }
 
-export default function ImageSelection({
-	uid,
-	setImgUrl,
-	setUserDataFail,
-}: IProps) {
+function ImageSelection({ uid, setImgUrl, setUserDataFail }: IProps) {
 	const [blob, setBlob] = useState<Blob>();
 	const [inputImg, setInputImg] = useState("");
 	const [inputImgName, setInputImgName] = useState("");
@@ -61,8 +59,8 @@ export default function ImageSelection({
 		event.preventDefault();
 		setIsLoading(true);
 		const uploadTask = storage
-			.ref("images")
-			.child(uid || uuid())
+			.ref("profilepic")
+			.child(uid)
 			.put(blob!, { contentType: blob!.type });
 
 		uploadTask.on(
@@ -142,3 +140,9 @@ export default function ImageSelection({
 		</>
 	);
 }
+
+const mapStateToProps = (state: IState) => ({
+	uid: state.auth.userData!.uid,
+});
+
+export default connect(mapStateToProps)(ImageSelection);
