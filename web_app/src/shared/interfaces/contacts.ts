@@ -20,6 +20,7 @@ export interface IMessage {
 	users: string;
 	text: string;
 	timestamp: number;
+	uid?: string;
 }
 
 export interface IContactAction {

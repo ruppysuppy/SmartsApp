@@ -30,7 +30,7 @@ function Chat({ contacts, selectedContact, userData }: IProps) {
 						text={message.text}
 						sharedKey={contacts[selectedContact].sharedKey}
 						timestamp={message.timestamp}
-						key={Math.random()}
+						key={message.uid!}
 					/>
 				))}
 			</div>

@@ -91,7 +91,6 @@ function UserDetails({
 					<ImageSelection
 						setImgUrl={setImgUrl}
 						setUserDataFail={setUserDataFail}
-						uid={user.uid}
 					/>
 					{error && error !== "User data not found" && (
 						<>

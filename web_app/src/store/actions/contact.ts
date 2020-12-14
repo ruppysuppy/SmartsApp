@@ -108,9 +108,10 @@ export const getContacts = (uid: string, privateKey: string) => {
 								messages: messagesArr[index],
 							} as IContactData);
 							userIndexMap[user.uid] = index;
-							previousData = contacts;
-							dispatch(getContactsSuccess(contacts));
-
+						});
+						previousData = contacts;
+						dispatch(getContactsSuccess(contacts));
+						userDataArr.map((user) => {
 							if (!(user.uid in messageSnapshotListeners)) {
 								const users = [user.uid, uid];
 								users.sort();
@@ -124,7 +125,10 @@ export const getContacts = (uid: string, privateKey: string) => {
 										docSnapshot.forEach((snapshot) => {
 											dispatch(
 												updateMessageSuccess(
-													snapshot.data() as IMessage,
+													{
+														...snapshot.data(),
+														uid: snapshot.id,
+													} as IMessage,
 													userIndexMap[user.uid]
 												)
 											);

@@ -15,6 +15,7 @@
 	-moz-box-shadow: 0px 0px 4px 0px var(--primary);
 	box-shadow: 0px 0px 4px 0px var(--primary);
 	color: white;
+	animation: send 0.2s ease-in-out;
 }
 
 .Received {
@@ -23,6 +24,7 @@
 	-webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
 	box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
+	animation: receive 0.2s ease-in-out;
 }
 
 .Time {
@@ -30,6 +32,24 @@
 	text-align: right;
 	font-size: xx-small;
 	color: gray;
+}
+
+@keyframes send {
+	0% {
+		transform: translate(100%) scale(0);
+	}
+	100% {
+		transform: translate(0) scale(1);
+	}
+}
+
+@keyframes receive {
+	0% {
+		transform: translate(-100%) scale(0);
+	}
+	100% {
+		transform: translate(0) scale(1);
+	}
 }
 
 @media (min-width: 768px) {
