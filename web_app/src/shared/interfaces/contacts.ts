@@ -6,11 +6,14 @@ export interface IContactData {
 	sharedKey: string;
 	about: string;
 	messages: IMessage[];
+	hasMore: boolean;
+	newMessages: number;
 }
 
 export interface IContactState {
 	contacts: IContactData[];
 	isLoading: boolean;
+	isMessageLoading: boolean;
 	error: string;
 	selectedContact?: number;
 }
@@ -30,5 +33,6 @@ export interface IContactAction {
 		error?: string;
 		selectionIndex?: number;
 		message?: IMessage;
+		messages?: IMessage[];
 	};
 }

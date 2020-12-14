@@ -9,6 +9,7 @@ interface IProps {
 	text: string;
 	sharedKey: string;
 	timestamp: number;
+	reference?: (node: any) => void;
 }
 
 export default function ChatMessage({
@@ -16,6 +17,7 @@ export default function ChatMessage({
 	text,
 	sharedKey,
 	timestamp,
+	reference,
 }: IProps) {
 	const date = new Date(timestamp);
 
@@ -27,12 +29,22 @@ export default function ChatMessage({
 		>
 			<span className="text-break"> {decrypt(text, sharedKey)} </span>
 			<br />
-			<span
-				className={styles.Time}
-			>{`${date.getHours()}:${date
-				.getMinutes()
-				.toString()
-				.padStart(2, "0")}`}</span>
+			{reference === undefined ? (
+				<span
+					className={styles.Time}
+				>{`${date.getHours()}:${date
+					.getMinutes()
+					.toString()
+					.padStart(2, "0")}`}</span>
+			) : (
+				<span
+					ref={reference}
+					className={styles.Time}
+				>{`${date.getHours()}:${date
+					.getMinutes()
+					.toString()
+					.padStart(2, "0")}`}</span>
+			)}
 		</div>
 	);
 }

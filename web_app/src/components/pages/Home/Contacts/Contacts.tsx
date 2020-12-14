@@ -36,7 +36,7 @@ function Contacts({
 	const [query, setQuery] = useState("");
 
 	useEffect(() => {
-		if (userData) {
+		if (userData && contacts.length === 0) {
 			getContacts(userData.uid, userData.privateKey);
 		}
 	}, []);

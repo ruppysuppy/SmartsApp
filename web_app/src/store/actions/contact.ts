@@ -106,6 +106,8 @@ export const getContacts = (uid: string, privateKey: string) => {
 								...user,
 								sharedKey: keys[index].shared_key,
 								messages: messagesArr[index],
+								hasMore: true,
+								newMessages: 0,
 							} as IContactData);
 							userIndexMap[user.uid] = index;
 						});
@@ -297,6 +299,74 @@ export const updateMessageSuccess = (
 		payload: {
 			message: message,
 			selectionIndex: selectionIndex,
+		},
+	};
+};
+
+export const getPreviousMessagesInit = () => {
+	return {
+		type: actionTypes.GET_PREVIOUS_MESSAGES_INIT,
+	};
+};
+
+export const getPreviousMessagesFail = (error: string) => {
+	return {
+		type: actionTypes.GET_PREVIOUS_MESSAGES_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const getPreviousMessagesSuccess = (
+	messages: IMessage[],
+	selectionIndex: number
+) => {
+	return {
+		type: actionTypes.GET_PREVIOUS_MESSAGES_SUCCESS,
+		payload: {
+			messages: messages,
+			selectionIndex: selectionIndex,
+		},
+	};
+};
+
+export const getPreviousMessages = (
+	uid: string,
+	otherId: string,
+	lastTimestamp: number
+) => {
+	return async (dispatch: Dispatch) => {
+		dispatch(getPreviousMessagesInit());
+		const users = [otherId, uid];
+		users.sort();
+		const usersList = users.join(",");
+		const query = firestore
+			.collection("messages")
+			.where("users", "==", usersList)
+			.where("timestamp", "<", lastTimestamp)
+			.orderBy("timestamp", "asc")
+			.limit(20);
+		try {
+			const docs = await query.get();
+			const messages: IMessage[] = [];
+			docs.forEach((doc) => {
+				messages.push({ ...doc.data(), uid: doc.id } as IMessage);
+			});
+			dispatch(
+				getPreviousMessagesSuccess(messages, userIndexMap[otherId])
+			);
+		} catch (error) {
+			dispatch(getPreviousMessagesFail(error.message));
+		}
+	};
+};
+
+export const resetNewMessageReceived = (uid: string) => {
+	return {
+		type: actionTypes.RESET_NEW_MESSAGES_COUNT,
+		payload: {
+			selectionIndex: userIndexMap[uid],
 		},
 	};
 };

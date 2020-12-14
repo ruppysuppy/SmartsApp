@@ -21,5 +21,7 @@ export {
 	clearSelectContact,
 	sendMessage,
 	sendMessageFail,
+	getPreviousMessages,
+	resetNewMessageReceived,
 } from "./contact";
 export { setIsDarkModeEnabled, setIsSideDrawerShown } from "./ui";

@@ -7,6 +7,7 @@ import {
 const initialState: IContactState = {
 	contacts: [],
 	isLoading: false,
+	isMessageLoading: false,
 	error: "",
 	selectedContact: undefined,
 };
@@ -94,6 +95,53 @@ const reducer = (
 					...stateCopy.contacts[payload.selectionIndex].messages,
 					payload.message,
 				];
+				stateCopy.contacts[payload.selectionIndex].newMessages += 1;
+				return stateCopy;
+			}
+			return { ...state };
+
+		case actionTypes.GET_PREVIOUS_MESSAGES_INIT:
+			return { ...state, error: "", isMessageLoading: true };
+
+		case actionTypes.GET_PREVIOUS_MESSAGES_FAIL:
+			if (payload?.error !== undefined) {
+				return {
+					...state,
+					error: payload.error,
+					isMessageLoading: false,
+				};
+			}
+			return { ...state };
+
+		case actionTypes.GET_PREVIOUS_MESSAGES_SUCCESS:
+			if (
+				payload?.messages !== undefined &&
+				payload?.selectionIndex !== undefined
+			) {
+				const stateCopy = {
+					...state,
+					contacts: [...state.contacts],
+					isMessageLoading: false,
+				};
+				if (payload.messages.length === 0) {
+					stateCopy.contacts[payload.selectionIndex].hasMore = false;
+				} else {
+					stateCopy.contacts[payload.selectionIndex].messages = [
+						...payload.messages,
+						...stateCopy.contacts[payload.selectionIndex].messages,
+					];
+				}
+				return stateCopy;
+			}
+			return { ...state };
+
+		case actionTypes.RESET_NEW_MESSAGES_COUNT:
+			if (payload?.selectionIndex !== undefined) {
+				const stateCopy = {
+					...state,
+					contacts: [...state.contacts],
+				};
+				stateCopy.contacts[payload.selectionIndex].newMessages = 0;
 				return stateCopy;
 			}
 			return { ...state };
