@@ -123,26 +123,56 @@ function Chat({
 						<Loader />
 					</div>
 				)}
-				{contacts[selectedContact].messages.map((message, index) =>
-					index === 0 ? (
-						<ChatMessage
-							isUserSent={message.sender === userData.uid}
-							text={message.text}
-							sharedKey={contacts[selectedContact].sharedKey}
-							timestamp={message.timestamp}
-							key={message.uid!}
-							reference={firstMessageRef}
-						/>
-					) : (
-						<ChatMessage
-							isUserSent={message.sender === userData.uid}
-							text={message.text}
-							sharedKey={contacts[selectedContact].sharedKey}
-							timestamp={message.timestamp}
-							key={message.uid!}
-						/>
-					)
-				)}
+				{contacts[selectedContact].messages.map((message, index) => {
+					const lastDate =
+						index === 0
+							? ""
+							: new Date(
+									contacts[selectedContact].messages[
+										index - 1
+									].timestamp
+							  );
+					const currDate = new Date(message.timestamp);
+					const lastDateString =
+						lastDate === ""
+							? ""
+							: `${lastDate.getDate()}/${lastDate.getMonth()}/${lastDate.getFullYear()}`;
+					const currDateString = `${currDate.getDate()}/${currDate.getMonth()}/${currDate.getFullYear()}`;
+					const shouldDisplayDate =
+						lastDate === "" || lastDateString !== currDateString;
+
+					return (
+						<>
+							{shouldDisplayDate && (
+								<span className={styles.DateDisplay}>
+									{currDateString}
+								</span>
+							)}
+							{index === 0 ? (
+								<ChatMessage
+									isUserSent={message.sender === userData.uid}
+									text={message.text}
+									sharedKey={
+										contacts[selectedContact].sharedKey
+									}
+									timestamp={message.timestamp}
+									key={message.uid!}
+									reference={firstMessageRef}
+								/>
+							) : (
+								<ChatMessage
+									isUserSent={message.sender === userData.uid}
+									text={message.text}
+									sharedKey={
+										contacts[selectedContact].sharedKey
+									}
+									timestamp={message.timestamp}
+									key={message.uid!}
+								/>
+							)}
+						</>
+					);
+				})}
 			</div>
 			<ChatInput />
 		</div>

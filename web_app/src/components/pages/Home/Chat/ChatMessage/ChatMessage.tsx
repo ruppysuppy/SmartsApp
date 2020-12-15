@@ -32,7 +32,10 @@ export default function ChatMessage({
 			{reference === undefined ? (
 				<span
 					className={styles.Time}
-				>{`${date.getHours()}:${date
+				>{`${date
+					.getHours()
+					.toString()
+					.padStart(2, "0")}:${date
 					.getMinutes()
 					.toString()
 					.padStart(2, "0")}`}</span>
@@ -40,7 +43,10 @@ export default function ChatMessage({
 				<span
 					ref={reference}
 					className={styles.Time}
-				>{`${date.getHours()}:${date
+				>{`${date
+					.getHours()
+					.toString()
+					.padStart(2, "0")}:${date
 					.getMinutes()
 					.toString()
 					.padStart(2, "0")}`}</span>

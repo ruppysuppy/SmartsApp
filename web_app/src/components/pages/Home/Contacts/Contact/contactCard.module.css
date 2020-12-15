@@ -32,4 +32,26 @@
 
 .InfoContainer {
 	padding: 0 0 0 8px;
+	width: 100%;
+}
+
+.FlexContainer {
+	flex: 1;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+}
+
+.NewMessageCount {
+	width: 25px;
+	height: 25px;
+	overflow: hidden;
+	border-radius: 50%;
+	font-size: xx-small;
+	color: white;
+	background-color: var(--primary);
+	filter: saturate(0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

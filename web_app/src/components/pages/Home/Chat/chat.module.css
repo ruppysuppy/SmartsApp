@@ -20,6 +20,17 @@
 	flex-direction: column;
 }
 
+.DateDisplay {
+	background-color: gray;
+	color: white;
+	width: max-content;
+	align-self: center;
+	font-weight: bold;
+	padding: 6px 12px;
+	border-radius: 8px;
+	animation: zoom-out 0.2s ease-in-out;
+}
+
 @keyframes fade-in {
 	0% {
 		transform: translateX(100%);
@@ -28,6 +39,15 @@
 	100% {
 		transform: translateX(0);
 		opacity: 1;
+	}
+}
+
+@keyframes zoom-out {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: translateX(1);
 	}
 }
 
