@@ -64,7 +64,7 @@ The back-end of the app is handled by `Firebase`.
            fields: {
                users: Ascending,
                timestamp: Descending,
-           }
+           },
            queryScope: Collection
        }
        ```
@@ -74,7 +74,7 @@ The back-end of the app is handled by `Firebase`.
            fields: {
                users: Ascending,
                timestamp: Ascending,
-           }
+           },
            queryScope: Collection
        }
        ```
