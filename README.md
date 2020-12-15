@@ -36,8 +36,8 @@ The back-end of the app is handled by `Firebase`.
 
 1. Go to the project `Firestore` section
 2. Create firestore provisions for the project (choose the server nearest to your location)
-3. Go to the rules tab and use the fillowing rules:
-    ```javascript
+3. Go to the `Rules` tab and use the fillowing rules:
+    ```c++
     rules_version = '2';
     service cloud.firestore {
         match /databases/{database}/documents {
@@ -57,13 +57,34 @@ The back-end of the app is handled by `Firebase`.
         }
     }
     ```
+4. Go to the `Indexes` tab and create the following indexes:
+    1. ```javascript
+       {
+           collection: messages,
+           fields: {
+               users: Ascending,
+               timestamp: Descending,
+           }
+           queryScope: Collection
+       }
+       ```
+    2. ```javascript
+       {
+           collection: messages,
+           fields: {
+               users: Ascending,
+               timestamp: Ascending,
+           }
+           queryScope: Collection
+       }
+       ```
 
 ### Storage Setup
 
 1. Go to the project `Storage` section
 2. Create storage provisions for the project (choose the server nearest to your location)
 3. Go to the rules tab and use the fillowing rules:
-    ```javascript
+    ```c++
     rules_version = '2';
     service firebase.storage {
         match /b/{bucket}/o {
