@@ -19,7 +19,7 @@ The back-end of the app is handled by `Firebase`.
 ### Basic Setup
 
 1. Go to firebase console and create a new project with the name `Smartsapp`
-2. Enable `Google Analylitics` [if you want to view the analytics of the project]
+2. Enable `Google Analylitics`
 
 ### App Setup
 
@@ -57,27 +57,17 @@ The back-end of the app is handled by `Firebase`.
         }
     }
     ```
-4. Go to the `Indexes` tab and create the following indexes:
-    1. ```javascript
-       {
-           collection: messages,
-           fields: {
-               users: Ascending,
-               timestamp: Descending,
-           },
-           queryScope: Collection
-       }
-       ```
-    2. ```javascript
-       {
-           collection: messages,
-           fields: {
-               users: Ascending,
-               timestamp: Ascending,
-           },
-           queryScope: Collection
-       }
-       ```
+4. Go to the `Indexes` tab and create the following index:
+    ```javascript
+    {
+        collection: "messages",
+        fields: {
+            users: Ascending,
+            timestamp: Descending,
+        },
+        queryScope: Collection
+    }
+    ```
 
 ### Storage Setup
 

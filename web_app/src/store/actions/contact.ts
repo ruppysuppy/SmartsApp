@@ -346,7 +346,7 @@ export const getPreviousMessages = (
 			.collection("messages")
 			.where("users", "==", usersList)
 			.where("timestamp", "<", lastTimestamp)
-			.orderBy("timestamp", "asc")
+			.orderBy("timestamp", "desc")
 			.limit(20);
 		try {
 			const docs = await query.get();
@@ -354,6 +354,7 @@ export const getPreviousMessages = (
 			docs.forEach((doc) => {
 				messages.push({ ...doc.data(), uid: doc.id } as IMessage);
 			});
+			messages.reverse();
 			dispatch(
 				getPreviousMessagesSuccess(messages, userIndexMap[otherId])
 			);
