@@ -1,6 +1,6 @@
+import imageCompression from "browser-image-compression";
 import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
-import imageCompression from "browser-image-compression";
 
 import Input from "../../../../ui/Input/Input";
 
@@ -14,6 +14,10 @@ import {
 } from "../../../../../shared/interfaces/interfaces";
 
 interface IProps {
+	contacts: IContactData[];
+	error: string;
+	selectedContact: number;
+	userData: IUserData;
 	sendMessage: (
 		uid: string,
 		otherId: string,
@@ -26,44 +30,19 @@ interface IProps {
 		image: File | Blob,
 		sharedKey: string
 	) => void;
-	userData?: IUserData;
-	contacts: IContactData[];
-	selectedContact?: number;
-	error: string;
 }
 
 function ChatInput({
-	userData,
-	selectedContact,
 	contacts,
 	error,
+	selectedContact,
+	userData,
 	sendMessage,
 	sendImage,
 }: IProps) {
 	const [message, setMessage] = useState("");
 
 	const inputRef = useRef<HTMLInputElement>(null);
-
-	const onSubmitHandler = async () => {
-		if (!message) {
-			return;
-		}
-		await sendMessage(
-			userData!.uid,
-			contacts[selectedContact!].uid,
-			message,
-			contacts[selectedContact!].sharedKey
-		);
-		if (!error) {
-			setMessage("");
-		}
-	};
-
-	const selectImageHandler = () => {
-		if (inputRef.current) {
-			inputRef.current.click();
-		}
-	};
 
 	const onFileChangeHandler = async (
 		event: React.ChangeEvent<HTMLInputElement>
@@ -89,6 +68,27 @@ function ChatInput({
 		}
 	};
 
+	const onSelectImageHandler = () => {
+		if (inputRef.current) {
+			inputRef.current.click();
+		}
+	};
+
+	const onSubmitHandler = async () => {
+		if (!message) {
+			return;
+		}
+		await sendMessage(
+			userData.uid,
+			contacts[selectedContact].uid,
+			message,
+			contacts[selectedContact].sharedKey
+		);
+		if (!error) {
+			setMessage("");
+		}
+	};
+
 	return (
 		<div className={styles.Body}>
 			<div className={styles.InputContainer}>
@@ -109,7 +109,7 @@ function ChatInput({
 			/>
 			<span
 				className={`${styles.Btn} ${styles.BtnSecondary}`}
-				onClick={selectImageHandler}
+				onClick={onSelectImageHandler}
 			>
 				<i className="material-icons">attach_file</i>
 			</span>
@@ -124,10 +124,10 @@ function ChatInput({
 }
 
 const mapStateToProps = (state: IState) => ({
-	userData: state.auth.userData,
 	contacts: state.contact.contacts,
-	selectedContact: state.contact.selectedContact,
 	error: state.contact.error,
+	selectedContact: state.contact.selectedContact!,
+	userData: state.auth.userData!,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

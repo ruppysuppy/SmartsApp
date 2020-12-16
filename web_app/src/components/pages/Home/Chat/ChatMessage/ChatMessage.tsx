@@ -1,26 +1,27 @@
 import React from "react";
 
-import { decrypt } from "../../../../../cryptography/cipher";
 import Loader from "../../../../ui/Loader/Loader";
+
+import { decrypt } from "../../../../../cryptography/cipher";
 
 import styles from "./chatMessage.module.css";
 
 interface IProps {
-	isUserSent: boolean;
-	text: string;
-	sharedKey: string;
-	timestamp: number;
-	reference?: (node: any) => void;
 	isMedia?: boolean;
+	isUserSent: boolean;
+	sharedKey: string;
+	text: string;
+	timestamp: number;
+	refCallBack?: (node: any) => void;
 }
 
 export default function ChatMessage({
-	isUserSent,
-	text,
-	sharedKey,
-	timestamp,
-	reference,
 	isMedia,
+	isUserSent,
+	sharedKey,
+	text,
+	timestamp,
+	refCallBack,
 }: IProps) {
 	const date = new Date(timestamp);
 	const message = decrypt(text, sharedKey);
@@ -30,6 +31,7 @@ export default function ChatMessage({
 			className={`text ${styles.Body} ${
 				isUserSent ? styles.Sent : styles.Received
 			}`}
+			ref={refCallBack}
 		>
 			{isMedia ? (
 				<span className={styles.MediaHolder}>
@@ -42,28 +44,15 @@ export default function ChatMessage({
 				<span className="text-break"> {message} </span>
 			)}
 			<br />
-			{reference === undefined ? (
-				<span
-					className={styles.Time}
-				>{`${date
-					.getHours()
-					.toString()
-					.padStart(2, "0")}:${date
-					.getMinutes()
-					.toString()
-					.padStart(2, "0")}`}</span>
-			) : (
-				<span
-					ref={reference}
-					className={styles.Time}
-				>{`${date
-					.getHours()
-					.toString()
-					.padStart(2, "0")}:${date
-					.getMinutes()
-					.toString()
-					.padStart(2, "0")}`}</span>
-			)}
+			<span
+				className={styles.Time}
+			>{`${date
+				.getHours()
+				.toString()
+				.padStart(2, "0")}:${date
+				.getMinutes()
+				.toString()
+				.padStart(2, "0")}`}</span>
 		</div>
 	);
 }

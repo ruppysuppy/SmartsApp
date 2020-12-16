@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 
 import Modal from "../../../../ui/Modal/Modal";
 
-import * as actions from "../../../../../store/actions/actions";
 import { IContactData } from "../../../../../shared/interfaces/interfaces";
+import * as actions from "../../../../../store/actions/actions";
 
 import styles from "./userInfo.module.css";
 
@@ -26,7 +26,7 @@ function UserInfo({ userData, clearSelectContact }: IProps) {
 				/>
 				<div className={styles.UserDetails}>
 					<div className={`mr-2 ${styles.ProfilePicure}`}>
-						<img src={userData.photoUrl} alt=" " />
+						<img src={userData.photoUrl} alt="" />
 					</div>
 					<span className="text fw-bold fs-6">
 						{userData.username}

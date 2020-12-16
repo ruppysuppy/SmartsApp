@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
-import UserInfo from "./UserInfo/UserInfo";
 import ChatInput from "./ChatInput/ChatInput";
 import ChatMessage from "./ChatMessage/ChatMessage";
 import Loader from "../../../ui/Loader/Loader";
+import UserInfo from "./UserInfo/UserInfo";
 
 import {
 	IContactData,
@@ -17,9 +17,9 @@ import styles from "./chat.module.css";
 
 interface IProps {
 	contacts: IContactData[];
+	isMessageLoading: boolean;
 	selectedContact: number;
 	userData: IUserData;
-	isMessageLoading: boolean;
 	getPreviousMessages: (
 		uid: string,
 		otherId: string,
@@ -30,12 +30,13 @@ interface IProps {
 
 function Chat({
 	contacts,
+	isMessageLoading,
 	selectedContact,
 	userData,
-	isMessageLoading,
 	getPreviousMessages,
 	resetNewMessageReceived,
 }: IProps) {
+	const hasMore = contacts[selectedContact].hasMore;
 	const newMessages = contacts[selectedContact].newMessages;
 
 	useEffect(() => {
@@ -53,7 +54,13 @@ function Chat({
 		HTMLSpanElement | IntersectionObserver
 	>();
 
-	const hasMore = contacts[selectedContact].hasMore;
+	const scrollChat = (prevHeight: number) => {
+		if (chatContainerRef.current) {
+			chatContainerRef.current.scrollTo({
+				top: chatContainerRef.current.scrollHeight - prevHeight,
+			});
+		}
+	};
 
 	const scrollToChatBottom = (isSmooth: boolean = false) => {
 		if (chatContainerRef.current) {
@@ -62,14 +69,6 @@ function Chat({
 				top:
 					chatContainerRef.current.scrollHeight -
 					chatContainerRef.current.clientHeight,
-			});
-		}
-	};
-
-	const scrollChat = (prevHeight: number) => {
-		if (chatContainerRef.current) {
-			chatContainerRef.current.scrollTo({
-				top: chatContainerRef.current.scrollHeight - prevHeight,
 			});
 		}
 	};
@@ -156,7 +155,7 @@ function Chat({
 									isMedia={message.isMedia}
 									timestamp={message.timestamp}
 									key={message.uid!}
-									reference={firstMessageRef}
+									refCallBack={firstMessageRef}
 								/>
 							) : (
 								<ChatMessage
@@ -181,9 +180,9 @@ function Chat({
 
 const mapStateToProps = (state: IState) => ({
 	contacts: state.contact.contacts,
+	isMessageLoading: state.contact.isMessageLoading,
 	selectedContact: state.contact.selectedContact!,
 	userData: state.auth.userData!,
-	isMessageLoading: state.contact.isMessageLoading,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
