@@ -9,6 +9,7 @@
 
 .Sent {
 	background-color: var(--primary);
+	border-bottom-right-radius: 0;
 	align-self: flex-end;
 	filter: saturate(0.6);
 	-webkit-box-shadow: 0px 0px 4px 0px var(--primary);
@@ -20,11 +21,30 @@
 
 .Received {
 	background-color: var(--color-light);
+	border-bottom-left-radius: 0;
 	align-self: flex-start;
 	-webkit-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
 	-moz-box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
 	box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.75);
 	animation: receive 0.2s ease-in-out;
+}
+
+.MediaHolder {
+	position: relative;
+	display: inline-block;
+	min-height: 60px;
+	min-width: 60px;
+}
+
+.LoaderHolder {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.MediaMessage {
+	max-width: calc(60vw - 32px);
+	filter: saturate(1.67);
 }
 
 .Time {
@@ -56,16 +76,25 @@
 	.Body {
 		max-width: 45vw;
 	}
+	.MediaMessage {
+		max-width: calc(45vw - 32px);
+	}
 }
 
 @media (min-width: 992px) {
 	.Body {
 		max-width: 40vw;
 	}
+	.MediaMessage {
+		max-width: calc(40vw - 32px);
+	}
 }
 
 @media (min-width: 1200px) {
 	.Body {
 		max-width: 35vw;
+	}
+	.MediaMessage {
+		max-width: calc(35vw - 32px);
 	}
 }

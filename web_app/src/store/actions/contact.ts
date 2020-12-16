@@ -1,7 +1,8 @@
 import { Dispatch } from "redux";
 import axios, { AxiosResponse } from "axios";
+import { v4 as uuid } from "uuid";
 
-import firebase, { firestore } from "../../firebase/firebase";
+import firebase, { firestore, storage } from "../../firebase/firebase";
 import * as actionTypes from "./actionTypes";
 import {
 	IContactAction,
@@ -368,5 +369,56 @@ export const resetNewMessageReceived = (uid: string) => {
 		payload: {
 			selectionIndex: userIndexMap[uid],
 		},
+	};
+};
+
+export const sendImage = (
+	uid: string,
+	otherId: string,
+	image: File | Blob,
+	sharedKey: string
+) => {
+	return (dispatch: Dispatch<IContactAction>) => {
+		dispatch(sendMessageInit());
+		try {
+			const uploadTask = storage.ref("media").child(uuid()).put(image);
+
+			uploadTask.on(
+				"state_changed",
+				function (_) {},
+				function (error) {
+					dispatch(sendMessageFail(error.message));
+				},
+				function () {
+					uploadTask.snapshot.ref
+						.getDownloadURL()
+						.then(async (downloadURL) => {
+							const encryptedMessage = encrypt(
+								downloadURL,
+								sharedKey
+							);
+							const users = [otherId, uid];
+							users.sort();
+							const messageData: IMessage = {
+								sender: uid,
+								users: users.join(","),
+								text: encryptedMessage,
+								timestamp: new Date().getTime(),
+								isMedia: true,
+							};
+							try {
+								await firestore
+									.collection("messages")
+									.add(messageData);
+								dispatch(sendMessageSuccess());
+							} catch (error) {
+								dispatch(sendMessageFail(error.message));
+							}
+						});
+				}
+			);
+		} catch (error) {
+			dispatch(sendMessageFail(error.message));
+		}
 	};
 };

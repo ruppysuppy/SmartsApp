@@ -24,6 +24,7 @@ export interface IMessage {
 	text: string;
 	timestamp: number;
 	uid?: string;
+	isMedia?: boolean;
 }
 
 export interface IContactAction {

@@ -23,5 +23,6 @@ export {
 	sendMessageFail,
 	getPreviousMessages,
 	resetNewMessageReceived,
+	sendImage,
 } from "./contact";
 export { setIsDarkModeEnabled, setIsSideDrawerShown } from "./ui";

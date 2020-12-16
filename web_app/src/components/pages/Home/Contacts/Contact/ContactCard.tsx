@@ -20,6 +20,9 @@ export default function ContactCard({ userData, onClickHandler }: IProps) {
 					userData.sharedKey
 			  )
 			: "No message exchanged";
+	const isMedia =
+		userData.messages.length > 0 &&
+		userData.messages[userData.messages.length - 1].isMedia;
 
 	const currDate =
 		userData.messages.length > 0
@@ -52,9 +55,18 @@ export default function ContactCard({ userData, onClickHandler }: IProps) {
 				<div className={styles.FlexContainer}>
 					<div className={styles.FlexContainer}>
 						<div className="text-muted fs-6">
-							{lastMessage.length > 30
-								? lastMessage.slice(0, 30) + "....."
-								: lastMessage}
+							{isMedia ? (
+								<>
+									<i className="material-icons">
+										insert_photo
+									</i>
+									Image
+								</>
+							) : lastMessage.length > 30 ? (
+								lastMessage.slice(0, 26) + "....."
+							) : (
+								lastMessage
+							)}
 						</div>
 					</div>
 					{userData.newMessages > 0 && (

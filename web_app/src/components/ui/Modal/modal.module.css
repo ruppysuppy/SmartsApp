@@ -14,6 +14,7 @@
 	position: fixed;
 	top: 50vh;
 	left: 50vw;
+	min-width: 80vw;
 	visibility: hidden;
 	transform: translate(-50%, -50%);
 	opacity: 0;
@@ -43,4 +44,34 @@
 	margin-right: 2px;
 	cursor: pointer;
 	font-size: larger;
+}
+
+@media (min-width: 567px) {
+	.Body {
+		min-width: 70vw;
+	}
+}
+
+@media (min-width: 768px) {
+	.Body {
+		min-width: 60vw;
+	}
+}
+
+@media (min-width: 992px) {
+	.Body {
+		min-width: 50vw;
+	}
+}
+
+@media (min-width: 1200px) {
+	.Body {
+		min-width: 45vw;
+	}
+}
+
+@media (min-width: 1600px) {
+	.Body {
+		min-width: 40vw;
+	}
 }

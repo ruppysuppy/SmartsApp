@@ -24,16 +24,27 @@
 
 .Btn:hover {
 	color: white;
+}
+
+.BtnSecondary {
+	transform: rotateZ(-45deg);
+}
+
+.BtnSecondary:hover {
 	background-color: grey;
 }
 
-.Btn i {
+.BtnSecondary i {
 	position: relative;
+	left: -2px;
 }
 
 .BtnPrimary {
-	color: white;
 	background-color: var(--primary);
+}
+
+.Btn i {
+	font-size: large;
 }
 
 .BtnPrimary:hover {
@@ -43,6 +54,6 @@
 	box-shadow: 0px 0px 8px 0px var(--primary);
 }
 
-.BtnPrimary i {
-	left: -2px;
+.AttachmentInput {
+	display: none;
 }

@@ -67,9 +67,7 @@ function Chat({
 	};
 
 	const scrollChat = (prevHeight: number) => {
-		console.log(chatContainerRef.current);
 		if (chatContainerRef.current) {
-			console.log(chatContainerRef.current.scrollHeight - prevHeight);
 			chatContainerRef.current.scrollTo({
 				top: chatContainerRef.current.scrollHeight - prevHeight,
 			});
@@ -119,7 +117,7 @@ function Chat({
 			<UserInfo userData={contacts[selectedContact]} />
 			<div className={styles.ChatContainer} ref={chatContainerRef}>
 				{isMessageLoading && (
-					<div className="d-flex justify-content-center">
+					<div className="d-flex justify-content-center my-2">
 						<Loader />
 					</div>
 				)}
@@ -155,6 +153,7 @@ function Chat({
 									sharedKey={
 										contacts[selectedContact].sharedKey
 									}
+									isMedia={message.isMedia}
 									timestamp={message.timestamp}
 									key={message.uid!}
 									reference={firstMessageRef}
@@ -166,6 +165,7 @@ function Chat({
 									sharedKey={
 										contacts[selectedContact].sharedKey
 									}
+									isMedia={message.isMedia}
 									timestamp={message.timestamp}
 									key={message.uid!}
 								/>

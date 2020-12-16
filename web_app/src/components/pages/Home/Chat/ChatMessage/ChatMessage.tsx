@@ -1,6 +1,7 @@
 import React from "react";
 
 import { decrypt } from "../../../../../cryptography/cipher";
+import Loader from "../../../../ui/Loader/Loader";
 
 import styles from "./chatMessage.module.css";
 
@@ -10,6 +11,7 @@ interface IProps {
 	sharedKey: string;
 	timestamp: number;
 	reference?: (node: any) => void;
+	isMedia?: boolean;
 }
 
 export default function ChatMessage({
@@ -18,8 +20,10 @@ export default function ChatMessage({
 	sharedKey,
 	timestamp,
 	reference,
+	isMedia,
 }: IProps) {
 	const date = new Date(timestamp);
+	const message = decrypt(text, sharedKey);
 
 	return (
 		<div
@@ -27,7 +31,16 @@ export default function ChatMessage({
 				isUserSent ? styles.Sent : styles.Received
 			}`}
 		>
-			<span className="text-break"> {decrypt(text, sharedKey)} </span>
+			{isMedia ? (
+				<span className={styles.MediaHolder}>
+					<span className={styles.LoaderHolder}>
+						<Loader />
+					</span>
+					<img className={styles.MediaMessage} src={message} alt="" />
+				</span>
+			) : (
+				<span className="text-break"> {message} </span>
+			)}
 			<br />
 			{reference === undefined ? (
 				<span
