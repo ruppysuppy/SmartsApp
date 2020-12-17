@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent, createRef } from "react";
 import { connect } from "react-redux";
-// import { v4 as uuid } from "uuid";
 
 import { storage } from "../../../firebase/firebase";
 import { IState } from "../../../shared/interfaces/state";
@@ -142,7 +141,7 @@ function ImageSelection({ uid, setImgUrl, setUserDataFail }: IProps) {
 }
 
 const mapStateToProps = (state: IState) => ({
-	uid: state.auth.userData!.uid,
+	uid: state.auth.user!.uid,
 });
 
 export default connect(mapStateToProps)(ImageSelection);

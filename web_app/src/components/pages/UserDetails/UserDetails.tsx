@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 
-import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
-import Loader from "../../ui/Loader/Loader";
+import Input from "../../ui/Input/Input";
 import ImageSelection from "../../ui/ImageSelection/ImageSelection";
+import Loader from "../../ui/Loader/Loader";
 
 import firebase from "../../../firebase/firebase";
 import * as actions from "../../../store/actions/actions";
@@ -14,25 +14,25 @@ import { IUserData, IState } from "../../../shared/interfaces/interfaces";
 import styles from "../../../shared/styles/sharedStyles.module.css";
 
 interface IProps {
-	user?: firebase.User;
-	userData?: IUserData;
 	error: string;
 	isLoading: boolean;
+	user?: firebase.User;
+	userData?: IUserData;
 	setUserData: (userData: IUserData) => void;
 	setUserDataFail: (message: string) => void;
 }
 
 function UserDetails({
-	user,
-	userData,
 	error,
 	isLoading,
+	user,
+	userData,
 	setUserData,
 	setUserDataFail,
 }: IProps) {
-	const [username, setUsername] = useState("");
 	const [about, setAbout] = useState("");
 	const [imgUrl, setImgUrl] = useState("");
+	const [username, setUsername] = useState("");
 
 	useEffect(() => {
 		setUserDataFail("");
@@ -47,12 +47,21 @@ function UserDetails({
 
 	const onSubmitHandler = (event: React.FormEvent) => {
 		event.preventDefault();
-		if (username.trim().length === 0) {
-			setUserDataFail("Invalid Username");
+		if (username.trim().length < 4) {
+			setUserDataFail("Username must contain at least 4 characters");
+			return;
+		} else if (username.trim().length > 20) {
+			setUserDataFail("Maximum Username length is 20 characters");
+			return;
+		} else if (username.trim().indexOf(" ") >= 0) {
+			setUserDataFail("Username cannot contain spaces");
 			return;
 		}
 		if (about.trim().length === 0) {
-			setUserDataFail("Invalid About");
+			setUserDataFail("About cannot be blank");
+			return;
+		} else if (about.trim().length > 80) {
+			setUserDataFail("Maximum About length is 80 characters");
 			return;
 		}
 		if (imgUrl.length === 0) {
@@ -67,9 +76,6 @@ function UserDetails({
 			publicKey: "",
 			privateKey: "",
 		});
-		// `https://avatars.dicebear.com/api/human/${Math.floor(
-		// 	Math.random() * 250
-		// 	)}.svg`
 	};
 
 	return (
@@ -112,10 +118,10 @@ function UserDetails({
 }
 
 const mapStateToProps = (state: IState) => ({
-	user: state.auth.user,
-	userData: state.auth.userData,
 	error: state.auth.error,
 	isLoading: state.auth.isLoading,
+	user: state.auth.user,
+	userData: state.auth.userData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 
-import ToggleSwitch from "../../ui/ToggleSwitch/ToggleSwitch";
 import ImageSelection from "../../ui/ImageSelection/ImageSelection";
+import ToggleSwitch from "../../ui/ToggleSwitch/ToggleSwitch";
 import UpdateAboutInput from "./UpdateAboutInput/UpdateAboutInput";
 
 import firebase from "../../../firebase/firebase";
-import { IUserData, IState } from "../../../shared/interfaces/interfaces";
+import { IState, IUserData } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
 
 import sharedStyles from "../../../shared/styles/sharedStyles.module.css";
@@ -16,21 +16,21 @@ import styles from "./settings.module.css";
 import backgroundLoader from "../../../assets/img/Loading.gif";
 
 interface IProps {
+	isDarkModeEnabled: boolean;
 	user?: firebase.User;
 	userData?: IUserData;
-	isDarkModeEnabled: boolean;
-	setIsDarkModeEnabled: (value: boolean) => void;
-	setImgFail: (error: string) => void;
 	setImg: (userData: IUserData) => Promise<void>;
+	setImgFail: (error: string) => void;
+	setIsDarkModeEnabled: (value: boolean) => void;
 }
 
 function Settings({
+	isDarkModeEnabled,
 	user,
 	userData,
-	isDarkModeEnabled,
-	setIsDarkModeEnabled,
 	setImg,
 	setImgFail,
+	setIsDarkModeEnabled,
 }: IProps) {
 	const [imgUrl, setImgUrl] = useState("");
 	const [isImgSelectShown, setIsImgSelectShown] = useState(false);
@@ -83,19 +83,19 @@ function Settings({
 }
 
 const mapStateToProps = (state: IState) => ({
+	isDarkModeEnabled: state.ui.isDarkModeEnabled,
 	user: state.auth.user,
 	userData: state.auth.userData,
-	isDarkModeEnabled: state.ui.isDarkModeEnabled,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
+	setImg: async (userData: IUserData) => {
+		await dispatch(actions.setImg(userData));
+	},
+	setImgFail: (error: string) => dispatch(actions.setImgFail(error)),
 	setIsDarkModeEnabled: (value: boolean) => {
 		dispatch(actions.setIsDarkModeEnabled(value));
 		window.localStorage.setItem("isDarkModeEnabled", `${value}`);
-	},
-	setImgFail: (error: string) => dispatch(actions.setImgFail(error)),
-	setImg: async (userData: IUserData) => {
-		await dispatch(actions.setImg(userData));
 	},
 });
 

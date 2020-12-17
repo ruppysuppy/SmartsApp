@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import Input from "../../../ui/Input/Input";
 import Button from "../../../ui/Button/Button";
+import Input from "../../../ui/Input/Input";
 import Loader from "../../../ui/Loader/Loader";
 
-import { IUserData, IState } from "../../../../shared/interfaces/interfaces";
+import { IState, IUserData } from "../../../../shared/interfaces/interfaces";
 import * as actions from "../../../../store/actions/actions";
 
-import styles from "./updateAboutInput.module.css";
 import sharedStyles from "../../../../shared/styles/sharedStyles.module.css";
+import styles from "./updateAboutInput.module.css";
 
 interface IProps {
-	userData?: IUserData;
-	isLoading: boolean;
 	error: string;
+	isLoading: boolean;
+	userData?: IUserData;
 	updateAbout: (userData: IUserData) => Promise<void>;
 	updateAboutFail: (message: string) => void;
 }
 
 function UpdateAboutInput({
-	userData,
-	isLoading,
 	error,
+	isLoading,
+	userData,
 	updateAbout,
 	updateAboutFail,
 }: IProps) {
@@ -44,8 +44,11 @@ function UpdateAboutInput({
 
 	const onSubmitHandler = async () => {
 		if (userData) {
-			if (!about.trim()) {
-				updateAboutFail("Invalid About");
+			if (about.trim().length === 0) {
+				updateAboutFail("About cannot be blank");
+				return;
+			} else if (about.trim().length > 80) {
+				updateAboutFail("Maximum About length is 80 characters");
 				return;
 			}
 			const userDataCopy = { ...userData, about: about };
@@ -100,9 +103,9 @@ function UpdateAboutInput({
 }
 
 const mapStateToProps = (state: IState) => ({
-	userData: state.auth.userData,
-	isLoading: state.auth.isLoading,
 	error: state.auth.error,
+	isLoading: state.auth.isLoading,
+	userData: state.auth.userData,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
