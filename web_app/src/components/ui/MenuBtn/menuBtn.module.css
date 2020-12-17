@@ -18,6 +18,10 @@
 	margin: 6px 0;
 }
 
+.ColorWhite {
+	background-color: var(--color-white);
+}
+
 .Toggler:hover .Bar1,
 .Toggler:hover .Bar2,
 .Toggler:hover .Bar3 {

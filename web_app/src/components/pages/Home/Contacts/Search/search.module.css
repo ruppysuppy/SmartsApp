@@ -13,7 +13,7 @@
 .Body i {
 	font-size: larger;
 	padding-left: 12px;
-	color: var(--color-dark);
+	color: var(--color-white);
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;

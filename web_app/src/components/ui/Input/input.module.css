@@ -28,8 +28,8 @@
 	background-color: transparent !important;
 	outline: none !important;
 	border: none;
-	border-bottom: 1px solid var(--color-dark);
-	color: grey;
+	border-bottom: 1px solid var(--color-white);
+	color: gray;
 }
 
 .Input:focus::placeholder,
@@ -37,5 +37,5 @@
 .InputTransparent:focus::placeholder,
 .InputTransparent:hover,
 .InputTransparent:focus {
-	color: var(--color-dark);
+	color: var(--color-white);
 }

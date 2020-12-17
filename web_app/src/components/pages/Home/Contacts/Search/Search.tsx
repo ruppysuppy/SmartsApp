@@ -49,6 +49,7 @@ function Search({
 			<span className={styles.Toggler}>
 				<MenuBtn
 					isCross={isSideDrawerShown}
+					isWhite={true}
 					onClick={() => {
 						setIsSideDrawerShown(!isSideDrawerShown);
 					}}
