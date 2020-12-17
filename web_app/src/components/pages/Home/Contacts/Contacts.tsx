@@ -16,6 +16,18 @@ import * as actions from "../../../../store/actions/actions";
 import styles from "./contacts.module.css";
 import sharedStyles from "../../../../shared/styles/auth.module.css";
 
+const sortContacts = (user1: IContactData, user2: IContactData) => {
+	if (user1.messages.length === 0 && user2.messages.length === 0) {
+		return -1;
+	} else if (user1.messages.length === 0 || user2.messages.length === 0) {
+		return user1.messages.length - user2.messages.length;
+	}
+	return (
+		user2.messages[user2.messages.length - 1].timestamp -
+		user1.messages[user1.messages.length - 1].timestamp
+	);
+};
+
 interface IProps {
 	userData?: IUserData;
 	contacts: IContactData[];
@@ -43,7 +55,8 @@ function Contacts({
 
 	const filteredContacts = query
 		? contacts.filter((contact) => contact.username.includes(query))
-		: contacts;
+		: [...contacts];
+	filteredContacts.sort(sortContacts);
 
 	const onClickHandler = (i: number) => {
 		const uid = filteredContacts[i].uid;
