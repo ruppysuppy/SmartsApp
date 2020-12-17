@@ -423,3 +423,9 @@ export const sendImage = (
 		}
 	};
 };
+
+export const clearContacts = () => {
+	return {
+		type: actionTypes.CLEAR_CONTACTS,
+	};
+};

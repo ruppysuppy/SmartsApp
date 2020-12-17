@@ -146,6 +146,9 @@ const reducer = (
 			}
 			return { ...state };
 
+		case actionTypes.CLEAR_CONTACTS:
+			return { ...initialState };
+
 		default:
 			return { ...state };
 	}

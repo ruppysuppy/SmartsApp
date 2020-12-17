@@ -8,14 +8,16 @@ import { IState } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
 
 interface IProps {
-	logout: () => void;
 	user?: firebase.User;
+	clearContacts: () => void;
+	logout: () => void;
 }
 
-function Logout({ logout, user }: IProps) {
+function Logout({ user, clearContacts, logout }: IProps) {
 	useEffect(() => {
 		if (user) {
 			auth.signOut();
+			clearContacts();
 			logout();
 		}
 	}, []);
@@ -29,6 +31,7 @@ const mapStateToProps = (state: IState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
 	logout: () => dispatch(actions.logout()),
+	clearContacts: () => dispatch(actions.clearContacts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logout);
