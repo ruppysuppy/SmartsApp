@@ -13,7 +13,7 @@ import {
 import * as actions from "../../../../../store/actions/actions";
 
 import styles from "./addBtn.module.css";
-import sharedStyles from "../../../../../shared/styles/auth.module.css";
+import sharedStyles from "../../../../../shared/styles/sharedStyles.module.css";
 
 interface IProps {
 	error: string;

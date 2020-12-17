@@ -2,19 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
 
-import Contacts from "./Contacts/Contacts";
 import Chat from "./Chat/Chat";
+import Contacts from "./Contacts/Contacts";
 
 import firebase from "../../../firebase/firebase";
-import { IUserData, IState } from "../../../shared/interfaces/interfaces";
+import { IState, IUserData } from "../../../shared/interfaces/interfaces";
 
 interface IProps {
+	selectedContact?: number;
 	user?: firebase.User;
 	userData?: IUserData;
-	selectedContact?: number;
 }
 
-function Home({ user, userData, selectedContact }: IProps) {
+function Home({ selectedContact, user, userData }: IProps) {
 	if (!user) {
 		return <Redirect to="/login" />;
 	}
@@ -31,9 +31,9 @@ function Home({ user, userData, selectedContact }: IProps) {
 }
 
 const mapStateToProps = (state: IState) => ({
+	selectedContact: state.contact.selectedContact,
 	user: state.auth.user,
 	userData: state.auth.userData,
-	selectedContact: state.contact.selectedContact,
 });
 
 export default connect(mapStateToProps)(Home);

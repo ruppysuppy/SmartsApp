@@ -3,21 +3,21 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import AuthBackground from "../../ui/AuthBackground/AuthBackground";
-import Input from "../../ui/Input/Input";
 import Button from "../../ui/Button/Button";
-import Loader from "../../ui/Loader/Loader";
 import GoogleAuth from "../../ui/GoogleAuth/GoogleAuth";
+import Input from "../../ui/Input/Input";
+import Loader from "../../ui/Loader/Loader";
 
 import firebase from "../../../firebase/firebase";
 import { IState } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
 
-import styles from "../../../shared/styles/auth.module.css";
+import styles from "../../../shared/styles/sharedStyles.module.css";
 
 interface IProps {
-	user?: firebase.User;
-	isLoading: boolean;
 	error: string;
+	isLoading: boolean;
+	user?: firebase.User;
 	emailAuth: (email: string, password: string) => void;
 	emailAuthFail: (message: string) => void;
 }
@@ -89,9 +89,9 @@ function Login({ user, isLoading, error, emailAuth, emailAuthFail }: IProps) {
 }
 
 const mapStateToProps = (state: IState) => ({
-	user: state.auth.user,
-	isLoading: state.auth.isLoading,
 	error: state.auth.error,
+	isLoading: state.auth.isLoading,
+	user: state.auth.user,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

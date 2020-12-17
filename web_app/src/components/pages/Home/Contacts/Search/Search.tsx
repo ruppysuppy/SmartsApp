@@ -22,10 +22,6 @@ function Search({
 	setQuery,
 	setIsSideDrawerShown,
 }: IProps) {
-	const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setQuery(event.currentTarget.value);
-	};
-
 	return (
 		<div className={styles.Body}>
 			<span className={styles.InputHolder}>

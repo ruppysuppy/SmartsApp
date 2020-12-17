@@ -1,8 +1,8 @@
 import React from "react";
 
-import ChatBackground from "../../../assets/img/Chat.svg";
-
 import styles from "./loading-screen.module.css";
+
+import ChatBackground from "../../../assets/img/Chat.svg";
 
 export default function LoadingScreen() {
 	return (

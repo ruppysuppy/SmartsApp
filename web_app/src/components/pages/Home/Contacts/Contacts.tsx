@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
-import Search from "./Search/Search";
-import ContactCard from "./Contact/ContactCard";
 import AddBtn from "./AddBtn/AddBtn";
+import ContactCard from "./Contact/ContactCard";
 import Loader from "../../../ui/Loader/Loader";
+import Search from "./Search/Search";
 
 import {
+	IContactData,
 	IState,
 	IUserData,
-	IContactData,
 } from "../../../../shared/interfaces/interfaces";
 import * as actions from "../../../../store/actions/actions";
 
 import styles from "./contacts.module.css";
-import sharedStyles from "../../../../shared/styles/auth.module.css";
+import sharedStyles from "../../../../shared/styles/sharedStyles.module.css";
 
 const sortContacts = (user1: IContactData, user2: IContactData) => {
 	if (user1.messages.length === 0 && user2.messages.length === 0) {
@@ -29,19 +29,19 @@ const sortContacts = (user1: IContactData, user2: IContactData) => {
 };
 
 interface IProps {
-	userData?: IUserData;
 	contacts: IContactData[];
-	isLoading: boolean;
 	error: string;
+	userData?: IUserData;
+	isLoading: boolean;
 	getContacts: (uid: string, privateKey: string) => void;
 	selectContact: (index: number) => void;
 }
 
 function Contacts({
-	error,
-	userData,
 	contacts,
+	error,
 	isLoading,
+	userData,
 	getContacts,
 	selectContact,
 }: IProps) {

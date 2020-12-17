@@ -1,6 +1,6 @@
 import React from "react";
 
-import sharedStyles from "../../../shared/styles/auth.module.css";
+import sharedStyles from "../../../shared/styles/sharedStyles.module.css";
 
 export default function Error404() {
 	return (
