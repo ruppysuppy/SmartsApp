@@ -40,13 +40,13 @@ function UserInfo({ userData, clearSelectContact }: IProps) {
 			>
 				<div className={styles.ModalBody}>
 					<img src={userData.photoUrl} alt=" " />
-					<h5 className="d-inline-block mt-4 text-break">
+					<h5 className="d-inline-block mt-4 text-break text-center">
 						<span>Username: </span>
-						<span className="fw-lighter">{userData.username}</span>
+						<span className="fw-light">{userData.username}</span>
 					</h5>
-					<h5 className="d-inline-block my-2 text-break">
+					<h5 className="d-inline-block my-2 text-break text-center">
 						<span>About: </span>
-						<span className="fw-lighter"> {userData.about} </span>
+						<span className="fw-light"> {userData.about} </span>
 					</h5>
 				</div>
 			</Modal>
