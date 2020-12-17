@@ -19,6 +19,32 @@ export const authChangedHandler = (user?: firebase.User) => {
 	};
 };
 
+export const emailAuthInit = () => {
+	return {
+		type: actionTypes.EMAIL_AUTH_INIT,
+	};
+};
+
+export const emailAuthFail = (error: string) => {
+	return {
+		type: actionTypes.EMAIL_AUTH_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const emailAuth = (email: string, password: string) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
+		dispatch(emailAuthInit());
+		try {
+			await auth.signInWithEmailAndPassword(email, password);
+		} catch (error) {
+			dispatch(emailAuthFail(error.message));
+		}
+	};
+};
+
 export const emailRegisterInit = () => {
 	return {
 		type: actionTypes.EMAIL_REGISTER_INIT,
@@ -49,38 +75,6 @@ export const emailRegister = (email: string, password: string) => {
 		} catch (error) {
 			dispatch(emailAuthFail(error.message));
 		}
-	};
-};
-
-export const emailAuthInit = () => {
-	return {
-		type: actionTypes.EMAIL_AUTH_INIT,
-	};
-};
-
-export const emailAuthFail = (error: string) => {
-	return {
-		type: actionTypes.EMAIL_AUTH_FAIL,
-		payload: {
-			error: error,
-		},
-	};
-};
-
-export const emailAuth = (email: string, password: string) => {
-	return async (dispatch: Dispatch<IAuthAction>) => {
-		dispatch(emailAuthInit());
-		try {
-			await auth.signInWithEmailAndPassword(email, password);
-		} catch (error) {
-			dispatch(emailAuthFail(error.message));
-		}
-	};
-};
-
-export const logout = () => {
-	return {
-		type: actionTypes.LOGOUT,
 	};
 };
 
@@ -134,6 +128,86 @@ export const getUserData = (uid: string) => {
 			);
 		} catch (error) {
 			dispatch(getUserDataFail(error.message));
+		}
+	};
+};
+
+export const logout = () => {
+	return {
+		type: actionTypes.LOGOUT,
+	};
+};
+
+export const setAboutInit = () => {
+	return {
+		type: actionTypes.SET_ABOUT_INIT,
+	};
+};
+
+export const setAboutSuccess = (userData: IUserData) => {
+	return {
+		type: actionTypes.SET_ABOUT_SUCCESS,
+		payload: {
+			userData: userData,
+		},
+	};
+};
+
+export const setAboutFail = (error: string) => {
+	return {
+		type: actionTypes.SET_ABOUT_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const setAbout = (userData: IUserData) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
+		dispatch(setAboutInit());
+		const userRef = firestore.collection("users").doc(userData.uid);
+		try {
+			await userRef.update({ about: userData.about });
+			dispatch(setAboutSuccess(userData));
+		} catch (error) {
+			dispatch(setAboutFail(error.message));
+		}
+	};
+};
+
+export const setImgInit = () => {
+	return {
+		type: actionTypes.SET_IMG_INIT,
+	};
+};
+
+export const setImgSuccess = (userData: IUserData) => {
+	return {
+		type: actionTypes.SET_IMG_SUCCESS,
+		payload: {
+			userData: userData,
+		},
+	};
+};
+
+export const setImgFail = (error: string) => {
+	return {
+		type: actionTypes.SET_IMG_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const setImg = (userData: IUserData) => {
+	return async (dispatch: Dispatch<IAuthAction>) => {
+		dispatch(setImgInit());
+		const userRef = firestore.collection("users").doc(userData.uid);
+		try {
+			await userRef.update({ photoUrl: userData.photoUrl });
+			dispatch(setImgSuccess(userData));
+		} catch (error) {
+			dispatch(setImgFail(error.message));
 		}
 	};
 };
@@ -198,80 +272,6 @@ export const setUserData = (userData: IUserData) => {
 			dispatch(setUserDataSuccess(userData));
 		} catch (error) {
 			dispatch(setUserDataFail(error.message));
-		}
-	};
-};
-
-export const setImgInit = () => {
-	return {
-		type: actionTypes.SET_IMG_INIT,
-	};
-};
-
-export const setImgSuccess = (userData: IUserData) => {
-	return {
-		type: actionTypes.SET_IMG_SUCCESS,
-		payload: {
-			userData: userData,
-		},
-	};
-};
-
-export const setImgFail = (error: string) => {
-	return {
-		type: actionTypes.SET_IMG_FAIL,
-		payload: {
-			error: error,
-		},
-	};
-};
-
-export const setImg = (userData: IUserData) => {
-	return async (dispatch: Dispatch<IAuthAction>) => {
-		dispatch(setImgInit());
-		const userRef = firestore.collection("users").doc(userData.uid);
-		try {
-			await userRef.update({ photoUrl: userData.photoUrl });
-			dispatch(setImgSuccess(userData));
-		} catch (error) {
-			dispatch(setImgFail(error.message));
-		}
-	};
-};
-
-export const setAboutInit = () => {
-	return {
-		type: actionTypes.SET_ABOUT_INIT,
-	};
-};
-
-export const setAboutSuccess = (userData: IUserData) => {
-	return {
-		type: actionTypes.SET_ABOUT_SUCCESS,
-		payload: {
-			userData: userData,
-		},
-	};
-};
-
-export const setAboutFail = (error: string) => {
-	return {
-		type: actionTypes.SET_ABOUT_FAIL,
-		payload: {
-			error: error,
-		},
-	};
-};
-
-export const setAbout = (userData: IUserData) => {
-	return async (dispatch: Dispatch<IAuthAction>) => {
-		dispatch(setAboutInit());
-		const userRef = firestore.collection("users").doc(userData.uid);
-		try {
-			await userRef.update({ about: userData.about });
-			dispatch(setAboutSuccess(userData));
-		} catch (error) {
-			dispatch(setAboutFail(error.message));
 		}
 	};
 };

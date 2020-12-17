@@ -10,12 +10,88 @@ import {
 	IMessage,
 	IUserData,
 } from "../../shared/interfaces/interfaces";
-import BASE_URL from "./baseUrl";
 import { encrypt } from "../../cryptography/cipher";
+import BASE_URL from "./baseUrl";
 
+// Data Cache for fast access
 let previousData: IContactData[] = [];
 const userIndexMap: { [key: string]: number } = {};
 const messageSnapshotListeners = new Set<string>();
+
+// Action creators
+
+export const addContactInit = () => {
+	return {
+		type: actionTypes.ADD_CONTACT_INIT,
+	};
+};
+
+export const addContactSuccess = () => {
+	return {
+		type: actionTypes.ADD_CONTACT_SUCCESS,
+	};
+};
+
+export const addContactFail = (error: string) => {
+	return {
+		type: actionTypes.ADD_CONTACT_FAIL,
+		payload: {
+			error: error,
+		},
+	};
+};
+
+export const addContact = (userId: string, username: string) => {
+	return async (dispatch: Dispatch<IContactAction>) => {
+		dispatch(addContactInit());
+		try {
+			const userRef = firestore
+				.collection("users")
+				.where("username", "==", username);
+			const userData = await userRef.get();
+			if (userData.empty) {
+				dispatch(addContactFail("User does not exist"));
+				return;
+			}
+			const uid = (userData.docs[0].data() as IUserData).uid;
+			const userContactsRef = firestore
+				.collection("contacts")
+				.doc(userId);
+			const contactContactsRef = firestore
+				.collection("contacts")
+				.doc(uid);
+			if (!(await userContactsRef.get()).exists) {
+				await userContactsRef.set({ contacts: [uid] });
+			} else {
+				await userContactsRef.update({
+					contacts: firebase.firestore.FieldValue.arrayUnion(uid),
+				});
+			}
+			if (!(await contactContactsRef.get()).exists) {
+				await contactContactsRef.set({ contacts: [userId] });
+			} else {
+				await contactContactsRef.update({
+					contacts: firebase.firestore.FieldValue.arrayUnion(userId),
+				});
+			}
+			dispatch(addContactSuccess());
+		} catch (error) {
+			dispatch(addContactFail(error.message));
+		}
+	};
+};
+
+export const clearContacts = () => {
+	return {
+		type: actionTypes.CLEAR_CONTACTS,
+	};
+};
+
+export const clearSelectContact = () => {
+	return {
+		type: actionTypes.CLEAR_SELECTED_CONTACT,
+	};
+};
 
 export const getContactsInit = () => {
 	return {
@@ -153,64 +229,72 @@ export const getContacts = (uid: string, privateKey: string) => {
 	};
 };
 
-export const addContactInit = () => {
+export const getPreviousMessagesInit = () => {
 	return {
-		type: actionTypes.ADD_CONTACT_INIT,
+		type: actionTypes.GET_PREVIOUS_MESSAGES_INIT,
 	};
 };
 
-export const addContactSuccess = () => {
+export const getPreviousMessagesFail = (error: string) => {
 	return {
-		type: actionTypes.ADD_CONTACT_SUCCESS,
-	};
-};
-
-export const addContactFail = (error: string) => {
-	return {
-		type: actionTypes.ADD_CONTACT_FAIL,
+		type: actionTypes.GET_PREVIOUS_MESSAGES_FAIL,
 		payload: {
 			error: error,
 		},
 	};
 };
 
-export const addContact = (userId: string, username: string) => {
-	return async (dispatch: Dispatch<IContactAction>) => {
-		dispatch(addContactInit());
+export const getPreviousMessagesSuccess = (
+	messages: IMessage[],
+	selectionIndex: number
+) => {
+	return {
+		type: actionTypes.GET_PREVIOUS_MESSAGES_SUCCESS,
+		payload: {
+			messages: messages,
+			selectionIndex: selectionIndex,
+		},
+	};
+};
+
+export const getPreviousMessages = (
+	uid: string,
+	otherId: string,
+	lastTimestamp: number
+) => {
+	return async (dispatch: Dispatch) => {
+		dispatch(getPreviousMessagesInit());
+		const users = [otherId, uid];
+		users.sort();
+		const usersList = users.join(",");
+		const query = firestore
+			.collection("messages")
+			.where("users", "==", usersList)
+			.where("timestamp", "<", lastTimestamp)
+			.orderBy("timestamp", "desc")
+			.limit(20);
 		try {
-			const userRef = firestore
-				.collection("users")
-				.where("username", "==", username);
-			const userData = await userRef.get();
-			if (userData.empty) {
-				dispatch(addContactFail("User does not exist"));
-				return;
-			}
-			const uid = (userData.docs[0].data() as IUserData).uid;
-			const userContactsRef = firestore
-				.collection("contacts")
-				.doc(userId);
-			const contactContactsRef = firestore
-				.collection("contacts")
-				.doc(uid);
-			if (!(await userContactsRef.get()).exists) {
-				await userContactsRef.set({ contacts: [uid] });
-			} else {
-				await userContactsRef.update({
-					contacts: firebase.firestore.FieldValue.arrayUnion(uid),
-				});
-			}
-			if (!(await contactContactsRef.get()).exists) {
-				await contactContactsRef.set({ contacts: [userId] });
-			} else {
-				await contactContactsRef.update({
-					contacts: firebase.firestore.FieldValue.arrayUnion(userId),
-				});
-			}
-			dispatch(addContactSuccess());
+			const docs = await query.get();
+			const messages: IMessage[] = [];
+			docs.forEach((doc) => {
+				messages.push({ ...doc.data(), uid: doc.id } as IMessage);
+			});
+			messages.reverse();
+			dispatch(
+				getPreviousMessagesSuccess(messages, userIndexMap[otherId])
+			);
 		} catch (error) {
-			dispatch(addContactFail(error.message));
+			dispatch(getPreviousMessagesFail(error.message));
 		}
+	};
+};
+
+export const resetNewMessageReceived = (uid: string) => {
+	return {
+		type: actionTypes.RESET_NEW_MESSAGES_COUNT,
+		payload: {
+			selectionIndex: userIndexMap[uid],
+		},
 	};
 };
 
@@ -223,9 +307,54 @@ export const selectContact = (index: number) => {
 	};
 };
 
-export const clearSelectContact = () => {
-	return {
-		type: actionTypes.CLEAR_SELECTED_CONTACT,
+export const sendImage = (
+	uid: string,
+	otherId: string,
+	image: File | Blob,
+	sharedKey: string
+) => {
+	return (dispatch: Dispatch<IContactAction>) => {
+		dispatch(sendMessageInit());
+		try {
+			const uploadTask = storage.ref("media").child(uuid()).put(image);
+
+			uploadTask.on(
+				"state_changed",
+				function (_) {},
+				function (error) {
+					dispatch(sendMessageFail(error.message));
+				},
+				function () {
+					uploadTask.snapshot.ref
+						.getDownloadURL()
+						.then(async (downloadURL) => {
+							const encryptedMessage = encrypt(
+								downloadURL,
+								sharedKey
+							);
+							const users = [otherId, uid];
+							users.sort();
+							const messageData: IMessage = {
+								sender: uid,
+								users: users.join(","),
+								text: encryptedMessage,
+								timestamp: new Date().getTime(),
+								isMedia: true,
+							};
+							try {
+								await firestore
+									.collection("messages")
+									.add(messageData);
+								dispatch(sendMessageSuccess());
+							} catch (error) {
+								dispatch(sendMessageFail(error.message));
+							}
+						});
+				}
+			);
+		} catch (error) {
+			dispatch(sendMessageFail(error.message));
+		}
 	};
 };
 
@@ -301,131 +430,5 @@ export const updateMessageSuccess = (
 			message: message,
 			selectionIndex: selectionIndex,
 		},
-	};
-};
-
-export const getPreviousMessagesInit = () => {
-	return {
-		type: actionTypes.GET_PREVIOUS_MESSAGES_INIT,
-	};
-};
-
-export const getPreviousMessagesFail = (error: string) => {
-	return {
-		type: actionTypes.GET_PREVIOUS_MESSAGES_FAIL,
-		payload: {
-			error: error,
-		},
-	};
-};
-
-export const getPreviousMessagesSuccess = (
-	messages: IMessage[],
-	selectionIndex: number
-) => {
-	return {
-		type: actionTypes.GET_PREVIOUS_MESSAGES_SUCCESS,
-		payload: {
-			messages: messages,
-			selectionIndex: selectionIndex,
-		},
-	};
-};
-
-export const getPreviousMessages = (
-	uid: string,
-	otherId: string,
-	lastTimestamp: number
-) => {
-	return async (dispatch: Dispatch) => {
-		dispatch(getPreviousMessagesInit());
-		const users = [otherId, uid];
-		users.sort();
-		const usersList = users.join(",");
-		const query = firestore
-			.collection("messages")
-			.where("users", "==", usersList)
-			.where("timestamp", "<", lastTimestamp)
-			.orderBy("timestamp", "desc")
-			.limit(20);
-		try {
-			const docs = await query.get();
-			const messages: IMessage[] = [];
-			docs.forEach((doc) => {
-				messages.push({ ...doc.data(), uid: doc.id } as IMessage);
-			});
-			messages.reverse();
-			dispatch(
-				getPreviousMessagesSuccess(messages, userIndexMap[otherId])
-			);
-		} catch (error) {
-			dispatch(getPreviousMessagesFail(error.message));
-		}
-	};
-};
-
-export const resetNewMessageReceived = (uid: string) => {
-	return {
-		type: actionTypes.RESET_NEW_MESSAGES_COUNT,
-		payload: {
-			selectionIndex: userIndexMap[uid],
-		},
-	};
-};
-
-export const sendImage = (
-	uid: string,
-	otherId: string,
-	image: File | Blob,
-	sharedKey: string
-) => {
-	return (dispatch: Dispatch<IContactAction>) => {
-		dispatch(sendMessageInit());
-		try {
-			const uploadTask = storage.ref("media").child(uuid()).put(image);
-
-			uploadTask.on(
-				"state_changed",
-				function (_) {},
-				function (error) {
-					dispatch(sendMessageFail(error.message));
-				},
-				function () {
-					uploadTask.snapshot.ref
-						.getDownloadURL()
-						.then(async (downloadURL) => {
-							const encryptedMessage = encrypt(
-								downloadURL,
-								sharedKey
-							);
-							const users = [otherId, uid];
-							users.sort();
-							const messageData: IMessage = {
-								sender: uid,
-								users: users.join(","),
-								text: encryptedMessage,
-								timestamp: new Date().getTime(),
-								isMedia: true,
-							};
-							try {
-								await firestore
-									.collection("messages")
-									.add(messageData);
-								dispatch(sendMessageSuccess());
-							} catch (error) {
-								dispatch(sendMessageFail(error.message));
-							}
-						});
-				}
-			);
-		} catch (error) {
-			dispatch(sendMessageFail(error.message));
-		}
-	};
-};
-
-export const clearContacts = () => {
-	return {
-		type: actionTypes.CLEAR_CONTACTS,
 	};
 };

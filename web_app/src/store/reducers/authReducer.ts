@@ -23,6 +23,16 @@ const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 			}
 			return { ...state };
 
+		case actionTypes.EMAIL_REGISTER_FAIL:
+			if (payload?.error !== undefined) {
+				return {
+					...state,
+					error: payload.error,
+					isLoading: false,
+				};
+			}
+			return { ...state };
+
 		case actionTypes.EMAIL_REGISTER_INIT:
 			return {
 				...state,
@@ -36,7 +46,7 @@ const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 				isLoading: false,
 			};
 
-		case actionTypes.EMAIL_REGISTER_FAIL:
+		case actionTypes.EMAIL_AUTH_FAIL:
 			if (payload?.error !== undefined) {
 				return {
 					...state,
@@ -53,7 +63,7 @@ const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 				error: null,
 			};
 
-		case actionTypes.EMAIL_AUTH_FAIL:
+		case actionTypes.GET_USER_DATA_FAIL:
 			if (payload?.error !== undefined) {
 				return {
 					...state,
@@ -62,9 +72,6 @@ const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 				};
 			}
 			return { ...state };
-
-		case actionTypes.LOGOUT:
-			return { ...initialState };
 
 		case actionTypes.GET_USER_DATA_INIT:
 			return {
@@ -83,61 +90,10 @@ const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 			}
 			return { ...state };
 
-		case actionTypes.GET_USER_DATA_FAIL:
-			if (payload?.error !== undefined) {
-				return {
-					...state,
-					error: payload.error,
-					isLoading: false,
-				};
-			}
-			return { ...state };
+		case actionTypes.LOGOUT:
+			return { ...initialState };
 
-		case actionTypes.SET_USER_DATA_INIT:
-			return {
-				...state,
-				isLoading: true,
-				error: null,
-			};
-
-		case actionTypes.SET_USER_DATA_SUCCESS:
-			if (payload?.userData) {
-				return {
-					...state,
-					isLoading: false,
-					userData: payload.userData,
-				};
-			}
-			return { ...state };
-
-		case actionTypes.SET_USER_DATA_FAIL:
-			if (payload?.error !== undefined) {
-				return {
-					...state,
-					error: payload.error,
-					isLoading: false,
-				};
-			}
-			return { ...state };
-
-		case actionTypes.SET_IMG_INIT:
-			return {
-				...state,
-				isLoading: true,
-				error: null,
-			};
-
-		case actionTypes.SET_IMG_SUCCESS:
-			if (payload?.userData) {
-				return {
-					...state,
-					isLoading: false,
-					userData: payload.userData,
-				};
-			}
-			return { ...state };
-
-		case actionTypes.SET_IMG_FAIL:
+		case actionTypes.SET_ABOUT_FAIL:
 			if (payload?.error !== undefined) {
 				return {
 					...state,
@@ -164,12 +120,56 @@ const reducer = (state: IAuthState = initialState, action: IAuthAction) => {
 			}
 			return { ...state };
 
-		case actionTypes.SET_ABOUT_FAIL:
+		case actionTypes.SET_IMG_FAIL:
 			if (payload?.error !== undefined) {
 				return {
 					...state,
 					error: payload.error,
 					isLoading: false,
+				};
+			}
+			return { ...state };
+
+		case actionTypes.SET_IMG_INIT:
+			return {
+				...state,
+				isLoading: true,
+				error: null,
+			};
+
+		case actionTypes.SET_IMG_SUCCESS:
+			if (payload?.userData) {
+				return {
+					...state,
+					isLoading: false,
+					userData: payload.userData,
+				};
+			}
+			return { ...state };
+
+		case actionTypes.SET_USER_DATA_FAIL:
+			if (payload?.error !== undefined) {
+				return {
+					...state,
+					error: payload.error,
+					isLoading: false,
+				};
+			}
+			return { ...state };
+
+		case actionTypes.SET_USER_DATA_INIT:
+			return {
+				...state,
+				isLoading: true,
+				error: null,
+			};
+
+		case actionTypes.SET_USER_DATA_SUCCESS:
+			if (payload?.userData) {
+				return {
+					...state,
+					isLoading: false,
+					userData: payload.userData,
 				};
 			}
 			return { ...state };

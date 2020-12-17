@@ -1,3 +1,14 @@
+export interface IContactAction {
+	type: string;
+	payload?: {
+		contacts?: IContactData[];
+		error?: string;
+		selectionIndex?: number;
+		message?: IMessage;
+		messages?: IMessage[];
+	};
+}
+
 export interface IContactData {
 	username: string;
 	uid: string;
@@ -25,15 +36,4 @@ export interface IMessage {
 	timestamp: number;
 	uid?: string;
 	isMedia?: boolean;
-}
-
-export interface IContactAction {
-	type: string;
-	payload?: {
-		contacts?: IContactData[];
-		error?: string;
-		selectionIndex?: number;
-		message?: IMessage;
-		messages?: IMessage[];
-	};
 }

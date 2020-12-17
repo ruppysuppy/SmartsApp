@@ -1,13 +1,6 @@
 import firebase from "../../firebase/firebase";
 import * as userInterfaces from "./user";
 
-export interface IAuthState {
-	user?: firebase.User;
-	userData?: userInterfaces.IUserData;
-	isLoading: boolean;
-	error: string;
-}
-
 export interface IAuthAction {
 	type: string;
 	payload?: {
@@ -15,4 +8,11 @@ export interface IAuthAction {
 		user?: firebase.User;
 		userData?: userInterfaces.IUserData;
 	};
+}
+
+export interface IAuthState {
+	user?: firebase.User;
+	userData?: userInterfaces.IUserData;
+	isLoading: boolean;
+	error: string;
 }

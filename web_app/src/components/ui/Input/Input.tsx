@@ -3,19 +3,19 @@ import React from "react";
 import styles from "./input.module.css";
 
 interface IProps {
-	onChangeFunc: (param: string) => void;
-	placeholder: string;
-	val: string;
-	type?: "email" | "password" | "text";
 	inputType?: "NORMAL" | "TRANSPARENT";
+	placeholder: string;
+	type?: "email" | "password" | "text";
+	val: string;
+	onChangeFunc: (param: string) => void;
 }
 
 export default function Input({
-	onChangeFunc,
-	placeholder,
-	val,
-	type,
 	inputType,
+	placeholder,
+	type,
+	val,
+	onChangeFunc,
 }: IProps) {
 	const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
 		onChangeFunc(e.currentTarget.value);

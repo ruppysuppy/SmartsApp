@@ -3,32 +3,33 @@ import { Link } from "react-router-dom";
 
 import Navlinks from "../NavLinks/Navlinks";
 
-import style from "./sidedrawer.module.css";
+import styles from "./sidedrawer.module.css";
 
 import ChatIcon from "../../../../assets/img/ChatIcon.svg";
 
 interface IProps {
-	sidebarClose: () => void;
+	shouldHideSidebar: boolean;
 	sidebarShown: boolean;
+	sidebarClose: () => void;
 }
 
-function SideDrawer({ sidebarClose, sidebarShown }: IProps) {
+function SideDrawer({ shouldHideSidebar, sidebarShown, sidebarClose }: IProps) {
 	return (
 		<>
 			<div
-				className={`${style.Backdrop} ${
-					sidebarShown ? style.BackdropOpen : style.BackdropClose
-				}`}
+				className={`${styles.Backdrop} ${
+					sidebarShown ? styles.BackdropOpen : styles.BackdropClose
+				} ${shouldHideSidebar && styles.HideSidebar}`}
 				onClick={sidebarClose}
 			></div>
 			<div
-				className={`${style.SideBarBody} ${
+				className={`${styles.SideBarBody} ${
 					sidebarShown
-						? style.SideBarBodyOpen
-						: style.SideBarBodyClose
-				}`}
+						? styles.SideBarBodyOpen
+						: styles.SideBarBodyClose
+				} ${shouldHideSidebar && styles.HideSidebar}`}
 			>
-				<div className={`container ${style.SideDrawerIcon}`}>
+				<div className={`container ${styles.SideDrawerIcon}`}>
 					<Link to="/" onClick={sidebarClose}>
 						<img src={ChatIcon} alt="SmartsApp" />
 					</Link>

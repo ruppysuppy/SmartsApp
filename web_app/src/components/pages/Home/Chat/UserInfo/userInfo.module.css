@@ -7,14 +7,19 @@
 	align-items: center;
 }
 
-.Body i:hover,
-.UserDetails:hover {
-	cursor: pointer;
+.Body i,
+.UserDetails span {
+	color: var(--color-white);
 }
 
 .UserDetails {
 	display: flex;
 	align-items: center;
+}
+
+.Body i:hover,
+.UserDetails:hover {
+	cursor: pointer;
 }
 
 .ProfilePicure {

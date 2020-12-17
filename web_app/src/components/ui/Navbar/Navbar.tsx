@@ -5,23 +5,23 @@ import { Dispatch } from "redux";
 
 import Navlinks from "./NavLinks/Navlinks";
 import SideDrawer from "./SideDrawer/SideDrawer";
+import ChatIcon from "../../../assets/img/ChatIcon.svg";
+import MenuBtn from "../MenuBtn/MenuBtn";
 
 import { IState } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
 
-import ChatIcon from "../../../assets/img/ChatIcon.svg";
 import styles from "./navbar.module.css";
-import MenuBtn from "../MenuBtn/MenuBtn";
 
 interface IProps {
+	isSideDrawerShown: boolean;
 	location: {
 		pathname: string;
 	};
-	isSideDrawerShown: boolean;
 	setIsSideDrawerShown: (value: boolean) => void;
 }
 
-function Navbar({ location, isSideDrawerShown, setIsSideDrawerShown }: IProps) {
+function Navbar({ isSideDrawerShown, location, setIsSideDrawerShown }: IProps) {
 	const { pathname } = location;
 
 	return (
@@ -56,6 +56,7 @@ function Navbar({ location, isSideDrawerShown, setIsSideDrawerShown }: IProps) {
 			<SideDrawer
 				sidebarClose={() => setIsSideDrawerShown(false)}
 				sidebarShown={isSideDrawerShown}
+				shouldHideSidebar={pathname !== "/"}
 			/>
 		</>
 	);

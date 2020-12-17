@@ -43,6 +43,10 @@
 	background-color: var(--primary);
 }
 
+.BtnPrimary i {
+	color: var(--color-white);
+}
+
 .Btn i {
 	font-size: large;
 }

@@ -3,16 +3,16 @@ import React from "react";
 import styles from "./button.module.css";
 
 interface IProps {
-	className?: string;
-	children?: React.ReactNode;
-	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 	btnType?: "NORMAL" | "SECONDARY";
+	children?: React.ReactNode;
+	className?: string;
+	onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Button({
+	btnType,
 	children,
 	className,
-	btnType,
 	...props
 }: IProps) {
 	if (!btnType) {

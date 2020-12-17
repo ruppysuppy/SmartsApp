@@ -20,7 +20,7 @@ const sortContacts = (user1: IContactData, user2: IContactData) => {
 	if (user1.messages.length === 0 && user2.messages.length === 0) {
 		return -1;
 	} else if (user1.messages.length === 0 || user2.messages.length === 0) {
-		return user1.messages.length - user2.messages.length;
+		return user2.messages.length - user1.messages.length;
 	}
 	return (
 		user2.messages[user2.messages.length - 1].timestamp -

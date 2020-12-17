@@ -5,15 +5,15 @@ import styles from "./modal.module.css";
 
 interface IProps {
 	children?: React.ReactNode;
-	title?: string;
 	isShown: boolean;
+	title?: string;
 	changeVisibility: (value: boolean) => void;
 }
 
 export default function Modal({
 	children,
-	title,
 	isShown,
+	title,
 	changeVisibility,
 }: IProps) {
 	const closeHandler = () => changeVisibility(false);
