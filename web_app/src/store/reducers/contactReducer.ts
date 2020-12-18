@@ -8,7 +8,9 @@ const initialState: IContactState = {
 	contacts: [],
 	isLoading: false,
 	isMessageLoading: false,
+	isNewUserLoading: false,
 	error: "",
+	newUserError: "",
 	selectedContact: undefined,
 };
 
@@ -21,15 +23,19 @@ const reducer = (
 	switch (type) {
 		case actionTypes.ADD_CONTACT_FAIL:
 			if (payload?.error !== undefined) {
-				return { ...state, error: payload.error, isLoading: false };
+				return {
+					...state,
+					newUserError: payload.error,
+					isNewUserLoading: false,
+				};
 			}
 			return { ...state };
 
 		case actionTypes.ADD_CONTACT_INIT:
-			return { ...state, isLoading: true, error: "" };
+			return { ...state, isNewUserLoading: true, newUserError: "" };
 
 		case actionTypes.ADD_CONTACT_SUCCESS:
-			return { ...state, isLoading: false };
+			return { ...state, isNewUserLoading: false };
 
 		case actionTypes.CLEAR_CONTACTS:
 			return { ...initialState };

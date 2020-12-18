@@ -25,7 +25,9 @@ export interface IContactState {
 	contacts: IContactData[];
 	isLoading: boolean;
 	isMessageLoading: boolean;
+	isNewUserLoading: boolean;
 	error: string;
+	newUserError: string;
 	selectedContact?: number;
 }
 

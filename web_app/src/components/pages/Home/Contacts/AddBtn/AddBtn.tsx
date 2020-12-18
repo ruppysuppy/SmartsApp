@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import Button from "../../../../ui/Button/Button";
 import Input from "../../../../ui/Input/Input";
+import Loader from "../../../../ui/Loader/Loader";
 import Modal from "../../../../ui/Modal/Modal";
 
 import {
@@ -18,6 +19,7 @@ import sharedStyles from "../../../../../shared/styles/sharedStyles.module.css";
 interface IProps {
 	error: string;
 	contacts: IContactData[];
+	isLoading: boolean;
 	userData?: IUserData;
 	addContact: (userId: string, username: string) => Promise<void>;
 	addContactFail: (error: string) => void;
@@ -27,6 +29,7 @@ interface IProps {
 function AddBtn({
 	error,
 	contacts,
+	isLoading,
 	userData,
 	addContact,
 	addContactFail,
@@ -87,17 +90,22 @@ function AddBtn({
 						</div>
 					</>
 				)}
-				<Button btnType="NORMAL" onClick={onSubmitHandler}>
-					Add Contact
-				</Button>
+				{isLoading ? (
+					<Loader />
+				) : (
+					<Button btnType="NORMAL" onClick={onSubmitHandler}>
+						Add Contact
+					</Button>
+				)}
 			</Modal>
 		</>
 	);
 }
 
 const mapStateToProps = (state: IState) => ({
-	error: state.contact.error,
+	error: state.contact.newUserError,
 	contacts: state.contact.contacts,
+	isLoading: state.contact.isNewUserLoading,
 	userData: state.auth.userData,
 });
 
