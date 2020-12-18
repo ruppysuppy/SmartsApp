@@ -23,19 +23,16 @@
 	transition: 0.2s;
 }
 
+.InputTransparent::placeholder,
+.Input:focus::placeholder {
+	color: var(--color-white);
+}
+
 .InputTransparent {
 	width: 100%;
 	background-color: transparent !important;
 	outline: none !important;
 	border: none;
 	border-bottom: 1px solid var(--color-white);
-	color: gray;
-}
-
-.Input:focus::placeholder,
-.InputTransparent:hover::placeholder,
-.InputTransparent:focus::placeholder,
-.InputTransparent:hover,
-.InputTransparent:focus {
 	color: var(--color-white);
 }

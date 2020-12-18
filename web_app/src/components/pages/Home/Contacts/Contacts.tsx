@@ -54,7 +54,9 @@ function Contacts({
 	}, []);
 
 	const filteredContacts = query
-		? contacts.filter((contact) => contact.username.includes(query))
+		? contacts.filter((contact) =>
+				contact.username.toLowerCase().includes(query.toLowerCase())
+		  )
 		: [...contacts];
 	filteredContacts.sort(sortContacts);
 

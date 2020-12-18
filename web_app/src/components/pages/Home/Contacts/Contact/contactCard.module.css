@@ -14,8 +14,8 @@
 
 .ProfilePic {
 	height: 50px;
-	width: 50px;
-	border-radius: 50%;
+	width: 55px;
+	border-radius: 25px;
 	overflow: hidden;
 	background-position: center;
 	background-size: cover;
