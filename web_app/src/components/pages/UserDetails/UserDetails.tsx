@@ -69,7 +69,7 @@ function UserDetails({
 			return;
 		}
 		setUserData({
-			username: username,
+			username: username.trim().toLowerCase(),
 			uid: user.uid,
 			photoUrl: imgUrl,
 			about: about,

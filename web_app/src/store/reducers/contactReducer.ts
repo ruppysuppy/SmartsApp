@@ -146,11 +146,18 @@ const reducer = (
 					...state,
 					contacts: [...state.contacts],
 				};
-				stateCopy.contacts[payload.selectionIndex].messages = [
-					...stateCopy.contacts[payload.selectionIndex].messages,
-					payload.message,
-				];
-				stateCopy.contacts[payload.selectionIndex].newMessages += 1;
+				const messageExists = stateCopy.contacts[
+					payload.selectionIndex
+				].messages.filter(
+					(message) => message.uid! === payload.message!.uid!
+				);
+				if (messageExists.length === 0) {
+					stateCopy.contacts[payload.selectionIndex].messages = [
+						...stateCopy.contacts[payload.selectionIndex].messages,
+						payload.message,
+					];
+					stateCopy.contacts[payload.selectionIndex].newMessages += 1;
+				}
 				return stateCopy;
 			}
 			return { ...state };

@@ -192,6 +192,7 @@ export const getContacts = (uid: string, privateKey: string) => {
 						dispatch(getContactsSuccess(contacts));
 						userDataArr.map((user) => {
 							if (!(user.uid in messageSnapshotListeners)) {
+								messageSnapshotListeners.add(user.uid);
 								const users = [user.uid, uid];
 								users.sort();
 								const usersList = users.join(",");
