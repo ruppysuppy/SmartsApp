@@ -24,9 +24,11 @@ interface IProps {
 function Navbar({ isSideDrawerShown, location, setIsSideDrawerShown }: IProps) {
 	const { pathname } = location;
 
+	const isInChat = !(pathname === "/" || pathname === "/chat");
+
 	return (
 		<>
-			{pathname !== "/" && (
+			{isInChat && (
 				<div className={styles.NavBar}>
 					<div className={`container ${styles.NavContainer}`}>
 						<div className={styles.NavIcon}>
@@ -56,7 +58,7 @@ function Navbar({ isSideDrawerShown, location, setIsSideDrawerShown }: IProps) {
 			<SideDrawer
 				sidebarClose={() => setIsSideDrawerShown(false)}
 				sidebarShown={isSideDrawerShown}
-				shouldHideSidebar={pathname !== "/"}
+				shouldHideSidebar={isInChat}
 			/>
 		</>
 	);

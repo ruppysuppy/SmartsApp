@@ -65,14 +65,15 @@ function App({
 						<Layout>
 							<Switch>
 								<Route path="/" exact component={Home} />
+								<Route path="/chat" exact component={Home} />
 								<Route path="/login" component={Login} />
+								<Route path="/logout" component={Logout} />
 								<Route path="/register" component={Register} />
 								<Route path="/settings" component={Settings} />
 								<Route
 									path="/user-details"
 									component={UserDetails}
 								/>
-								<Route path="/logout" component={Logout} />
 								<Route component={Error404} />
 							</Switch>
 						</Layout>

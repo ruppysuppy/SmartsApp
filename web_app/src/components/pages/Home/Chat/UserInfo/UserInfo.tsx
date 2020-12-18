@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Modal from "../../../../ui/Modal/Modal";
@@ -19,11 +20,13 @@ function UserInfo({ userData, clearSelectContact }: IProps) {
 	return (
 		<>
 			<div className={styles.Body} onClick={() => setIsShown(true)}>
-				<i
-					className="fa fa-arrow-left mr-3 fs-6 text"
-					aria-hidden="true"
-					onClick={clearSelectContact}
-				/>
+				<Link to="/">
+					<i
+						className="fa fa-arrow-left mr-3 fs-6 text"
+						aria-hidden="true"
+						onClick={clearSelectContact}
+					/>
+				</Link>
 				<div className={styles.UserDetails}>
 					<div className={`mr-2 ${styles.ProfilePicure}`}>
 						<img src={userData.photoUrl} alt="" />

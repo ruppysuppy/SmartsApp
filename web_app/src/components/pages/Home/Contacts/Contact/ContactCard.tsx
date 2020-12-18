@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import Loader from "../../../../../assets/img/Loading.gif";
 
@@ -36,48 +37,50 @@ export default function ContactCard({ userData, onClickHandler }: IProps) {
 			: `${currDate.getDate()}/${currDate.getMonth()}/${currDate.getFullYear()}`;
 
 	return (
-		<div className={styles.Body} onClick={onClickHandler}>
-			<div
-				className={styles.ProfilePic}
-				style={{ backgroundImage: `url(${Loader})` }}
-			>
-				<img src={userData.photoUrl} alt=" " />
-			</div>
-			<div className={styles.InfoContainer}>
-				<div className={styles.FlexContainer}>
-					<div className={styles.FlexContainer}>
-						<div className="text fs-5 fw-bold">
-							{userData.username}
-						</div>
-					</div>
-					<div className="text-muted">{currDateString}</div>
+		<Link to="/chat">
+			<div className={styles.Body} onClick={onClickHandler}>
+				<div
+					className={styles.ProfilePic}
+					style={{ backgroundImage: `url(${Loader})` }}
+				>
+					<img src={userData.photoUrl} alt=" " />
 				</div>
-				<div className={styles.FlexContainer}>
+				<div className={styles.InfoContainer}>
 					<div className={styles.FlexContainer}>
-						<div className="text-muted fs-6">
-							{isMedia ? (
-								<>
-									<i className="material-icons">
-										insert_photo
-									</i>
-									Image
-								</>
-							) : lastMessage.length > 30 ? (
-								lastMessage.slice(0, 26) + "....."
-							) : (
-								lastMessage
-							)}
+						<div className={styles.FlexContainer}>
+							<div className="text fs-5 fw-bold">
+								{userData.username}
+							</div>
 						</div>
+						<div className="text-muted">{currDateString}</div>
 					</div>
-					{userData.newMessages > 0 && (
-						<span className={styles.NewMessageCount}>
-							{userData.newMessages >= 10
-								? "9+"
-								: userData.newMessages}
-						</span>
-					)}
+					<div className={styles.FlexContainer}>
+						<div className={styles.FlexContainer}>
+							<div className="text-muted fs-6">
+								{isMedia ? (
+									<>
+										<i className="material-icons">
+											insert_photo
+										</i>
+										Image
+									</>
+								) : lastMessage.length > 30 ? (
+									lastMessage.slice(0, 26) + "....."
+								) : (
+									lastMessage
+								)}
+							</div>
+						</div>
+						{userData.newMessages > 0 && (
+							<span className={styles.NewMessageCount}>
+								{userData.newMessages >= 10
+									? "9+"
+									: userData.newMessages}
+							</span>
+						)}
+					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 }
