@@ -1,5 +1,5 @@
 .Btn {
-	color: #ffffff;
+	color: var(--color-white);
 	border: none;
 	outline: none !important;
 	border-radius: 8px;
@@ -18,9 +18,9 @@
 }
 
 .Secondary {
-	background-color: var(--color-shadow);
+	background-color: grey;
 }
 
 .Secondary:hover {
-	filter: drop-shadow(0 0 8px var(--color-shadow));
+	filter: drop-shadow(0 0 8px grey);
 }

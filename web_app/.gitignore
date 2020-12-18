@@ -9,6 +9,12 @@
 # firebase config
 /src/firebase/config.ts
 
+# firebase files
+.firebase/
+.firebaserc
+firebase.json
+firebase-debug.log
+
 # production
 /build
 

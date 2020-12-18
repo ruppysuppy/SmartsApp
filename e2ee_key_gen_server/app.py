@@ -1,15 +1,13 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 from dh import DiffieHellman
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config["CORS_HEADERS"] = "Content-Type"
 
 
 @app.route("/generate-keys", methods=["GET"])
-@cross_origin()
 def generate_keys():
     dh = DiffieHellman()
     private_key, public_key = dh.get_private_key(), dh.gen_public_key()
@@ -17,7 +15,6 @@ def generate_keys():
 
 
 @app.route("/generate-shared-key", methods=["GET"])
-@cross_origin()
 def generate_shared_key():
     try:
         local_private_key = request.args.get("local_private_key")
@@ -31,6 +28,10 @@ def generate_shared_key():
     except:
         return jsonify({"message": "Invalid public key"}), 400
     return jsonify({"shared_key": shared_key})
+
+
+if __name__ == "__main__":
+    app.run()
 
 
 if __name__ == "__main__":
