@@ -18,13 +18,23 @@ interface IProps {
 	location: {
 		pathname: string;
 	};
+	clearSelectedContact: () => void;
 	setIsSideDrawerShown: (value: boolean) => void;
 }
 
-function Navbar({ isSideDrawerShown, location, setIsSideDrawerShown }: IProps) {
+function Navbar({
+	isSideDrawerShown,
+	location,
+	clearSelectedContact,
+	setIsSideDrawerShown,
+}: IProps) {
 	const { pathname } = location;
 
 	const isInChat = !(pathname === "/" || pathname === "/chat");
+
+	if (pathname === "/") {
+		clearSelectedContact();
+	}
 
 	return (
 		<>
@@ -69,6 +79,7 @@ const mapStateToProps = (state: IState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+	clearSelectedContact: () => dispatch(actions.clearSelectContact()),
 	setIsSideDrawerShown: (value: boolean) =>
 		dispatch(actions.setIsSideDrawerShown(value)),
 });
