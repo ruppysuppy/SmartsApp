@@ -4,6 +4,12 @@ import { app, BrowserWindow, Menu } from "electron";
 
 import * as environments from "./nodeEnvironments";
 
+const gotSingleInstanceLock = app.requestSingleInstanceLock();
+
+if (!gotSingleInstanceLock) {
+	app.quit();
+}
+
 process.env.NODE_ENV = environments.DEVELOPMENT;
 
 const isDarwin = process.platform === "darwin";
@@ -26,6 +32,7 @@ function createSplashScreen() {
 			"img",
 			isDarwin ? "ChatIcon.icns" : "ChatIcon.png"
 		),
+		resizable: false,
 		show: false,
 		width: 400,
 	});
@@ -49,6 +56,8 @@ function createMainWindow() {
 			"img",
 			isDarwin ? "ChatIcon.icns" : "ChatIcon.png"
 		),
+		minHeight: 600,
+		minWidth: 800,
 		show: false,
 		width: 800,
 	});
@@ -66,11 +75,22 @@ function createMainWindow() {
 	});
 }
 
-function initialize() {
+const initializeHandler = () => {
 	createSplashScreen();
 	setTimeout(createMainWindow, 1200);
-}
+};
 
-app.on("ready", initialize);
+const secondInstanceHandler = () => {
+	if (mainWindow) {
+		mainWindow.maximize();
+		mainWindow.focus();
+	} else if (splashScreen) {
+		splashScreen.focus();
+	}
+};
+
+app.on("second-instance", secondInstanceHandler);
+
+app.on("ready", initializeHandler);
 
 app.on("window-all-closed", () => !isDarwin && app.quit());
