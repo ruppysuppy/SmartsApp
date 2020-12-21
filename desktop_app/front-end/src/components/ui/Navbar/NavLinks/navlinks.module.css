@@ -1,0 +1,75 @@
+.NavLinkHolder {
+	display: flex;
+	flex-direction: column;
+}
+
+.SideLinkHolder {
+	display: flex;
+	flex-direction: column !important;
+}
+
+.NavLink,
+.SideLink {
+	color: var(--primary);
+	margin: 12px 0;
+	font-weight: 700;
+	text-decoration: none;
+	position: relative;
+	width: max-content;
+}
+
+.NavLink:hover,
+.SideLink:hover {
+	color: var(--primary);
+}
+
+.NavLink::after,
+.SideLink::after {
+	content: "";
+	background-color: var(--primary);
+	height: 2px;
+	width: 0;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	border-radius: 2px;
+	transition: 0.2s;
+}
+
+.NavLink:hover::after,
+.SideLink:hover::after {
+	width: 100%;
+}
+
+.NavLinkActive,
+.SideLinkActive {
+	color: var(--secondary);
+}
+
+.NavLinkActive:hover,
+.SideLinkActive:hover {
+	color: var(--secondary);
+}
+
+.NavLinkActive::after,
+.SideLinkActive::after {
+	background-color: var(--secondary);
+	width: 100%;
+}
+
+.Spacer {
+	display: inline-block;
+	width: 4px;
+}
+
+@media (min-width: 992px) {
+	.NavLinkHolder {
+		flex-direction: row;
+	}
+	.NavLink {
+		margin: 0 8px;
+	}
+	.Spacer {
+		width: 6px;
+	}
+}

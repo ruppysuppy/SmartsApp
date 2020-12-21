@@ -1,0 +1,60 @@
+.Body {
+	height: 100vh;
+	width: 100vw;
+	border-right: 1px solid grey;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	position: relative;
+	z-index: 5;
+}
+
+.BtnHolder {
+	position: fixed;
+	bottom: 12px;
+	left: calc(100vw - 52px);
+}
+
+.LoaderContainer {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-bottom: 10%;
+}
+
+@media (min-width: 768px) {
+	.Body {
+		width: 45vw;
+	}
+	.BtnHolder {
+		left: calc(45vw - 52px);
+	}
+}
+
+@media (min-width: 992px) {
+	.Body {
+		width: 40vw;
+	}
+	.BtnHolder {
+		left: calc(40vw - 52px);
+	}
+}
+
+@media (min-width: 1200px) {
+	.Body {
+		width: 35vw;
+	}
+	.BtnHolder {
+		left: calc(35vw - 56px);
+	}
+}
+
+@media (min-width: 1600px) {
+	.Body {
+		width: 30vw;
+	}
+	.BtnHolder {
+		left: calc(30vw - 50px);
+	}
+}

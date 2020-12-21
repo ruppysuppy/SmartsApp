@@ -1,0 +1,78 @@
+.Body {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	animation: fade-in 0.2s ease-in-out;
+	z-index: 10;
+	background-color: var(--background);
+	display: flex;
+	flex-direction: column;
+}
+
+.ChatContainer {
+	flex: 1;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding: 8px 4px;
+	margin-bottom: 64px;
+	display: flex;
+	flex-direction: column;
+}
+
+.DateDisplay {
+	background-color: gray;
+	color: white;
+	width: max-content;
+	align-self: center;
+	font-weight: bold;
+	padding: 6px 12px;
+	border-radius: 8px;
+	animation: zoom-out 0.2s ease-in-out;
+}
+
+@keyframes fade-in {
+	0% {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes zoom-out {
+	0% {
+		transform: scale(0);
+	}
+	100% {
+		transform: translateX(1);
+	}
+}
+
+@media (min-width: 768px) {
+	.Body {
+		width: 55vw;
+	}
+}
+
+@media (min-width: 992px) {
+	.Body {
+		width: 60vw;
+	}
+}
+
+@media (min-width: 1200px) {
+	.Body {
+		width: 65vw;
+	}
+}
+
+@media (min-width: 1600px) {
+	.Body {
+		width: 70vw;
+	}
+}

@@ -1,0 +1,112 @@
+.Body {
+	height: 100vh;
+	width: 100vw;
+	background-repeat: no-repeat;
+	background-size: 0;
+	padding-top: 72px;
+	transition: 0s;
+}
+
+.ChatHover {
+	height: 0;
+	position: absolute;
+	left: 180px;
+	top: 140px;
+	filter: drop-shadow(0 0 6px var(--color-shadow));
+	animation: hover-anim 4s ease-in-out infinite;
+	z-index: 5;
+	transition: 0s;
+}
+
+.AuthFormCard {
+	height: max-content;
+	animation: fade-in 0.4s ease-in-out;
+	z-index: 10;
+}
+
+@keyframes hover-anim {
+	0% {
+		transform: translateY(5%);
+	}
+	50% {
+		transform: translateY(-5%);
+	}
+	100% {
+		transform: translateY(5%);
+	}
+}
+
+@keyframes fade-in {
+	0% {
+		transform: translateY(-100px);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0px);
+		opacity: 1;
+	}
+}
+
+@media (min-width: 992px) and (min-height: 600px) {
+	.Body {
+		background-size: 720px;
+		background-position: -150px -150px;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+	}
+	.ChatHover {
+		height: 400px;
+	}
+	.AuthFormCard {
+		margin-right: 12px;
+		overflow: hidden;
+		-webkit-box-shadow: 0px 0px 8px 0px var(--color-shadow);
+		-moz-box-shadow: 0px 0px 8px 0px var(--color-shadow);
+		box-shadow: 0px 0px 8px 0px var(--color-shadow);
+		border-radius: 8px;
+		background-color: var(--color-light);
+	}
+}
+
+@media (min-width: 1200px) and (min-height: 600px) {
+	.Body {
+		background-size: 800px;
+		background-position: -160px -200px;
+	}
+	.ChatHover {
+		left: 240px;
+		top: 160px;
+		height: 400px;
+	}
+	.AuthFormCard {
+		margin-right: 28px;
+	}
+}
+
+@media (min-width: 1400px) and (min-height: 600px) {
+	.AuthFormCard {
+		margin-right: 48px;
+	}
+}
+
+@media (min-width: 1600px) and (min-height: 600px) {
+	.Body {
+		background-size: 1000px;
+		background-position: -100px -200px;
+	}
+	.ChatHover {
+		left: 280px;
+		top: 180px;
+		height: 600px;
+	}
+	.AuthFormCard {
+		margin-right: 64px;
+	}
+}
+
+@media (min-width: 1800px) and (min-height: 600px) {
+	.AuthFormCard {
+		margin-right: 96px;
+	}
+}

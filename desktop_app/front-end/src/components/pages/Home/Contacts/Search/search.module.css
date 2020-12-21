@@ -1,0 +1,33 @@
+.Body {
+	background-color: var(--primary);
+	padding: 24px 16px 12px 16px;
+	height: 65px;
+	display: flex;
+	align-items: center;
+}
+
+.InputHolder {
+	flex: 1;
+}
+
+.Body i {
+	font-size: larger;
+	padding-left: 12px;
+	color: var(--color-white);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.CloseBtn {
+	cursor: pointer;
+}
+
+.Toggler {
+	position: relative;
+	right: -4px;
+	bottom: -2px;
+}

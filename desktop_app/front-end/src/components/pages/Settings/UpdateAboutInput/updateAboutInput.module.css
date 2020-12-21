@@ -1,0 +1,18 @@
+.AboutHolder {
+	display: flex;
+}
+
+.InputHolder {
+	flex: 1;
+}
+
+.BtnHolder {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-left: 8px;
+}
+
+.Tick {
+	color: var(--success);
+}

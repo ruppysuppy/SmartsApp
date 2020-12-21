@@ -1,33 +1,65 @@
-import { app, BrowserWindow } from "electron";
 import * as path from "path";
 
-const isDarwin = process.platform === "darwin";
+import { app, BrowserWindow, Menu } from "electron";
 
-let win: BrowserWindow;
+import * as environments from "./nodeEnvironments";
+
+process.env.NODE_ENV = environments.DEVELOPMENT;
+
+const isDarwin = process.platform === "darwin";
+const isDev = process.env.NODE_ENV === environments.DEVELOPMENT;
+
+let mainWindow: BrowserWindow;
 let splashScreen: BrowserWindow;
 
 function createSplashScreen() {
 	splashScreen = new BrowserWindow({
-		width: 400,
-		height: 300,
 		frame: false,
-		skipTaskbar: true,
 		hasShadow: true,
+		height: 300,
+		icon: path.join(
+			__dirname,
+			"..",
+			"front-end",
+			"src",
+			"assets",
+			"img",
+			isDarwin ? "ChatIcon.icns" : "ChatIcon.png"
+		),
+		show: false,
+		width: 400,
 	});
 	splashScreen.loadFile(
 		path.join(__dirname, "..", "splash-screen", "index.html")
 	);
+	splashScreen.on("ready-to-show", () => {
+		splashScreen.show();
+	});
 }
 
 function createMainWindow() {
-	win = new BrowserWindow({
-		width: 800,
+	mainWindow = new BrowserWindow({
 		height: 600,
+		icon: path.join(
+			__dirname,
+			"..",
+			"front-end",
+			"src",
+			"assets",
+			"img",
+			isDarwin ? "ChatIcon.icns" : "ChatIcon.png"
+		),
 		show: false,
+		width: 800,
 	});
-	win.loadFile(path.join(__dirname, "..", "front-end", "index.html"));
-	win.on("ready-to-show", () => {
-		win.show();
+	isDev
+		? mainWindow.loadURL("http://localhost:3000/")
+		: mainWindow.loadFile(
+				path.join(__dirname, "..", "front-end", "build", "index.html")
+		  );
+	Menu.setApplicationMenu(null);
+	mainWindow.on("ready-to-show", () => {
+		mainWindow.show();
 		if (splashScreen) {
 			splashScreen.destroy();
 		}

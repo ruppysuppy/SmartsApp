@@ -1,0 +1,47 @@
+.Btn {
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--primary);
+	font-size: x-large;
+	cursor: pointer;
+}
+
+.Btn i {
+	font-size: large;
+	position: relative;
+	left: -1px;
+	top: -1px;
+	color: var(--color-white);
+}
+
+.InputHolder {
+	width: 80vw;
+}
+
+@media (min-width: 768px) {
+	.InputHolder {
+		width: 60vw;
+	}
+}
+
+@media (min-width: 992px) {
+	.InputHolder {
+		width: 55vw;
+	}
+}
+
+@media (min-width: 1200px) {
+	.InputHolder {
+		width: 50vw;
+	}
+}
+
+@media (min-width: 1600px) {
+	.InputHolder {
+		width: 40vw;
+	}
+}

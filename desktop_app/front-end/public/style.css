@@ -1,0 +1,81 @@
+:root {
+	--background: #f0f0f0;
+	--color-border: #555555;
+	--color-dark: #000000;
+	--color-light: #ffffff;
+	--color-shadow: #111111;
+	--color-white: #ffffff;
+	--error: #ff0000;
+	--primary: #7905ff;
+	--secondary: #008080;
+	--success: #008000;
+}
+
+.dark {
+	--background: #222222;
+	--color-border: #eeeeee;
+	--color-dark: #ffffff;
+	--color-light: #121212;
+	--error: #ff3e3e;
+	--success: #31a831;
+}
+
+* {
+	font-family: "Lato", sans-serif;
+	transition: 0.2s;
+}
+
+html,
+body,
+#root-container {
+	padding: 0;
+	margin: 0;
+	background-color: var(--background);
+	width: 100vw;
+	overflow: hidden;
+}
+
+a {
+	color: var(--primary);
+	text-decoration: none !important;
+}
+
+a:hover,
+a:focus,
+a:active {
+	color: var(--secondary);
+}
+
+hr {
+	background-color: var(--color-dark);
+}
+
+.text {
+	color: var(--color-dark);
+}
+
+.material-icons {
+	font-size: medium;
+	position: relative;
+	bottom: -2px;
+}
+
+/* Scrollbar styles */
+
+::-webkit-scrollbar {
+	width: 2px;
+	height: 2px;
+	border-radius: 1px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--color-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #808080;
+}

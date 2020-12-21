@@ -1,0 +1,90 @@
+.Backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 25;
+}
+
+.BackdropClose {
+	visibility: hidden;
+}
+
+.BackdropOpen {
+	visibility: visible;
+}
+
+.SideBarBody {
+	position: fixed;
+	width: 70vw;
+	height: 100vh;
+	background-color: var(--color-light);
+	transition: 0.2s ease-out;
+	z-index: 30;
+}
+
+.SideBarBodyClose {
+	transform: translateX(-100%);
+}
+
+.SideBarBodyOpen {
+	transform: translateX(0%);
+}
+
+.SideDrawerIcon img {
+	width: 150px;
+	margin-top: 28px;
+}
+
+@media (min-width: 576px) {
+	.SideBarBody {
+		width: 50vw;
+	}
+	.SideDrawerIcon img {
+		width: 175px;
+	}
+}
+
+@media (min-width: 768px) {
+	.SideBarBody {
+		width: 40vw;
+	}
+	.SideDrawerIcon img {
+		width: 200px;
+	}
+}
+
+@media (min-width: 992px) {
+	.SideBarBody {
+		width: 35vw;
+		font-size: large;
+	}
+	.SideDrawerIcon img {
+		width: 210px;
+	}
+	.HideSidebar {
+		visibility: hidden !important;
+		opacity: 0;
+	}
+}
+
+@media (min-width: 1200px) {
+	.SideBarBody {
+		width: 30vw;
+	}
+	.SideDrawerIcon img {
+		width: 220px;
+	}
+}
+
+@media (min-width: 1600px) {
+	.SideBarBody {
+		width: 25vw;
+		font-size: larger;
+	}
+	.SideDrawerIcon img {
+		width: 240px;
+	}
+}

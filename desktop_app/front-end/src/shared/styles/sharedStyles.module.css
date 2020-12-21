@@ -1,0 +1,39 @@
+.Body {
+	width: 100%;
+	padding: 8px 12px;
+}
+
+.RedirectText {
+	font-weight: bolder;
+	padding-left: 2px;
+	padding-top: 8px;
+}
+
+.ErrorText {
+	color: var(--error);
+	font-weight: bold;
+	display: flex;
+}
+
+.OverflowContainer {
+	overflow-y: scroll;
+	height: 100vh;
+}
+
+@media (min-width: 992px) and (min-height: 600px) {
+	.Body {
+		width: 400px;
+	}
+}
+
+@media (min-width: 1200px) and (min-height: 600px) {
+	.Body {
+		width: 500px;
+	}
+}
+
+@media (min-width: 1600px) and (min-height: 600px) {
+	.Body {
+		width: 600px;
+	}
+}

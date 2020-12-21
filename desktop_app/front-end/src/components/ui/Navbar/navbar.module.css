@@ -1,0 +1,53 @@
+.NavBar {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 20;
+	background-color: var(--color-light);
+	width: 100vw;
+	border-radius: 0 0 4px 4px;
+	-webkit-box-shadow: 0px 0px 24px -6px var(--color-shadow);
+	-moz-box-shadow: 0px 0px 24px -6px var(--color-shadow);
+	box-shadow: 0px 0px 24px -6px var(--color-shadow);
+}
+
+.NavContainer {
+	display: flex;
+}
+
+.NavIcon a {
+	display: flex;
+	align-items: center;
+	text-decoration: none !important;
+}
+
+.NavIcon img {
+	width: 40px;
+	margin: 8px 0;
+}
+
+.NavIcon span {
+	text-transform: uppercase;
+	display: inline-block;
+	margin-left: 8px;
+	font-weight: bold;
+	color: var(--primary);
+}
+
+.NavLinkHolder {
+	display: none;
+}
+
+.Toggler {
+	display: inline-block;
+	margin: auto 0 auto auto;
+}
+
+@media (min-width: 992px) {
+	.NavLinkHolder {
+		display: block;
+	}
+	.Toggler {
+		display: none;
+	}
+}

@@ -1,0 +1,77 @@
+.Backdrop {
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	visibility: hidden;
+	opacity: 0;
+	z-index: 30;
+}
+
+.Body {
+	position: fixed;
+	top: 50vh;
+	left: 50vw;
+	min-width: 80vw;
+	visibility: hidden;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	background-color: var(--background);
+	padding: 8px 12px;
+	border-radius: 8px;
+	-webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.5);
+	z-index: 30;
+}
+
+.Visible {
+	visibility: visible;
+	opacity: 1;
+}
+
+.Top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 4px;
+}
+
+.BtnHolder {
+	display: inline-block;
+	margin-right: 2px;
+	cursor: pointer;
+	font-size: larger;
+}
+
+@media (min-width: 567px) {
+	.Body {
+		min-width: 70vw;
+	}
+}
+
+@media (min-width: 768px) {
+	.Body {
+		min-width: 60vw;
+	}
+}
+
+@media (min-width: 992px) {
+	.Body {
+		min-width: 50vw;
+	}
+}
+
+@media (min-width: 1200px) {
+	.Body {
+		min-width: 45vw;
+	}
+}
+
+@media (min-width: 1600px) {
+	.Body {
+		min-width: 40vw;
+	}
+}

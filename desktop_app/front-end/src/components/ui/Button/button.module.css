@@ -1,0 +1,26 @@
+.Btn {
+	color: var(--color-white);
+	border: none;
+	outline: none !important;
+	border-radius: 8px;
+	padding: 8px 16px;
+	font-size: large;
+	transition: 0.15s ease-in-out;
+}
+
+.Normal {
+	background-color: var(--primary);
+}
+
+.Normal:hover {
+	background-color: var(--primary);
+	filter: drop-shadow(0 0 8px var(--primary));
+}
+
+.Secondary {
+	background-color: grey;
+}
+
+.Secondary:hover {
+	filter: drop-shadow(0 0 8px grey);
+}

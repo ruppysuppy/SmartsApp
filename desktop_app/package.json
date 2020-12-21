@@ -5,6 +5,7 @@
   "main": "./dist/main.js",
   "scripts": {
     "start": "nodemon --exec electron .",
+    "start-front-end": "cd front-end && npm start",
     "watch": "tsc --watch"
   },
   "keywords": [
