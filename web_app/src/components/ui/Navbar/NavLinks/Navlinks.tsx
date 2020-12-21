@@ -9,12 +9,19 @@ import styles from "./navlinks.module.css";
 
 interface IProps {
 	isSideBar?: boolean;
+	pathname: string;
 	user?: firebase.User;
 	userData?: IUserData;
 	sidebarClose: () => void;
 }
 
-function Navlinks({ isSideBar, userData, user, sidebarClose }: IProps) {
+function Navlinks({
+	isSideBar,
+	pathname,
+	userData,
+	user,
+	sidebarClose,
+}: IProps) {
 	return (
 		<div
 			className={`ml-auto my-auto ${
@@ -28,6 +35,7 @@ function Navlinks({ isSideBar, userData, user, sidebarClose }: IProps) {
 						to="/"
 						className={isSideBar ? styles.SideLink : styles.NavLink}
 						activeClassName={styles.NavLinkActive}
+						isActive={() => ["/", "/chat"].includes(pathname)}
 						onClick={sidebarClose}
 					>
 						Chats

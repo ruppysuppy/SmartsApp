@@ -8,12 +8,18 @@ import styles from "./sidedrawer.module.css";
 import ChatIcon from "../../../../assets/img/ChatIcon.svg";
 
 interface IProps {
+	pathname: string;
 	shouldHideSidebar: boolean;
 	sidebarShown: boolean;
 	sidebarClose: () => void;
 }
 
-function SideDrawer({ shouldHideSidebar, sidebarShown, sidebarClose }: IProps) {
+function SideDrawer({
+	pathname,
+	shouldHideSidebar,
+	sidebarShown,
+	sidebarClose,
+}: IProps) {
 	return (
 		<>
 			<div
@@ -35,7 +41,11 @@ function SideDrawer({ shouldHideSidebar, sidebarShown, sidebarClose }: IProps) {
 					</Link>
 				</div>
 				<div className="container px-3">
-					<Navlinks sidebarClose={sidebarClose} isSideBar={true} />
+					<Navlinks
+						pathname={pathname}
+						isSideBar={true}
+						sidebarClose={sidebarClose}
+					/>
 				</div>
 			</div>
 		</>

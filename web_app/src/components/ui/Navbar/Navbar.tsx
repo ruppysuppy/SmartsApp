@@ -51,6 +51,7 @@ function Navbar({
 							className={`ml-auto my-auto ${styles.NavLinkHolder}`}
 						>
 							<Navlinks
+								pathname={pathname}
 								sidebarClose={() => setIsSideDrawerShown(false)}
 							/>
 						</div>
@@ -66,6 +67,7 @@ function Navbar({
 				</div>
 			)}
 			<SideDrawer
+				pathname={pathname}
 				sidebarClose={() => setIsSideDrawerShown(false)}
 				sidebarShown={isSideDrawerShown}
 				shouldHideSidebar={isInChat}

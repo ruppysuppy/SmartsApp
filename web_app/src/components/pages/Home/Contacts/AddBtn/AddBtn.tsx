@@ -39,7 +39,11 @@ function AddBtn({
 	const [isShown, setIsShown] = useState(false);
 
 	const onSubmitHandler = async () => {
-		if (username.trim().length < 4) {
+		if (
+			username.trim().length < 4 ||
+			username.trim().length > 14 ||
+			username.trim().indexOf(" ") >= 0
+		) {
 			addContactFail("Enter a valid username");
 			return;
 		}

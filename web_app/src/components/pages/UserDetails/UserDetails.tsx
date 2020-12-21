@@ -50,8 +50,8 @@ function UserDetails({
 		if (username.trim().length < 4) {
 			setUserDataFail("Username must contain at least 4 characters");
 			return;
-		} else if (username.trim().length > 20) {
-			setUserDataFail("Maximum Username length is 20 characters");
+		} else if (username.trim().length > 14) {
+			setUserDataFail("Maximum Username length is 14 characters");
 			return;
 		} else if (username.trim().indexOf(" ") >= 0) {
 			setUserDataFail("Username cannot contain spaces");
