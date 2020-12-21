@@ -1,3 +1,8 @@
+@font-face {
+	font-family: Lato;
+	src: url("./font/Lato-Regular.ttf");
+}
+
 :root {
 	--background: #f0f0f0;
 	--color-border: #555555;
