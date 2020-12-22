@@ -12,7 +12,17 @@
 	border-radius: 28px;
 	font-size: large;
 	font-weight: bolder;
+	overflow: hidden;
 	padding: 8px 12px;
+	position: relative;
+	opacity: 0.6;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: not-allowed;
 }
 
 .OAuthContainer i {
@@ -25,5 +35,4 @@
 .OAuthContainer:hover {
 	background-color: var(--color-dark);
 	color: var(--color-light);
-	cursor: pointer;
 }
