@@ -6,6 +6,7 @@ export interface IContactAction {
 		selectionIndex?: number;
 		message?: IMessage;
 		messages?: IMessage[];
+		value?: boolean;
 	};
 }
 
@@ -29,6 +30,8 @@ export interface IContactState {
 	error: string;
 	newUserError: string;
 	selectedContact?: number;
+	shouldPlayReceiveAudio: boolean;
+	shouldPlaySendAudio: boolean;
 }
 
 export interface IMessage {

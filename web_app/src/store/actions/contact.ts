@@ -14,6 +14,7 @@ import { encrypt } from "../../cryptography/cipher";
 import BASE_URL from "./baseUrl";
 
 // Data Cache for fast access
+let isInitialized = false;
 let previousData: IContactData[] = [];
 const userIndexMap: { [key: string]: number } = {};
 const messageSnapshotListeners = new Set<string>();
@@ -203,19 +204,36 @@ export const getContacts = (uid: string, privateKey: string) => {
 									.limit(1)
 									.onSnapshot((docSnapshot) => {
 										docSnapshot.forEach((snapshot) => {
+											const message = {
+												...snapshot.data(),
+												uid: snapshot.id,
+											} as IMessage;
 											dispatch(
 												updateMessageSuccess(
-													{
-														...snapshot.data(),
-														uid: snapshot.id,
-													} as IMessage,
+													message,
 													userIndexMap[user.uid]
 												)
 											);
+											if (isInitialized) {
+												if (message.sender === uid) {
+													dispatch(
+														setShouldPlaySendAudio(
+															true
+														)
+													);
+												} else {
+													dispatch(
+														setShouldPlayReceiveAudio(
+															true
+														)
+													);
+												}
+											}
 										});
 									});
 							}
 						});
+						isInitialized = true;
 					} catch (error) {
 						dispatch(getContactsFail(error.message));
 					}
@@ -403,6 +421,24 @@ export const sendMessage = (
 		} catch (error) {
 			dispatch(sendMessageFail(error.message));
 		}
+	};
+};
+
+export const setShouldPlayReceiveAudio = (value: boolean) => {
+	return {
+		type: actionTypes.SET_SHOULD_PLAY_RECEIVE_AUDIO,
+		payload: {
+			value: value,
+		},
+	};
+};
+
+export const setShouldPlaySendAudio = (value: boolean) => {
+	return {
+		type: actionTypes.SET_SHOULD_PLAY_SEND_AUDIO,
+		payload: {
+			value: value,
+		},
 	};
 };
 
