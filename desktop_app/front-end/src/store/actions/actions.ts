@@ -25,5 +25,7 @@ export {
 	sendImage,
 	sendMessage,
 	sendMessageFail,
+	setShouldPlayReceiveAudio,
+	setShouldPlaySendAudio,
 } from "./contact";
 export { setIsDarkModeEnabled, setIsSideDrawerShown } from "./ui";

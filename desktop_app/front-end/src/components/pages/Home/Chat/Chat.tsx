@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
+import AudioHandler from "../../../util/AudioHandler/AudioHandler";
 import ChatInput from "./ChatInput/ChatInput";
 import ChatMessage from "./ChatMessage/ChatMessage";
 import Loader from "../../../ui/Loader/Loader";
@@ -113,6 +114,7 @@ function Chat({
 
 	return (
 		<div className={styles.Body}>
+			<AudioHandler />
 			<UserInfo userData={contacts[selectedContact]} />
 			<div className={styles.ChatContainer} ref={chatContainerRef}>
 				{isMessageLoading && (

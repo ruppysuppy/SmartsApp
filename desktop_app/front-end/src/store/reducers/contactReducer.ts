@@ -12,6 +12,8 @@ const initialState: IContactState = {
 	error: "",
 	newUserError: "",
 	selectedContact: undefined,
+	shouldPlayReceiveAudio: false,
+	shouldPlaySendAudio: false,
 };
 
 const reducer = (
@@ -124,6 +126,28 @@ const reducer = (
 			return { ...state, error: "" };
 
 		case actionTypes.SEND_MESSAGE_SUCCESS:
+			return {
+				...state,
+			};
+
+		case actionTypes.SET_SHOULD_PLAY_RECEIVE_AUDIO:
+			if (payload?.value !== undefined) {
+				return {
+					...state,
+					shouldPlayReceiveAudio: payload.value,
+				};
+			}
+			return {
+				...state,
+			};
+
+		case actionTypes.SET_SHOULD_PLAY_SEND_AUDIO:
+			if (payload?.value !== undefined) {
+				return {
+					...state,
+					shouldPlaySendAudio: payload.value,
+				};
+			}
 			return {
 				...state,
 			};

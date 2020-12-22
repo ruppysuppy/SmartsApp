@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 
 import Layout from "./components/ui/Layout/Layout";
@@ -60,7 +60,7 @@ function App({
 			{isLoading ? (
 				<LoadingScreen />
 			) : (
-				<BrowserRouter>
+				<HashRouter>
 					<Suspense fallback={<LoadingScreen />}>
 						<Layout>
 							<Switch>
@@ -78,7 +78,7 @@ function App({
 							</Switch>
 						</Layout>
 					</Suspense>
-				</BrowserRouter>
+				</HashRouter>
 			)}
 		</div>
 	);
