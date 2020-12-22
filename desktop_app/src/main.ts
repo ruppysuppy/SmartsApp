@@ -66,7 +66,7 @@ function createMainWindow() {
 		: mainWindow.loadFile(
 				path.join(__dirname, "..", "front-end", "build", "index.html")
 		  );
-	Menu.setApplicationMenu(null);
+	!isDev && Menu.setApplicationMenu(null);
 	mainWindow.on("ready-to-show", () => {
 		mainWindow.show();
 		if (splashScreen) {

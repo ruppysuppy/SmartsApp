@@ -10,6 +10,11 @@ import firebase, { auth } from "./firebase/firebase";
 import { IState } from "./shared/interfaces/interfaces";
 import * as actions from "./store/actions/actions";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "font-awesome/css/font-awesome.min.css";
+import "material-icons/iconfont/material-icons.css";
+import "./shared/styles/colors.css";
+
 const Home = lazy(() => import("./components/pages/Home/Home"));
 const Login = lazy(() => import("./components/pages/Login/Login"));
 const Register = lazy(() => import("./components/pages/Register/Register"));
