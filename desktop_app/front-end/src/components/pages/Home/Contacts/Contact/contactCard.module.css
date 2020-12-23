@@ -45,6 +45,7 @@
 .FlexContainer i {
 	position: relative;
 	display: inline-block;
+	font-size: inherit;
 	top: 2px;
 	margin-right: 2px;
 }

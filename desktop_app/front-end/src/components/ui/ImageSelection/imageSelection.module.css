@@ -12,6 +12,10 @@
 	display: inline-block;
 }
 
+.AuxilaryContainer i {
+	font-size: inherit;
+}
+
 .File {
 	display: none;
 }

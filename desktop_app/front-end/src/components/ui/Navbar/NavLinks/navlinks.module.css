@@ -41,6 +41,11 @@
 	width: 100%;
 }
 
+.NavLink i,
+.SideLink i {
+	font-size: inherit;
+}
+
 .NavLinkActive,
 .SideLinkActive {
 	color: var(--secondary);
