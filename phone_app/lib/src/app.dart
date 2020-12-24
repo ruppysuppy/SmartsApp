@@ -21,17 +21,48 @@ const primarySwatch = MaterialColor(0xFF7905FF, {
 ThemeData generateThemeData(bool isDark) {
   return ThemeData(
     primarySwatch: primarySwatch,
-    accentColor: Colors.teal,
+    accentColor: Colors.tealAccent,
     fontFamily: "Lato",
     backgroundColor: isDark ? Color(0xFF222222) : Color(0xFFF0F0F0),
     errorColor: isDark ? Color(0xFFFF3E3E) : Color(0xFFFF0000),
+    buttonTheme: ButtonThemeData(
+      buttonColor: primarySwatch,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+      textTheme: ButtonTextTheme.primary,
+    ),
     textTheme: TextTheme(
-      headline1:
-          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
-      headline6:
+      bodyText1:
           TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
       bodyText2:
           TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      caption: TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      headline1:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      headline2:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      headline3:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      headline4:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      headline5:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      headline6:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      subtitle1:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      subtitle2:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+      overline:
+          TextStyle(color: isDark ? Color(0xFFFFFFFF) : Color(0xFF000000)),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: primarySwatch,
+        ),
+      ),
+      hintStyle: TextStyle(color: Color(0xFF808080)),
+      labelStyle: TextStyle(color: primarySwatch),
     ),
   );
 }
