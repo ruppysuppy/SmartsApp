@@ -12,7 +12,7 @@ if (!gotSingleInstanceLock) {
 	app.quit();
 }
 
-process.env.NODE_ENV = environments.DEVELOPMENT;
+process.env.NODE_ENV = environments.PRODUCTION;
 
 const isDarwin = process.platform === "darwin";
 const isDev = process.env.NODE_ENV === environments.DEVELOPMENT;
