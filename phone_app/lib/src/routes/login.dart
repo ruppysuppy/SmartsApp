@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:smartsapp/src/widgets/dark_mode_toggler.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   static const routeName = "/login";
+
+  @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final GlobalKey<FormState> formKey = GlobalKey();
+  bool isEmailValid = true;
+  bool isPasswordValid = true;
+  Map<String, String> authData = {
+    'email': '',
+    'password': '',
+  };
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
     final navigator = Navigator.of(context);
+    final node = FocusScope.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,6 +32,7 @@ class Login extends StatelessWidget {
         color: themeData.backgroundColor,
         height: deviceSize.height,
         child: Form(
+          key: formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -27,36 +42,8 @@ class Login extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'E-Mail',
-                    hintText: 'Enter your email',
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (email) {
-                    if (email.isEmpty ||
-                        !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(email)) {
-                      return 'Invalid email';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {},
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    hintText: 'Enter your password',
-                  ),
-                  obscureText: true,
-                  validator: (password) {
-                    if (password.length < 6) {
-                      return 'Password must contain at least 6 characters';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {},
-                ),
+                createEmailField(themeData, node),
+                createPasswordField(themeData, node),
                 SizedBox(
                   height: 4,
                 ),
@@ -73,7 +60,7 @@ class Login extends StatelessWidget {
                   ],
                 ),
                 RaisedButton(
-                  onPressed: () {},
+                  onPressed: submit,
                   child: Text(
                     "Login",
                     style: TextStyle(
@@ -88,5 +75,73 @@ class Login extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget createEmailField(ThemeData themeData, FocusNode node) {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'E-Mail',
+          hintText: 'Enter your email',
+          labelStyle: TextStyle(
+              color: isEmailValid
+                  ? themeData.primaryColor
+                  : themeData.errorColor)),
+      keyboardType: TextInputType.emailAddress,
+      validator: (email) {
+        if (email.isEmpty ||
+            !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                .hasMatch(email)) {
+          setState(() {
+            isEmailValid = false;
+          });
+          return 'Invalid email';
+        }
+        setState(() {
+          isEmailValid = true;
+        });
+        return null;
+      },
+      onEditingComplete: () => node.nextFocus(),
+      onSaved: (value) {
+        authData['email'] = value;
+      },
+    );
+  }
+
+  Widget createPasswordField(ThemeData themeData, FocusNode node) {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'Password',
+          hintText: 'Enter your password',
+          labelStyle: TextStyle(
+              color: isPasswordValid
+                  ? themeData.primaryColor
+                  : themeData.errorColor)),
+      obscureText: true,
+      validator: (password) {
+        if (password.length < 6) {
+          setState(() {
+            isPasswordValid = false;
+          });
+          return 'Password must contain at least 6 characters';
+        }
+        setState(() {
+          isPasswordValid = true;
+        });
+        return null;
+      },
+      onEditingComplete: () => node.unfocus(),
+      onSaved: (value) {
+        authData['password'] = value;
+      },
+    );
+  }
+
+  Future<void> submit() async {
+    if (!formKey.currentState.validate()) {
+      return;
+    }
+    formKey.currentState.save();
+    print(authData);
   }
 }
