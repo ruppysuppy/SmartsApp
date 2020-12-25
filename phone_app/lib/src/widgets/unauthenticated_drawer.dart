@@ -13,37 +13,51 @@ class UnauthenticatedDrawer extends StatelessWidget {
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
 
     return Drawer(
+      elevation: darkModeProvider.isDarkTheme ? 0 : 4,
       child: Container(
         color: themeData.backgroundColor,
         padding: const EdgeInsets.only(
-          top: 16,
+          top: 32,
           left: 12,
           right: 12,
           bottom: 12,
         ),
-        child: Column(
-          children: [
-            ListTile(
-              title: Text("Login"),
-              leading: Icon(
-                Icons.login,
-                color:
-                    darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image(
+                image: AssetImage(
+                  "assets/img/chat_full.png",
+                ),
+                width: 180,
               ),
-              onTap: () => navigator.pushReplacementNamed(Login.routeName),
-            ),
-            Divider(),
-            ListTile(
-              title: Text("Register"),
-              leading: Icon(
-                Icons.person_add,
-                color:
-                    darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+              SizedBox(
+                height: 12,
               ),
-              onTap: () => navigator.pushReplacementNamed(Register.routeName),
-            ),
-            Divider(),
-          ],
+              Divider(),
+              ListTile(
+                title: Text("Login"),
+                leading: Icon(
+                  Icons.login,
+                  color:
+                      darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+                ),
+                onTap: () => navigator.pushReplacementNamed(Login.routeName),
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Register"),
+                leading: Icon(
+                  Icons.person_add,
+                  color:
+                      darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+                ),
+                onTap: () => navigator.pushReplacementNamed(Register.routeName),
+              ),
+              Divider(),
+            ],
+          ),
         ),
       ),
     );
