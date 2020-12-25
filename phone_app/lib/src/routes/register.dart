@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 
-import './register.dart';
+import './login.dart';
 import '../widgets/dark_mode_toggler.dart';
 
-class Login extends StatefulWidget {
-  static const routeName = "/login";
+class Register extends StatefulWidget {
+  static const routeName = "/register";
 
   @override
-  _LoginState createState() => _LoginState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final GlobalKey<FormState> formKey = GlobalKey();
   bool isEmailValid = true;
   bool isPasswordValid = true;
+  bool isPasswordConfirmValid = true;
   Map<String, String> authData = {
     'email': '',
     'password': '',
+    'passwordConfirm': '',
   };
 
   @override
@@ -28,7 +30,7 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("LOGIN"),
+        title: const Text("Register"),
       ),
       body: Container(
         color: themeData.backgroundColor,
@@ -46,25 +48,26 @@ class _LoginState extends State<Login> {
               children: [
                 createEmailField(themeData, node),
                 createPasswordField(themeData, node),
+                createPasswordConfirmField(themeData, node),
                 SizedBox(
                   height: 4,
                 ),
                 Row(
                   children: [
-                    Text("Not a member yet?"),
+                    Text("Already a member?"),
                     FlatButton(
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
-                        navigator.pushReplacementNamed(Register.routeName);
+                        navigator.pushReplacementNamed(Login.routeName);
                       },
-                      child: Text("Register"),
+                      child: Text("Login"),
                     ),
                   ],
                 ),
                 RaisedButton(
                   onPressed: submit,
                   child: Text(
-                    "Login",
+                    "REGISTER",
                     style: TextStyle(
                       color: Colors.white,
                     ),
@@ -135,6 +138,35 @@ class _LoginState extends State<Login> {
       onEditingComplete: () => node.unfocus(),
       onSaved: (value) {
         authData['password'] = value;
+      },
+    );
+  }
+
+  Widget createPasswordConfirmField(ThemeData themeData, FocusNode node) {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: 'Confirm Password',
+          hintText: 'Enter your password again',
+          labelStyle: TextStyle(
+              color: isPasswordValid
+                  ? themeData.primaryColor
+                  : themeData.errorColor)),
+      obscureText: true,
+      validator: (password) {
+        if (authData['password'] != password) {
+          setState(() {
+            isPasswordValid = false;
+          });
+          return 'Password and Confirm Passwords must match';
+        }
+        setState(() {
+          isPasswordValid = true;
+        });
+        return null;
+      },
+      onEditingComplete: () => node.unfocus(),
+      onSaved: (value) {
+        authData['passwordConfirm'] = value;
       },
     );
   }

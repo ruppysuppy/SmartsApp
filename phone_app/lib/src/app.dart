@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import './providers/dark_mode_provider.dart';
 
 import './routes/login.dart';
+import './routes/register.dart';
 
 const primarySwatch = MaterialColor(0xFF7905FF, {
   50: Color.fromRGBO(121, 5, 255, 0.1),
@@ -83,6 +84,7 @@ class App extends StatelessWidget {
           home: Login(),
           routes: {
             Login.routeName: (ctx) => Login(),
+            Register.routeName: (ctx) => Register(),
           },
         ),
       ),
