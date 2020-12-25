@@ -26,6 +26,7 @@ ThemeData generateThemeData(bool isDark) {
     fontFamily: "Lato",
     backgroundColor: isDark ? Color(0xFF222222) : Color(0xFFF0F0F0),
     errorColor: isDark ? Color(0xFFFF3E3E) : Color(0xFFFF0000),
+    appBarTheme: AppBarTheme(elevation: isDark ? 0 : 4),
     buttonTheme: ButtonThemeData(
       buttonColor: primarySwatch,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -65,6 +66,7 @@ ThemeData generateThemeData(bool isDark) {
       hintStyle: TextStyle(color: Color(0xFF808080)),
       labelStyle: TextStyle(color: primarySwatch),
     ),
+    dividerColor: isDark ? Colors.white : Colors.black,
   );
 }
 

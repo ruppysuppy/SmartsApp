@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './login.dart';
 import '../widgets/dark_mode_toggler.dart';
+import '../widgets/unauthenticated_drawer.dart';
 
 class Register extends StatefulWidget {
   static const routeName = "/register";
@@ -30,8 +31,9 @@ class _RegisterState extends State<Register> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Register"),
+        title: const Text("REGISTER"),
       ),
+      drawer: UnauthenticatedDrawer(),
       body: Container(
         color: themeData.backgroundColor,
         height: deviceSize.height,
@@ -67,7 +69,7 @@ class _RegisterState extends State<Register> {
                 RaisedButton(
                   onPressed: submit,
                   child: Text(
-                    "REGISTER",
+                    "Register",
                     style: TextStyle(
                       color: Colors.white,
                     ),

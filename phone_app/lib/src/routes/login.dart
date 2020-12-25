@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './register.dart';
 import '../widgets/dark_mode_toggler.dart';
+import '../widgets/unauthenticated_drawer.dart';
 
 class Login extends StatefulWidget {
   static const routeName = "/login";
@@ -30,6 +31,7 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         title: const Text("LOGIN"),
       ),
+      drawer: UnauthenticatedDrawer(),
       body: Container(
         color: themeData.backgroundColor,
         height: deviceSize.height,
