@@ -35,5 +35,7 @@ To use the project follow the steps given below:
     ```
 
 4. Use `npm run watch` to run the TypeScript Complier
-5. Use `npm start-front-end` to run the react app
+5. Perform either of the following based on the development status of the app you are using:
+    - **PRODUCTION (default)**: Use `npm run build-front-end` to build the react app
+    - **DEVELOPMENT**: Use `npm run start-front-end` to start the react app
 6. Use `npm start` to run the electron app

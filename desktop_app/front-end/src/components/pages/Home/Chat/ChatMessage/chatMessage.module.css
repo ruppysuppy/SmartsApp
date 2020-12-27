@@ -45,6 +45,7 @@
 .MediaMessage {
 	max-width: calc(60vw - 32px);
 	filter: saturate(1.67);
+	cursor: pointer;
 }
 
 .Time {
@@ -52,6 +53,10 @@
 	text-align: right;
 	font-size: xx-small;
 	color: gray;
+}
+
+.ModalPicture {
+	max-width: 100%;
 }
 
 @keyframes send {

@@ -4,8 +4,9 @@
   "description": "SmartApp: Cross-Platform Messenger",
   "main": "./dist/main.js",
   "scripts": {
+    "build-front-end": "cd front-end && npm run build",
     "start": "nodemon --exec electron .",
-    "start-front-end": "cd front-end && npm start",
+    "start-front-end": "cd front-end && npm run start",
     "watch": "tsc --watch"
   },
   "keywords": [
