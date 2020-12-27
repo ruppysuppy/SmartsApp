@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Loader from "../../../../ui/Loader/Loader";
+import Modal from "../../../../ui/Modal/Modal";
 
 import { decrypt } from "../../../../../cryptography/cipher";
 
@@ -23,8 +24,17 @@ export default function ChatMessage({
 	timestamp,
 	refCallBack,
 }: IProps) {
-	const date = new Date(timestamp);
+	const [isShown, setIsShown] = useState(false);
+	const datetime = new Date(timestamp);
 	const message = decrypt(text, sharedKey);
+	const date = `${datetime.getDate()}/${datetime.getMonth()}/${datetime.getFullYear()}`;
+	const time = `${datetime
+		.getHours()
+		.toString()
+		.padStart(2, "0")}:${datetime
+		.getMinutes()
+		.toString()
+		.padStart(2, "0")}`;
 
 	return (
 		<div
@@ -38,21 +48,28 @@ export default function ChatMessage({
 					<span className={styles.LoaderHolder}>
 						<Loader />
 					</span>
-					<img className={styles.MediaMessage} src={message} alt="" />
+					<img
+						className={styles.MediaMessage}
+						src={message}
+						alt=""
+						onClick={() => setIsShown(true)}
+					/>
 				</span>
 			) : (
 				<span className="text-break"> {message} </span>
 			)}
 			<br />
-			<span
-				className={styles.Time}
-			>{`${date
-				.getHours()
-				.toString()
-				.padStart(2, "0")}:${date
-				.getMinutes()
-				.toString()
-				.padStart(2, "0")}`}</span>
+			<span className={styles.Time}>{time}</span>
+			{isMedia && (
+				<Modal
+					title={`Image`}
+					isShown={isShown}
+					changeVisibility={setIsShown}
+				>
+					<img className={styles.ModalPicture} src={message} alt="" />
+					<span className={styles.Time}>{`${date} ${time}`}</span>
+				</Modal>
+			)}
 		</div>
 	);
 }
