@@ -5,7 +5,7 @@ import '../providers/dark_mode_provider.dart';
 import '../routes/login.dart';
 import '../routes/register.dart';
 
-class UnauthenticatedDrawer extends StatelessWidget {
+class SideDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
@@ -36,30 +36,37 @@ class UnauthenticatedDrawer extends StatelessWidget {
                 height: 12,
               ),
               Divider(),
-              ListTile(
-                title: Text("Login"),
-                leading: Icon(
-                  Icons.login,
-                  color:
-                      darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
-                ),
-                onTap: () => navigator.pushReplacementNamed(Login.routeName),
-              ),
-              Divider(),
-              ListTile(
-                title: Text("Register"),
-                leading: Icon(
-                  Icons.person_add,
-                  color:
-                      darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
-                ),
-                onTap: () => navigator.pushReplacementNamed(Register.routeName),
-              ),
-              Divider(),
+              if (true) ...unauthenticatedWidgets(navigator, darkModeProvider),
             ],
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> unauthenticatedWidgets(
+    NavigatorState navigator,
+    DarkModeProvider darkModeProvider,
+  ) {
+    return [
+      ListTile(
+        title: Text("Login"),
+        leading: Icon(
+          Icons.login,
+          color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+        ),
+        onTap: () => navigator.pushReplacementNamed(Login.routeName),
+      ),
+      Divider(),
+      ListTile(
+        title: Text("Register"),
+        leading: Icon(
+          Icons.person_add,
+          color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+        ),
+        onTap: () => navigator.pushReplacementNamed(Register.routeName),
+      ),
+      Divider(),
+    ];
   }
 }

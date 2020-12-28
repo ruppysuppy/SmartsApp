@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 import './register.dart';
 import '../widgets/dark_mode_toggler.dart';
-import '../widgets/unauthenticated_drawer.dart';
+import '../widgets/sidedrawer.dart';
+
+import '../providers/dark_mode_provider.dart';
 
 class Login extends StatefulWidget {
   static const routeName = "/login";
@@ -12,6 +16,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final firebaseAuth = FirebaseAuth.instance;
   final GlobalKey<FormState> formKey = GlobalKey();
   bool isEmailValid = true;
   bool isPasswordValid = true;
@@ -25,13 +30,14 @@ class _LoginState extends State<Login> {
     final deviceSize = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
     final navigator = Navigator.of(context);
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
     final node = FocusScope.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("LOGIN"),
       ),
-      drawer: UnauthenticatedDrawer(),
+      drawer: SideDrawer(),
       body: Container(
         color: themeData.backgroundColor,
         height: deviceSize.height,
@@ -63,12 +69,14 @@ class _LoginState extends State<Login> {
                     ),
                   ],
                 ),
-                RaisedButton(
-                  onPressed: submit,
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Colors.white,
+                Builder(
+                  builder: (ctx) => RaisedButton(
+                    onPressed: () => submit(ctx, themeData, darkModeProvider),
+                    child: Text(
+                      "Login",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -141,11 +149,37 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Future<void> submit() async {
+  Future<void> submit(BuildContext ctx, ThemeData themeData,
+      DarkModeProvider darkModeProvider) async {
     formKey.currentState.save();
     if (!formKey.currentState.validate()) {
       return;
     }
-    print(authData);
+    try {
+      final UserCredential authResult =
+          await firebaseAuth.signInWithEmailAndPassword(
+        email: authData['email'],
+        password: authData['password'],
+      );
+    } catch (e) {
+      final message = e.message == null ? "An Error Occoured" : e.message;
+      Scaffold.of(ctx).showSnackBar(
+        SnackBar(
+          content: Text(
+            message,
+            style: TextStyle(
+              color: themeData.errorColor,
+            ),
+          ),
+          backgroundColor:
+              darkModeProvider.isDarkTheme ? Colors.white : Colors.black87,
+          action: SnackBarAction(
+            label: "Close",
+            onPressed: Scaffold.of(ctx).hideCurrentSnackBar,
+            textColor: themeData.errorColor,
+          ),
+        ),
+      );
+    }
   }
 }

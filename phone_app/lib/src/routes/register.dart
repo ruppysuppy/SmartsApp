@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import './login.dart';
 import '../widgets/dark_mode_toggler.dart';
-import '../widgets/unauthenticated_drawer.dart';
+import '../widgets/sidedrawer.dart';
 
 class Register extends StatefulWidget {
   static const routeName = "/register";
@@ -33,7 +33,7 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         title: const Text("REGISTER"),
       ),
-      drawer: UnauthenticatedDrawer(),
+      drawer: SideDrawer(),
       body: Container(
         color: themeData.backgroundColor,
         height: deviceSize.height,

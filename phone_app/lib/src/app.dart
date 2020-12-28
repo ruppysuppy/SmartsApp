@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import './providers/dark_mode_provider.dart';
@@ -79,17 +80,33 @@ class App extends StatelessWidget {
           value: DarkModeProvider(),
         ),
       ],
-      child: Consumer<DarkModeProvider>(
-        builder: (_, darkModeProvider, _2) => MaterialApp(
-          title: "SmartApp",
-          theme: generateThemeData(darkModeProvider.isDarkTheme),
-          home: Login(),
-          routes: {
-            Login.routeName: (ctx) => Login(),
-            Register.routeName: (ctx) => Register(),
-          },
-        ),
-      ),
+      child: FutureBuilder<void>(
+          future: Firebase.initializeApp(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return MaterialApp(
+                title: "SmartApp",
+                home: Scaffold(
+                  body: Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: primarySwatch,
+                    ),
+                  ),
+                ),
+              );
+            }
+            return Consumer<DarkModeProvider>(
+              builder: (_, darkModeProvider, _2) => MaterialApp(
+                title: "SmartApp",
+                theme: generateThemeData(darkModeProvider.isDarkTheme),
+                home: Login(),
+                routes: {
+                  Login.routeName: (ctx) => Login(),
+                  Register.routeName: (ctx) => Register(),
+                },
+              ),
+            );
+          }),
     );
   }
 }
