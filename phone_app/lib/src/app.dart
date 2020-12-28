@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
+import './providers/auth_provider.dart';
 import './providers/dark_mode_provider.dart';
 
 import './routes/login.dart';
@@ -76,6 +77,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(
+          value: AuthProvider(),
+        ),
         ChangeNotifierProvider.value(
           value: DarkModeProvider(),
         ),
