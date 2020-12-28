@@ -4,14 +4,14 @@ import './login.dart';
 import '../widgets/dark_mode_toggler.dart';
 import '../widgets/sidedrawer.dart';
 
-class Register extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   static const routeName = "/register";
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> formKey = GlobalKey();
   bool isEmailValid = true;
   bool isPasswordValid = true;
@@ -60,7 +60,7 @@ class _RegisterState extends State<Register> {
                     FlatButton(
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
-                        navigator.pushReplacementNamed(Login.routeName);
+                        navigator.pushReplacementNamed(LoginPage.routeName);
                       },
                       child: Text("Login"),
                     ),

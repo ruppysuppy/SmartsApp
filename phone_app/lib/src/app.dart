@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 import './providers/auth_provider.dart';
 import './providers/dark_mode_provider.dart';
 
+import './routes/contacts.dart';
 import './routes/login.dart';
 import './routes/register.dart';
+import './routes/user_details.dart';
 
 const primarySwatch = MaterialColor(0xFF7905FF, {
   50: Color.fromRGBO(121, 5, 255, 0.1),
@@ -20,6 +22,14 @@ const primarySwatch = MaterialColor(0xFF7905FF, {
   800: Color.fromRGBO(121, 5, 255, 0.9),
   900: Color.fromRGBO(121, 5, 255, 1.0),
 });
+
+const blankPage = Scaffold(
+  body: Center(
+    child: CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(primarySwatch),
+    ),
+  ),
+);
 
 ThemeData generateThemeData(bool isDark) {
   return ThemeData(
@@ -90,23 +100,19 @@ class App extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return MaterialApp(
                 title: "SmartApp",
-                home: Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: primarySwatch,
-                    ),
-                  ),
-                ),
+                home: blankPage,
               );
             }
             return Consumer<DarkModeProvider>(
               builder: (_, darkModeProvider, _2) => MaterialApp(
                 title: "SmartApp",
                 theme: generateThemeData(darkModeProvider.isDarkTheme),
-                home: Login(),
+                home: LoginPage(),
                 routes: {
-                  Login.routeName: (ctx) => Login(),
-                  Register.routeName: (ctx) => Register(),
+                  ContactsPage.routeName: (ctx) => ContactsPage(),
+                  LoginPage.routeName: (ctx) => LoginPage(),
+                  RegisterPage.routeName: (ctx) => RegisterPage(),
+                  UserDetailsPage.routeName: (ctx) => UserDetailsPage(),
                 },
               ),
             );

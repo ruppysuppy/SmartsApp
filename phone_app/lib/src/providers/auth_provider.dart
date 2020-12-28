@@ -6,20 +6,18 @@ final firebaseAuth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
 
 class AuthProvider with ChangeNotifier {
-  UserCredential auth;
+  User auth;
   Map<String, dynamic> authData;
   bool isLoading = false;
-  String error = "";
 
   Future<void> loginWithEmail(String email, String password) async {
     setIsLoading(true);
 
-    final UserCredential authResult =
-        await firebaseAuth.signInWithEmailAndPassword(
+    await firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
-    auth = authResult;
+    auth = firebaseAuth.currentUser;
 
     setIsLoading(false);
   }
@@ -46,6 +44,20 @@ class AuthProvider with ChangeNotifier {
 
     authData = userData;
     setIsLoading(false);
-    print(authData);
+  }
+
+  Future<void> autoLogin() async {
+    if (firebaseAuth.currentUser != null) {
+      auth = firebaseAuth.currentUser;
+      await getUserData();
+    }
+    return;
+  }
+
+  void logout() {
+    auth = null;
+    authData = null;
+    isLoading = false;
+    notifyListeners();
   }
 }

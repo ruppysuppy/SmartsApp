@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/auth_provider.dart';
 import '../providers/dark_mode_provider.dart';
 import '../routes/login.dart';
 import '../routes/register.dart';
@@ -10,6 +11,7 @@ class SideDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
     final themeData = Theme.of(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
 
     return Drawer(
@@ -36,7 +38,11 @@ class SideDrawer extends StatelessWidget {
                 height: 12,
               ),
               Divider(),
-              if (true) ...unauthenticatedWidgets(navigator, darkModeProvider),
+              if (authProvider.auth == null)
+                ...getUnauthenticatedWidgets(navigator, darkModeProvider),
+              if (authProvider.auth != null)
+                ...getAuthenticatedWidgets(
+                    navigator, darkModeProvider, authProvider),
             ],
           ),
         ),
@@ -44,7 +50,7 @@ class SideDrawer extends StatelessWidget {
     );
   }
 
-  List<Widget> unauthenticatedWidgets(
+  List<Widget> getUnauthenticatedWidgets(
     NavigatorState navigator,
     DarkModeProvider darkModeProvider,
   ) {
@@ -55,7 +61,7 @@ class SideDrawer extends StatelessWidget {
           Icons.login,
           color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
         ),
-        onTap: () => navigator.pushReplacementNamed(Login.routeName),
+        onTap: () => navigator.pushReplacementNamed(LoginPage.routeName),
       ),
       Divider(),
       ListTile(
@@ -64,7 +70,28 @@ class SideDrawer extends StatelessWidget {
           Icons.person_add,
           color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
         ),
-        onTap: () => navigator.pushReplacementNamed(Register.routeName),
+        onTap: () => navigator.pushReplacementNamed(RegisterPage.routeName),
+      ),
+      Divider(),
+    ];
+  }
+
+  List<Widget> getAuthenticatedWidgets(
+    NavigatorState navigator,
+    DarkModeProvider darkModeProvider,
+    AuthProvider authProvider,
+  ) {
+    return [
+      ListTile(
+        title: Text("Logout"),
+        leading: Icon(
+          Icons.logout,
+          color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+        ),
+        onTap: () {
+          authProvider.logout();
+          navigator.pushReplacementNamed(LoginPage.routeName);
+        },
       ),
       Divider(),
     ];

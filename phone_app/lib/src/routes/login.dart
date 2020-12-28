@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './contacts.dart';
 import './register.dart';
+import './user_details.dart';
 import '../widgets/dark_mode_toggler.dart';
 import '../widgets/sidedrawer.dart';
 
 import '../providers/auth_provider.dart';
 import '../providers/dark_mode_provider.dart';
 
-class Login extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   static const routeName = "/login";
 
   @override
-  _LoginState createState() => _LoginState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> formKey = GlobalKey();
   bool isEmailValid = true;
   bool isPasswordValid = true;
@@ -63,7 +65,7 @@ class _LoginState extends State<Login> {
                     FlatButton(
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
-                        navigator.pushReplacementNamed(Register.routeName);
+                        navigator.pushReplacementNamed(RegisterPage.routeName);
                       },
                       child: Text("Register"),
                     ),
@@ -79,7 +81,12 @@ class _LoginState extends State<Login> {
                   builder: (ctx) => Visibility(
                     child: RaisedButton(
                       onPressed: () => submit(
-                          ctx, themeData, darkModeProvider, authProvider),
+                        ctx,
+                        themeData,
+                        darkModeProvider,
+                        authProvider,
+                        navigator,
+                      ),
                       child: Text(
                         "Login",
                         style: TextStyle(
@@ -159,8 +166,12 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Future<void> submit(BuildContext ctx, ThemeData themeData,
-      DarkModeProvider darkModeProvider, AuthProvider authProvider) async {
+  Future<void> submit(
+      BuildContext ctx,
+      ThemeData themeData,
+      DarkModeProvider darkModeProvider,
+      AuthProvider authProvider,
+      NavigatorState navigator) async {
     formKey.currentState.save();
     if (!formKey.currentState.validate()) {
       return;
@@ -171,6 +182,11 @@ class _LoginState extends State<Login> {
         authData['password'],
       );
       await authProvider.getUserData();
+      if (authProvider.authData.isNotEmpty) {
+        navigator.pushReplacementNamed(ContactsPage.routeName);
+      } else {
+        navigator.pushReplacementNamed(UserDetailsPage.routeName);
+      }
     } catch (e) {
       authProvider.setIsLoading(false);
       final message = e.message == null ? "An Error Occoured" : e.message;
