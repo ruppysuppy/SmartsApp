@@ -17,8 +17,8 @@ class AuthProvider with ChangeNotifier {
       email: email,
       password: password,
     );
-    auth = firebaseAuth.currentUser;
 
+    login();
     setIsLoading(false);
   }
 
@@ -46,7 +46,7 @@ class AuthProvider with ChangeNotifier {
     setIsLoading(false);
   }
 
-  Future<void> autoLogin() async {
+  Future<void> login() async {
     if (firebaseAuth.currentUser != null) {
       auth = firebaseAuth.currentUser;
       await getUserData();
@@ -58,6 +58,7 @@ class AuthProvider with ChangeNotifier {
     auth = null;
     authData = null;
     isLoading = false;
+    firebaseAuth.signOut();
     notifyListeners();
   }
 }

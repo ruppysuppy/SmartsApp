@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
@@ -107,7 +108,23 @@ class App extends StatelessWidget {
               builder: (_, darkModeProvider, _2) => MaterialApp(
                 title: "SmartApp",
                 theme: generateThemeData(darkModeProvider.isDarkTheme),
-                home: LoginPage(),
+                home: StreamBuilder<User>(
+                  stream: FirebaseAuth.instance.authStateChanges(),
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      User user = snapshot.data;
+                      if (user == null) {
+                        return LoginPage();
+                      }
+                      final authProvider =
+                          Provider.of<AuthProvider>(context, listen: false);
+                      authProvider.login();
+                      return ContactsPage();
+                    } else {
+                      return blankPage;
+                    }
+                  },
+                ),
                 routes: {
                   ContactsPage.routeName: (ctx) => ContactsPage(),
                   LoginPage.routeName: (ctx) => LoginPage(),
