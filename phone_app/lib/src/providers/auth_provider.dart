@@ -46,6 +46,18 @@ class AuthProvider with ChangeNotifier {
     setIsLoading(false);
   }
 
+  Future<void> registerWithEmail(String email, String password) async {
+    setIsLoading(true);
+
+    await firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    login();
+    setIsLoading(false);
+  }
+
   void setIsLoading(bool value) {
     isLoading = value;
     notifyListeners();
@@ -70,12 +82,10 @@ class AuthProvider with ChangeNotifier {
     setIsLoading(false);
   }
 
-  Future<void> login() async {
+  void login() {
     if (firebaseAuth.currentUser != null) {
       auth = firebaseAuth.currentUser;
-      await getUserData();
     }
-    return;
   }
 
   void logout() {

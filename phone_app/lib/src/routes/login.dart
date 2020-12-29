@@ -169,11 +169,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> submit(
-      BuildContext ctx,
-      ThemeData themeData,
-      DarkModeProvider darkModeProvider,
-      AuthProvider authProvider,
-      NavigatorState navigator) async {
+    BuildContext ctx,
+    ThemeData themeData,
+    DarkModeProvider darkModeProvider,
+    AuthProvider authProvider,
+    NavigatorState navigator,
+  ) async {
     formKey.currentState.save();
     if (!formKey.currentState.validate()) {
       return;

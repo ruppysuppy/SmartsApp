@@ -119,7 +119,14 @@ class App extends StatelessWidget {
                       final authProvider =
                           Provider.of<AuthProvider>(context, listen: false);
                       authProvider.login();
-                      return ContactsPage();
+                      return FutureBuilder(
+                        builder: (_, snapshotAuthData) =>
+                            snapshotAuthData.connectionState ==
+                                    ConnectionState.waiting
+                                ? blankPage
+                                : ContactsPage(),
+                        future: authProvider.getUserData(),
+                      );
                     } else {
                       return blankPage;
                     }

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './login.dart';
+import './user_details.dart';
+import '../providers/auth_provider.dart';
+import '../providers/dark_mode_provider.dart';
 import '../widgets/dark_mode_toggler.dart';
 import '../widgets/google_oauth.dart';
 import '../widgets/sidedrawer.dart';
@@ -28,6 +32,8 @@ class _RegisterPageState extends State<RegisterPage> {
     final deviceSize = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
     final navigator = Navigator.of(context);
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
     final node = FocusScope.of(context);
 
     return Scaffold(
@@ -67,13 +73,30 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                RaisedButton(
-                  onPressed: submit,
-                  child: Text(
-                    "Register",
-                    style: TextStyle(
-                      color: Colors.white,
+                if (authProvider.isLoading)
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      themeData.primaryColor.withOpacity(0.8),
                     ),
+                  ),
+                Builder(
+                  builder: (ctx) => Visibility(
+                    child: RaisedButton(
+                      onPressed: () => submit(
+                        ctx,
+                        themeData,
+                        darkModeProvider,
+                        authProvider,
+                        navigator,
+                      ),
+                      child: Text(
+                        "Register",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    visible: !authProvider.isLoading,
                   ),
                 ),
                 GoogleOAuth(),
@@ -175,11 +198,42 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Future<void> submit() async {
+  Future<void> submit(
+    BuildContext ctx,
+    ThemeData themeData,
+    DarkModeProvider darkModeProvider,
+    AuthProvider authProvider,
+    NavigatorState navigator,
+  ) async {
     formKey.currentState.save();
     if (!formKey.currentState.validate()) {
       return;
     }
-    print(authData);
+    try {
+      await authProvider.registerWithEmail(
+        authData['email'],
+        authData['password'],
+      );
+      navigator.pushReplacementNamed(UserDetailsPage.routeName);
+    } catch (e) {
+      authProvider.setIsLoading(false);
+      final message = e.message == null ? "An Error Occoured" : e.message;
+      Scaffold.of(ctx).showSnackBar(
+        SnackBar(
+          content: Text(
+            message,
+            style: TextStyle(
+              color: themeData.errorColor,
+            ),
+          ),
+          backgroundColor: Colors.black87,
+          action: SnackBarAction(
+            label: "Close",
+            onPressed: Scaffold.of(ctx).hideCurrentSnackBar,
+            textColor: themeData.errorColor,
+          ),
+        ),
+      );
+    }
   }
 }
