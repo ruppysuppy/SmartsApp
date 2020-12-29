@@ -5,6 +5,7 @@ import './contacts.dart';
 import './register.dart';
 import './user_details.dart';
 import '../widgets/dark_mode_toggler.dart';
+import '../widgets/google_oauth.dart';
 import '../widgets/sidedrawer.dart';
 
 import '../providers/auth_provider.dart';
@@ -97,6 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                     visible: !authProvider.isLoading,
                   ),
                 ),
+                GoogleOAuth(),
                 DarkModeToggler(),
               ],
             ),

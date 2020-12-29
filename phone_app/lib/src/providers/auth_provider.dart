@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' show ChangeNotifier;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final firebaseAuth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
@@ -9,6 +10,11 @@ class AuthProvider with ChangeNotifier {
   User auth;
   Map<String, dynamic> authData;
   bool isLoading = false;
+  final googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+    ],
+  );
 
   Future<void> loginWithEmail(String email, String password) async {
     setIsLoading(true);
@@ -19,6 +25,24 @@ class AuthProvider with ChangeNotifier {
     );
 
     login();
+    setIsLoading(false);
+  }
+
+  Future<void> loginWithCredentails() async {
+    setIsLoading(true);
+
+    await googleSignIn.signIn();
+    if (googleSignIn.currentUser != null) {
+      final googleAuth = await googleSignIn.currentUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await firebaseAuth.signInWithCredential(credential);
+      login();
+    }
+
     setIsLoading(false);
   }
 
@@ -55,10 +79,11 @@ class AuthProvider with ChangeNotifier {
   }
 
   void logout() {
+    firebaseAuth.signOut();
+    googleSignIn.disconnect();
     auth = null;
     authData = null;
     isLoading = false;
-    firebaseAuth.signOut();
     notifyListeners();
   }
 }

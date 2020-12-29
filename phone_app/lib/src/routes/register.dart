@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './login.dart';
 import '../widgets/dark_mode_toggler.dart';
+import '../widgets/google_oauth.dart';
 import '../widgets/sidedrawer.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -75,6 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
+                GoogleOAuth(),
                 DarkModeToggler(),
               ],
             ),
