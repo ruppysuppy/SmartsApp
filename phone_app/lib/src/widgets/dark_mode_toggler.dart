@@ -8,11 +8,13 @@ class DarkModeToggler extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkModeProvider>(context);
 
-    return Checkbox(
+    return Switch.adaptive(
       value: themeChange.isDarkTheme,
       onChanged: (bool value) {
         themeChange.isDarkTheme = value;
       },
+      activeColor: Colors.grey,
+      activeTrackColor: Theme.of(context).primaryColor,
     );
   }
 }

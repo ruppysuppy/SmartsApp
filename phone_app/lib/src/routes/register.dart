@@ -5,7 +5,6 @@ import './login.dart';
 import './user_details.dart';
 import '../providers/auth_provider.dart';
 import '../providers/dark_mode_provider.dart';
-import '../widgets/dark_mode_toggler.dart';
 import '../widgets/google_oauth.dart';
 import '../widgets/sidedrawer.dart';
 
@@ -100,7 +99,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 GoogleOAuth(),
-                DarkModeToggler(),
               ],
             ),
           ),
