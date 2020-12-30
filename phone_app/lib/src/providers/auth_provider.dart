@@ -1,7 +1,11 @@
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart' show ChangeNotifier;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../base_url.dart';
 
 final firebaseAuth = FirebaseAuth.instance;
 final firestore = FirebaseFirestore.instance;
@@ -95,5 +99,39 @@ class AuthProvider with ChangeNotifier {
     authData = null;
     isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> setUserData(Map<String, String> userData, String uid) async {
+    final username = userData['username'];
+    final userRef = firestore.collection("users").where(
+          "username",
+          isEqualTo: username,
+        );
+    final doc = await userRef.get();
+    if (doc.size > 0) {
+      throw "Username already in use";
+    }
+
+    final response = await http.get("$BASE_URL/generate-keys");
+    if (response.statusCode == 200) {
+      final keys = convert.jsonDecode(response.body) as Map<String, dynamic>;
+
+      final setKeyRef = firestore.collection("keys").doc(uid);
+      final setUserRef = firestore.collection("users").doc(uid);
+
+      final userDataWithCredential = {...userData};
+      userDataWithCredential['uid'] = uid;
+      userDataWithCredential['publicKey'] = keys['public_key'];
+
+      await setKeyRef.set({
+        "privateKey": keys['private_key'],
+      });
+      await setUserRef.set(userDataWithCredential);
+
+      userDataWithCredential['privateKey'] = keys['private_key'];
+      authData = userDataWithCredential;
+    } else {
+      throw "An Error Occoured!";
+    }
   }
 }

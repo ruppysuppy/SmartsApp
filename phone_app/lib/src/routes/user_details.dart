@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smartsapp/src/widgets/dark_mode_toggler.dart';
 
+import '../routes/contacts.dart';
+import '../widgets/dark_mode_toggler.dart';
+import '../widgets/dp_image_picker.dart';
 import '../widgets/sidedrawer.dart';
 
 import '../providers/auth_provider.dart';
@@ -17,16 +19,20 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   final GlobalKey<FormState> formKey = GlobalKey();
   bool isUsernameValid = true;
   bool isAboutValid = true;
+  bool isImageValid = false;
+  bool shouldDisplayErrorMessage = false;
   Map<String, String> userData = {
     'username': '',
     'about': '',
+    'photoUrl': '',
   };
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final themeData = Theme.of(context);
-    final authProvider = Provider.of<AuthProvider>(context);
+    final navigator = Navigator.of(context);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final node = FocusScope.of(context);
 
     return Scaffold(
@@ -50,14 +56,36 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
               children: [
                 createUsernameField(themeData, node),
                 createAboutField(themeData, node),
+                SizedBox(height: 4),
+                DpImagePicker(setImageUrl, setImageValid),
+                if (!isImageValid && shouldDisplayErrorMessage) ...[
+                  SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.error,
+                        color: themeData.errorColor,
+                      ),
+                      SizedBox(width: 4),
+                      Text(
+                        "Please add an image",
+                        style: TextStyle(color: themeData.errorColor),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                ],
                 SizedBox(height: 8),
                 Visibility(
-                  child: RaisedButton(
-                    onPressed: () => submit(),
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(
-                        color: Colors.white,
+                  child: Builder(
+                    builder: (ctx) => RaisedButton(
+                      onPressed: () =>
+                          submit(authProvider, ctx, themeData, navigator),
+                      child: Text(
+                        "Submit",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -139,15 +167,61 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
       },
       onEditingComplete: () => node.unfocus(),
       onSaved: (value) {
-        userData['username'] = value;
+        userData['about'] = value;
       },
     );
   }
 
-  Future<void> submit() async {
+  Future<void> submit(
+    AuthProvider authProvider,
+    BuildContext context,
+    ThemeData themeData,
+    NavigatorState navigator,
+  ) async {
+    setState(() {
+      shouldDisplayErrorMessage = true;
+    });
     formKey.currentState.save();
     if (!formKey.currentState.validate()) {
       return;
     }
+    try {
+      await authProvider.setUserData(
+        userData,
+        authProvider.auth.uid,
+      );
+      navigator.pushReplacementNamed(ContactsPage.routeName);
+    } catch (e) {
+      print("ERROR $e");
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e is String ? e : e.message,
+            style: TextStyle(
+              color: themeData.errorColor,
+            ),
+          ),
+          backgroundColor: Colors.black87,
+          action: SnackBarAction(
+            label: "Close",
+            onPressed: Scaffold.of(context).hideCurrentSnackBar,
+            textColor: themeData.errorColor,
+          ),
+        ),
+      );
+    }
+  }
+
+  void setImageUrl(String url) {
+    setState(() {
+      userData['photoUrl'] = url;
+    });
+  }
+
+  void setImageValid(bool value) {
+    setState(() {
+      isImageValid = value;
+      shouldDisplayErrorMessage = !value;
+    });
   }
 }
