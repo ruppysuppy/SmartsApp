@@ -259,7 +259,6 @@ export const setUserData = (userData: IUserData) => {
 			keys = response.data as IKeys;
 
 			userData.publicKey = keys.public_key;
-			userData.privateKey = keys.private_key;
 		} catch (error) {
 			dispatch(setUserDataFail(error.message));
 			return;
@@ -269,6 +268,7 @@ export const setUserData = (userData: IUserData) => {
 		try {
 			await setKeyRef.set({ privateKey: keys.private_key });
 			await setUserRef.set(userData);
+			userData.privateKey = keys.private_key;
 			dispatch(setUserDataSuccess(userData));
 		} catch (error) {
 			dispatch(setUserDataFail(error.message));
