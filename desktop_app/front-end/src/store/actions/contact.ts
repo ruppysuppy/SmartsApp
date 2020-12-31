@@ -123,14 +123,14 @@ export const getContacts = (uid: string, privateKey: string) => {
 		dispatch(getContactsInit());
 		try {
 			const contactsRef = firestore.collection("contacts").doc(uid);
-			const doc = await contactsRef.get();
-			if (!doc.exists) {
-				dispatch(getContactsSuccess([]));
-				return;
-			}
 
 			contactsRef.onSnapshot(
 				async (docSnapshot) => {
+					if (!docSnapshot.exists) {
+						dispatch(getContactsSuccess([]));
+						return;
+					}
+
 					const contacts: IContactData[] = [];
 					const contactList: string[] = docSnapshot.data()!.contacts;
 					const userPromiseArr: Promise<
