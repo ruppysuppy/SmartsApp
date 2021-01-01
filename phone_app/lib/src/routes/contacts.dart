@@ -7,8 +7,16 @@ import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
 import '../widgets/sidedrawer.dart';
 
-class ContactsPage extends StatelessWidget {
+class ContactsPage extends StatefulWidget {
   static const routeName = "/contacts";
+  final inputController = TextEditingController();
+
+  @override
+  _ContactsPageState createState() => _ContactsPageState();
+}
+
+class _ContactsPageState extends State<ContactsPage> {
+  String searchQuery = "";
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +29,41 @@ class ContactsPage extends StatelessWidget {
         Navigator.of(context).pushReplacementNamed(UserDetailsPage.routeName);
       } else if (!authProvider.isLoading) {
         contactProvider.getContact(
-            authProvider.auth.uid, authProvider.authData['privateKey']);
+          authProvider.auth.uid,
+          authProvider.authData['privateKey'] as String,
+        );
       }
     });
 
+    final filteredContacts = searchQuery == ""
+        ? contactProvider.contacts
+        : contactProvider.contacts
+            .where((contact) => (contact['username'] as String)
+                .toLowerCase()
+                .contains(searchQuery.toLowerCase()))
+            .toList();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("CONTACTS"),
+        title: TextField(
+          controller: widget.inputController,
+          style: TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: "Search Contacts",
+            contentPadding: EdgeInsets.only(bottom: 0),
+            focusColor: Colors.white,
+            suffix: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () {
+                widget.inputController.clear();
+                setState(() => searchQuery = "");
+              },
+            ),
+          ),
+          onChanged: (value) {
+            setState(() => searchQuery = value);
+          },
+        ),
       ),
       drawer: SideDrawer(),
       body: Container(
@@ -39,12 +75,21 @@ class ContactsPage extends StatelessWidget {
                       AlwaysStoppedAnimation<Color>(themeData.primaryColor),
                 ),
               )
-            : ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                itemBuilder: (ctx, index) =>
-                    ContactCard(contactProvider.contacts[index]),
-                itemCount: contactProvider.contacts.length,
-              ),
+            : contactProvider.contacts.length == 0
+                ? Center(
+                    child: Text("You don't have any contact"),
+                  )
+                : filteredContacts.length == 0
+                    ? Center(
+                        child: Text("No contact matched"),
+                      )
+                    : ListView.builder(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        itemBuilder: (ctx, index) =>
+                            ContactCard(filteredContacts[index], index),
+                        itemCount: filteredContacts.length,
+                      ),
       ),
     );
   }

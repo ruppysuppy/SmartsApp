@@ -7,6 +7,7 @@ import './providers/auth_provider.dart';
 import './providers/contact_provider.dart';
 import './providers/dark_mode_provider.dart';
 
+import './routes/chat.dart';
 import './routes/contacts.dart';
 import './routes/login.dart';
 import './routes/register.dart';
@@ -138,6 +139,7 @@ class App extends StatelessWidget {
                   },
                 ),
                 routes: {
+                  ChatPage.routeName: (ctx) => ChatPage(),
                   ContactsPage.routeName: (ctx) => ContactsPage(),
                   LoginPage.routeName: (ctx) => LoginPage(),
                   RegisterPage.routeName: (ctx) => RegisterPage(),

@@ -113,6 +113,8 @@ class ContactProvider with ChangeNotifier {
                 ...contacts[userIndexMap[user['uid']]]['messages'],
                 message
               ];
+              contacts[userIndexMap[user['uid']]]['newMessages'] += 1;
+              notifyListeners();
             });
           });
         }
@@ -124,6 +126,11 @@ class ContactProvider with ChangeNotifier {
 
   setIsLoading(bool value) {
     isLoading = value;
+    notifyListeners();
+  }
+
+  selectContact(int index) {
+    selectedContact = index;
     notifyListeners();
   }
 }
