@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
 import '../providers/dark_mode_provider.dart';
+import '../routes/contacts.dart';
 import '../routes/login.dart';
 import '../routes/register.dart';
+import '../routes/settings.dart';
 
 class SideDrawer extends StatelessWidget {
   @override
@@ -82,6 +84,28 @@ class SideDrawer extends StatelessWidget {
     AuthProvider authProvider,
   ) {
     return [
+      ListTile(
+        title: Text("Chats"),
+        leading: Icon(
+          Icons.chat,
+          color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+        ),
+        onTap: () {
+          navigator.pushReplacementNamed(ContactsPage.routeName);
+        },
+      ),
+      Divider(),
+      ListTile(
+        title: Text("Settings"),
+        leading: Icon(
+          Icons.settings,
+          color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
+        ),
+        onTap: () {
+          navigator.pushReplacementNamed(SettingsPage.routeName);
+        },
+      ),
+      Divider(),
       ListTile(
         title: Text("Logout"),
         leading: Icon(

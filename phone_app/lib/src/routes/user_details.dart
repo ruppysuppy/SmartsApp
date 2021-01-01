@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../routes/contacts.dart';
-import '../widgets/dark_mode_toggler.dart';
 import '../widgets/dp_image_picker.dart';
 import '../widgets/sidedrawer.dart';
 
@@ -37,7 +36,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("User Details"),
+        title: Text("USER DETAILS"),
       ),
       drawer: SideDrawer(),
       body: Container(
@@ -91,7 +90,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                   ),
                   visible: !authProvider.isLoading,
                 ),
-                DarkModeToggler(),
               ],
             ),
           ),
@@ -192,7 +190,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
       );
       navigator.pushReplacementNamed(ContactsPage.routeName);
     } catch (e) {
-      print("ERROR $e");
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(

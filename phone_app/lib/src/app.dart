@@ -4,11 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
 import './providers/auth_provider.dart';
+import './providers/contact_provider.dart';
 import './providers/dark_mode_provider.dart';
 
 import './routes/contacts.dart';
 import './routes/login.dart';
 import './routes/register.dart';
+import './routes/settings.dart';
 import './routes/user_details.dart';
 
 const primarySwatch = MaterialColor(0xFF7905FF, {
@@ -92,6 +94,9 @@ class App extends StatelessWidget {
           value: AuthProvider(),
         ),
         ChangeNotifierProvider.value(
+          value: ContactProvider(),
+        ),
+        ChangeNotifierProvider.value(
           value: DarkModeProvider(),
         ),
       ],
@@ -136,6 +141,7 @@ class App extends StatelessWidget {
                   ContactsPage.routeName: (ctx) => ContactsPage(),
                   LoginPage.routeName: (ctx) => LoginPage(),
                   RegisterPage.routeName: (ctx) => RegisterPage(),
+                  SettingsPage.routeName: (ctx) => SettingsPage(),
                   UserDetailsPage.routeName: (ctx) => UserDetailsPage(),
                 },
               ),
