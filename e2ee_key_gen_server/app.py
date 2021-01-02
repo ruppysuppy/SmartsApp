@@ -32,7 +32,3 @@ def generate_shared_key():
 
 if __name__ == "__main__":
     app.run()
-
-
-if __name__ == "__main__":
-    app.run()

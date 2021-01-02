@@ -4,14 +4,14 @@ Phone App for Smartsapp messenger.
 
 ## Tools used
 
-1. **Flutter:** To create the Phone App
+1. **Cloud Firestore:** For Database handling
 2. **Firebase Auth:** For Authentication handling
-3. **Google Sign In:** For handling Google OAuth
-4. **Cloud Firestore:** For Database handling
-5. **Firebase Storage:** For storing images
-6. **Provider:** For State Management
-7. **Image Cropper:** For Cropping and resizing images
-8. **Image Picker:** For selecting images
+3. **Firebase Storage:** For storing images
+4. **Flutter:** To create the Phone App
+5. **Google Sign In:** For handling Google OAuth
+6. **Image Cropper:** For Cropping and resizing images
+7. **Image Picker:** For selecting images
+8. **Provider:** For State Management
 
 ## How to Use
 
