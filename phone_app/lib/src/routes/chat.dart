@@ -7,7 +7,7 @@ import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
 
 class ChatPage extends StatelessWidget {
-  static const routeName = "/contacts";
+  static const routeName = "/chat";
 
   @override
   Widget build(BuildContext context) {
