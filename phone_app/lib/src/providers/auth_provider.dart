@@ -134,4 +134,9 @@ class AuthProvider with ChangeNotifier {
       throw "An Error Occoured!";
     }
   }
+
+  void updateDp(String url) {
+    authData['photoUrl'] = url;
+    notifyListeners();
+  }
 }
