@@ -136,7 +136,21 @@ class AuthProvider with ChangeNotifier {
   }
 
   void updateDp(String url) {
+    firestore.collection("users").doc(auth.uid).update({
+      "photoUrl": url,
+    });
     authData['photoUrl'] = url;
     notifyListeners();
+  }
+
+  Future<void> updateAbout(String about) async {
+    setIsLoading(true);
+
+    await firestore.collection("users").doc(auth.uid).update({
+      "about": about,
+    });
+    authData['about'] = about;
+
+    setIsLoading(false);
   }
 }

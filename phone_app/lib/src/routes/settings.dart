@@ -17,6 +17,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool isUpdating = false;
   bool isImageValid = true;
+  bool modified = false;
+  String about = "";
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +42,12 @@ class _SettingsPageState extends State<SettingsPage> {
         color: themeData.backgroundColor,
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (isUpdating) ...[
                 SizedBox(height: 8),
                 DpImagePicker(
-                  (url) => setImageUrl(url, authProvider),
+                  (String url) => setImageUrl(url, authProvider),
                   setImageValid,
                 ),
                 SizedBox(height: 8),
@@ -78,6 +81,44 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ),
+              SizedBox(height: 8),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Enter About",
+                  labelText: "About",
+                ),
+                initialValue: authProvider.authData['about'],
+                onChanged: (value) {
+                  setState(() {
+                    about = value;
+                    modified = true;
+                  });
+                },
+              ),
+              if (about != authProvider.authData['about'] && modified) ...[
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    authProvider.isLoading
+                        ? CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              themeData.primaryColor,
+                            ),
+                          )
+                        : RaisedButton(
+                            onPressed: () {
+                              authProvider.updateAbout(about);
+                            },
+                            child: Text("Update"),
+                          ),
+                    Expanded(
+                      child: Container(),
+                      flex: 1,
+                    ),
+                  ],
+                ),
+              ],
+              SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
