@@ -17,7 +17,6 @@ class _AddUserModalState extends State<AddUserModal> {
     final contactProvider = Provider.of<ContactProvider>(context);
 
     final controller = TextEditingController();
-    void forcedUpdater() => setState(() {});
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -60,12 +59,14 @@ class _AddUserModalState extends State<AddUserModal> {
           ] else
             RaisedButton(
               child: Text("Add User"),
-              onPressed: () {
-                contactProvider.addUser(
+              onPressed: () async {
+                await contactProvider.addUser(
                   controller.text,
                   authProvider.auth.uid,
-                  forcedUpdater,
                 );
+                if (contactProvider.newUserError.isEmpty) {
+                  Navigator.pop(context);
+                }
               },
             ),
         ],

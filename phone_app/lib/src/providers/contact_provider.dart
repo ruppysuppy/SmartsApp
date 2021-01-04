@@ -20,7 +20,6 @@ class ContactProvider with ChangeNotifier {
   bool shouldPlayReceiveAudio = false;
   bool shouldPlaySendAudio = false;
 
-  bool isInitialized = false;
   List<Map<String, dynamic>> previousData = [];
   final userIndexMap = {};
   final messageSnapshotListeners = Set<String>();
@@ -29,7 +28,6 @@ class ContactProvider with ChangeNotifier {
     if (isInitialized) {
       return;
     }
-    final List<Map<String, dynamic>> currContacts = [];
     isInitialized = true;
     setIsLoading(true);
     final contactsRef = firestore.collection("contacts").doc(uid);
@@ -39,6 +37,7 @@ class ContactProvider with ChangeNotifier {
         return;
       }
 
+      List<Map<String, dynamic>> currContacts = [];
       final List<String> contactList =
           (docSnapshot.data()['contacts'] as List<dynamic>)
               .map((e) => e.toString())
@@ -76,17 +75,23 @@ class ContactProvider with ChangeNotifier {
       final keys = (await Future.wait(keyFutureArr))
           .map((res) => convert.json.decode(res.body) as Map<String, dynamic>)
           .toList();
-
       for (var i = 0; i < usersDataArr.length; i++) {
         final user = usersDataArr[i];
 
-        currContacts.add({
-          ...user,
-          'sharedKey': keys[i]['shared_key'],
-          'messages': messagesArr[i],
-          'hasMore': true,
-          'newMessages': 0,
-        });
+        if (i < previousData.length) {
+          currContacts.add({
+            ...previousData[i],
+            ...user,
+          });
+        } else {
+          currContacts.add({
+            ...user,
+            'sharedKey': keys[i]['shared_key'],
+            'messages': messagesArr[i],
+            'hasMore': true,
+            'newMessages': 0,
+          });
+        }
         userIndexMap[user['uid']] = i;
       }
       _contacts = currContacts;
@@ -143,11 +148,10 @@ class ContactProvider with ChangeNotifier {
   Future<void> addUser(
     String username,
     String userId,
-    Function forcedUpdater,
   ) async {
     isNewUserLoading = true;
+    newUserError = "";
     notifyListeners();
-    forcedUpdater();
 
     try {
       final userRef =
@@ -186,7 +190,6 @@ class ContactProvider with ChangeNotifier {
       isNewUserLoading = false;
       newUserError = error.runtimeType == String ? error : error.message;
       notifyListeners();
-      forcedUpdater();
     }
   }
 }
