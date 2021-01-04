@@ -1,4 +1,5 @@
 import 'dart:convert' as convert;
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart' show ChangeNotifier;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,7 @@ final firestore = FirebaseFirestore.instance;
 bool isInitialized = false;
 
 class ContactProvider with ChangeNotifier {
-  List<Map<String, dynamic>> contacts = [];
+  List<Map<String, dynamic>> _contacts = [];
   bool isLoading = false;
   bool isMessageLoading = false;
   bool isNewUserLoading = false;
@@ -28,6 +29,7 @@ class ContactProvider with ChangeNotifier {
     if (isInitialized) {
       return;
     }
+    final List<Map<String, dynamic>> currContacts = [];
     isInitialized = true;
     setIsLoading(true);
     final contactsRef = firestore.collection("contacts").doc(uid);
@@ -37,7 +39,6 @@ class ContactProvider with ChangeNotifier {
         return;
       }
 
-      final List<Map<String, dynamic>> contactData = [];
       final List<String> contactList =
           (docSnapshot.data()['contacts'] as List<dynamic>)
               .map((e) => e.toString())
@@ -79,7 +80,7 @@ class ContactProvider with ChangeNotifier {
       for (var i = 0; i < usersDataArr.length; i++) {
         final user = usersDataArr[i];
 
-        contacts.add({
+        currContacts.add({
           ...user,
           'sharedKey': keys[i]['shared_key'],
           'messages': messagesArr[i],
@@ -88,7 +89,8 @@ class ContactProvider with ChangeNotifier {
         });
         userIndexMap[user['uid']] = i;
       }
-      previousData = contacts;
+      _contacts = currContacts;
+      previousData = currContacts;
 
       usersDataArr.forEach((user) {
         if (!messageSnapshotListeners.contains(user['uid'])) {
@@ -109,11 +111,11 @@ class ContactProvider with ChangeNotifier {
                 ...snapshot.data(),
                 uid: snapshot.id,
               };
-              contacts[userIndexMap[user['uid']]]['messages'] = [
-                ...contacts[userIndexMap[user['uid']]]['messages'],
+              _contacts[userIndexMap[user['uid']]]['messages'] = [
+                ..._contacts[userIndexMap[user['uid']]]['messages'],
                 message
               ];
-              contacts[userIndexMap[user['uid']]]['newMessages'] += 1;
+              _contacts[userIndexMap[user['uid']]]['newMessages'] += 1;
               notifyListeners();
             });
           });
@@ -132,5 +134,59 @@ class ContactProvider with ChangeNotifier {
   selectContact(int index) {
     selectedContact = index;
     notifyListeners();
+  }
+
+  List<Map<String, dynamic>> get contacts {
+    return [..._contacts];
+  }
+
+  Future<void> addUser(
+    String username,
+    String userId,
+    Function forcedUpdater,
+  ) async {
+    isNewUserLoading = true;
+    notifyListeners();
+    forcedUpdater();
+
+    try {
+      final userRef =
+          firestore.collection("users").where("username", isEqualTo: username);
+      final userData = await userRef.get();
+      if (userData.size == 0) {
+        throw "User does not exist";
+      }
+
+      final uid = (userData.docs[0].data())['uid'];
+      final userContactsRef = firestore.collection("contacts").doc(userId);
+      final contactContactsRef = firestore.collection("contacts").doc(uid);
+
+      if (!(await userContactsRef.get()).exists) {
+        await userContactsRef.set({
+          'contacts': [uid]
+        });
+      } else {
+        await userContactsRef.update({
+          'contacts': FieldValue.arrayUnion([uid]),
+        });
+      }
+      if (!(await contactContactsRef.get()).exists) {
+        await contactContactsRef.set({
+          'contacts': [userId]
+        });
+      } else {
+        await contactContactsRef.update({
+          'contacts': FieldValue.arrayUnion([userId]),
+        });
+
+        isNewUserLoading = false;
+        notifyListeners();
+      }
+    } catch (error) {
+      isNewUserLoading = false;
+      newUserError = error.runtimeType == String ? error : error.message;
+      notifyListeners();
+      forcedUpdater();
+    }
   }
 }

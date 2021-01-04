@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smartsapp/src/widgets/contact_card.dart';
 
 import './user_details.dart';
 import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
+import '../widgets/contact_card.dart';
 import '../widgets/sidedrawer.dart';
+import '../widgets/add_user_modal.dart';
 
 int sortContacts(Map<String, dynamic> user1, Map<String, dynamic> user2) {
   if (user1['messages'].length == 0 && user2['messages'].length == 0) {
@@ -75,6 +76,19 @@ class _ContactsPageState extends State<ContactsPage> {
             setState(() => searchQuery = value);
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: themeData.primaryColor,
+        child: Icon(
+          Icons.person_add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (ctx) => AddUserModal(),
+          );
+        },
       ),
       drawer: SideDrawer(),
       body: Container(
