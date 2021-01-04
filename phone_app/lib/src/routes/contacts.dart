@@ -7,6 +7,16 @@ import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
 import '../widgets/sidedrawer.dart';
 
+int sortContacts(Map<String, dynamic> user1, Map<String, dynamic> user2) {
+  if (user1['messages'].length == 0 && user2['messages'].length == 0) {
+    return -1;
+  } else if (user1['messages'].length == 0 || user2['messages'].length == 0) {
+    return user2['messages'].length - user1['messages'].length;
+  }
+  return (user2['messages'].last['timestamp'] -
+      user1['messages'].last['timestamp']);
+}
+
 class ContactsPage extends StatefulWidget {
   static const routeName = "/contacts";
   final inputController = TextEditingController();
@@ -42,6 +52,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 .toLowerCase()
                 .contains(searchQuery.toLowerCase()))
             .toList();
+    filteredContacts.sort(sortContacts);
 
     return Scaffold(
       appBar: AppBar(
