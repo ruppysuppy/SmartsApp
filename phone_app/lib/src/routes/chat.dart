@@ -5,6 +5,7 @@ import './contacts.dart';
 import './user_details.dart';
 import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
+import '../providers/dark_mode_provider.dart';
 import '../widgets/user_details_modal.dart';
 
 class ChatPage extends StatelessWidget {
@@ -13,8 +14,10 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
+    final deviceSize = MediaQuery.of(context).size;
     final authProvider = Provider.of<AuthProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
 
     Future.delayed(Duration.zero, () {
       if (authProvider.authData == null) {
@@ -48,6 +51,9 @@ class ChatPage extends StatelessWidget {
         ),
       ),
       body: Container(
+        height: deviceSize.height,
+        width: deviceSize.width,
+        padding: EdgeInsets.all(16),
         color: themeData.backgroundColor,
         child: authProvider.isLoading || contactProvider.isLoading
             ? Center(
@@ -56,7 +62,48 @@ class ChatPage extends StatelessWidget {
                       AlwaysStoppedAnimation<Color>(themeData.primaryColor),
                 ),
               )
-            : Text("CHAT"),
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (ctx, index) => Text("PLACEHOLDER"),
+                      itemCount: contact['messages'].length,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Type your message",
+                            hintStyle: TextStyle(
+                                color: darkModeProvider.isDarkTheme
+                                    ? Colors.white
+                                    : Colors.grey),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.attachment,
+                          color: darkModeProvider.isDarkTheme
+                              ? Colors.white
+                              : Colors.grey,
+                        ),
+                        onPressed: null,
+                      ),
+                      CircleAvatar(
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.send,
+                              color: Colors.white,
+                            ),
+                            onPressed: null),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
       ),
     );
   }
