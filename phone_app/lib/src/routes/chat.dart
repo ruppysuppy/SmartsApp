@@ -5,6 +5,7 @@ import './contacts.dart';
 import './user_details.dart';
 import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
+import '../widgets/user_details_modal.dart';
 
 class ChatPage extends StatelessWidget {
   static const routeName = "/chat";
@@ -23,9 +24,28 @@ class ChatPage extends StatelessWidget {
       }
     });
 
+    final contact = contactProvider.contacts[contactProvider.selectedContact];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("CHAT"),
+        title: GestureDetector(
+          onTap: () => showModalBottomSheet(
+            context: context,
+            builder: (ctx) => UserDetailsModal(contact),
+          ),
+          child: Row(
+            children: [
+              CircleAvatar(
+                child: ClipOval(
+                  child: Image.network(contact['photoUrl']),
+                ),
+                backgroundImage: AssetImage("assets/img/loading.gif"),
+              ),
+              SizedBox(width: 8),
+              Text(contact['username']),
+            ],
+          ),
+        ),
       ),
       body: Container(
         color: themeData.backgroundColor,
