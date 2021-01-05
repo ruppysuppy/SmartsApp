@@ -43,5 +43,5 @@ flutter:
               - asset: assets/fonts/Lato-Black.ttf
                 weight: 900
     assets:
-        - assets/img/chat.png
         - assets/img/chat_full.png
+        - assets/img/loading.gif

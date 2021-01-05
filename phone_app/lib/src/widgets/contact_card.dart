@@ -35,6 +35,7 @@ class ContactCard extends StatelessWidget {
             child: ClipOval(
               child: Image.network(userData['photoUrl']),
             ),
+            backgroundImage: AssetImage("assets/img/loading.gif"),
           ),
           title: Text(
             userData['username'],

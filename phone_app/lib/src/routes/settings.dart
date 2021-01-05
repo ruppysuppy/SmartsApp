@@ -66,6 +66,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               Image.network(authProvider.authData['photoUrl']),
                         ),
                         radius: deviceSize.width > 350 ? 120 : 100,
+                        backgroundImage: AssetImage("assets/img/loading.gif"),
                       ),
                       Positioned(
                         bottom: 8,
