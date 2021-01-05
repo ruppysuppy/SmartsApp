@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smartsapp/src/widgets/chat_item.dart';
 
 import './contacts.dart';
 import './user_details.dart';
@@ -53,7 +54,6 @@ class ChatPage extends StatelessWidget {
       body: Container(
         height: deviceSize.height,
         width: deviceSize.width,
-        padding: EdgeInsets.all(16),
         color: themeData.backgroundColor,
         child: authProvider.isLoading || contactProvider.isLoading
             ? Center(
@@ -66,41 +66,87 @@ class ChatPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemBuilder: (ctx, index) => Text("PLACEHOLDER"),
+                      padding: EdgeInsets.all(16),
+                      itemBuilder: (ctx, index) {
+                        final dateCurr = DateTime.fromMillisecondsSinceEpoch(
+                            contact['messages'][index]['timestamp']);
+                        final datePrev = index > 0
+                            ? DateTime.fromMillisecondsSinceEpoch(
+                                contact['messages'][index - 1]['timestamp'])
+                            : null;
+                        if (index == 0 || datePrev.day != dateCurr.day) {
+                          return Column(
+                            children: [
+                              SizedBox(height: 4),
+                              Container(
+                                child: Text(
+                                  "${dateCurr.day}/${dateCurr.month}/${dateCurr.year}",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(12),
+                                  ),
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              ChatItem(
+                                contact['messages'][index]
+                                    as Map<String, dynamic>,
+                                authProvider.auth.uid,
+                                contact['sharedKey'],
+                              ),
+                            ],
+                          );
+                        }
+                        return ChatItem(
+                          contact['messages'][index] as Map<String, dynamic>,
+                          authProvider.auth.uid,
+                          contact['sharedKey'],
+                        );
+                      },
                       itemCount: contact['messages'].length,
                     ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: "Type your message",
-                            hintStyle: TextStyle(
-                                color: darkModeProvider.isDarkTheme
-                                    ? Colors.white
-                                    : Colors.grey),
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: "Type your message",
+                              hintStyle: TextStyle(
+                                  color: darkModeProvider.isDarkTheme
+                                      ? Colors.white
+                                      : Colors.grey),
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.attachment,
-                          color: darkModeProvider.isDarkTheme
-                              ? Colors.white
-                              : Colors.grey,
+                        IconButton(
+                          icon: Icon(
+                            Icons.attachment,
+                            color: darkModeProvider.isDarkTheme
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
+                          onPressed: null,
                         ),
-                        onPressed: null,
-                      ),
-                      CircleAvatar(
-                        child: IconButton(
-                            icon: Icon(
-                              Icons.send,
-                              color: Colors.white,
-                            ),
-                            onPressed: null),
-                      ),
-                    ],
+                        CircleAvatar(
+                          child: IconButton(
+                              icon: Icon(
+                                Icons.send,
+                                color: Colors.white,
+                              ),
+                              onPressed: null),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
