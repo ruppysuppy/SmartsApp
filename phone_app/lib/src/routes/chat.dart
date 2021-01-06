@@ -10,9 +10,44 @@ import '../providers/dark_mode_provider.dart';
 import '../widgets/send_media_message_btn.dart';
 import '../widgets/user_details_modal.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   static const routeName = "/chat";
+
+  @override
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
   final textController = TextEditingController();
+  final scrollController = ScrollController();
+  bool initailized;
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.minScrollExtent) {
+        final contactProvider =
+            Provider.of<ContactProvider>(context, listen: false);
+
+        contactProvider.fetchPreviousMessages(
+            Provider.of<AuthProvider>(context, listen: false).auth.uid);
+        contactProvider.resetNewMessages();
+      }
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ContactProvider>(context, listen: false)
+          .fetchPreviousMessages(
+              Provider.of<AuthProvider>(context, listen: false).auth.uid);
+    });
+
+    setState(() {
+      initailized = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +66,18 @@ class ChatPage extends StatelessWidget {
     });
 
     final contact = contactProvider.contacts[contactProvider.selectedContact];
+
+    if (contact['messages'].length > 0 && !initailized) {
+      Future.delayed(Duration.zero, () {
+        scrollController.jumpTo(
+          scrollController.position.maxScrollExtent,
+        );
+
+        setState(() {
+          initailized = true;
+        });
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -68,6 +115,7 @@ class ChatPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ListView.builder(
+                      controller: scrollController,
                       padding: EdgeInsets.all(16),
                       itemBuilder: (ctx, index) {
                         final dateCurr = DateTime.fromMillisecondsSinceEpoch(
@@ -79,6 +127,12 @@ class ChatPage extends StatelessWidget {
                         if (index == 0 || datePrev.day != dateCurr.day) {
                           return Column(
                             children: [
+                              if (contactProvider.isMessageLoading &&
+                                  index == 0) ...[
+                                SizedBox(height: 8),
+                                CircularProgressIndicator(),
+                                SizedBox(height: 4),
+                              ],
                               SizedBox(height: 4),
                               Container(
                                 child: Text(

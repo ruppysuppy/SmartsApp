@@ -125,7 +125,9 @@ class ContactProvider with ChangeNotifier {
                 ..._contacts[userIndexMap[user['uid']]]['messages'],
                 message
               ];
-              _contacts[userIndexMap[user['uid']]]['newMessages'] += 1;
+              if (selectedContact != userIndexMap[user['uid']]) {
+                _contacts[userIndexMap[user['uid']]]['newMessages'] += 1;
+              }
               notifyListeners();
             });
           });
@@ -247,5 +249,53 @@ class ContactProvider with ChangeNotifier {
     } catch (error) {
       throw error;
     }
+  }
+
+  Future<void> fetchPreviousMessages(String uid) async {
+    if (!_contacts[selectedContact]['hasMore']) {
+      return;
+    }
+
+    isMessageLoading = true;
+    notifyListeners();
+
+    final String otherId = _contacts[selectedContact]['uid'];
+    final int lastTimestamp =
+        _contacts[selectedContact]['messages'][0]['timestamp'];
+
+    final users = [otherId, uid];
+    users.sort();
+    final usersList = users.join(",");
+    final query = firestore
+        .collection("messages")
+        .where("users", isEqualTo: usersList)
+        .where("timestamp", isLessThan: lastTimestamp)
+        .orderBy("timestamp", descending: true)
+        .limit(20);
+
+    try {
+      final docs = await query.get();
+
+      if (docs.docs.length > 0) {
+        final messages = [];
+        docs.docs.forEach((doc) => messages.add({...doc.data(), uid: doc.id}));
+        _contacts[selectedContact]['messages'] = [
+          ...messages.reversed.toList(),
+          ..._contacts[selectedContact]['messages'],
+        ];
+      } else {
+        _contacts[selectedContact]['hasMore'] = false;
+      }
+    } catch (error) {
+      print(error);
+    }
+
+    isMessageLoading = false;
+    notifyListeners();
+  }
+
+  void resetNewMessages() {
+    _contacts[selectedContact]['newMessages'] = 0;
+    notifyListeners();
   }
 }
