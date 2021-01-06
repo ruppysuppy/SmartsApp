@@ -86,8 +86,10 @@ class _DpImagePickerState extends State<DpImagePicker> {
       return;
     }
 
-    final ref =
-        firebaseStorage.ref().child("profilepic").child(authProvider.auth.uid);
+    final ref = firebaseStorage
+        .ref()
+        .child("profilepic")
+        .child("${authProvider.auth.uid}.jpg");
     final uploadTask = ref.putFile(croppedImageFile);
     final url = await (await uploadTask).ref.getDownloadURL();
 

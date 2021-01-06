@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/dark_mode_provider.dart';
 import '../util/cipher.dart';
 
 class ChatItem extends StatelessWidget {
@@ -13,11 +15,14 @@ class ChatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
+    final darkModeProvider = Provider.of<DarkModeProvider>(context);
 
     final isUserSent = uid == message['sender'];
+    final text = decrypt(message['text'], sharedKey);
+    final time = DateTime.fromMillisecondsSinceEpoch(message['timestamp']);
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 16, top: 8),
       child: Row(
         mainAxisAlignment:
             isUserSent ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -34,11 +39,50 @@ class ChatItem extends StatelessWidget {
                 bottomRight:
                     isUserSent ? Radius.circular(0) : Radius.circular(12),
               ),
-              color: isUserSent ? themeData.primaryColor : Colors.grey,
+              color: isUserSent
+                  ? themeData.primaryColor
+                  : darkModeProvider.isDarkTheme
+                      ? Colors.black
+                      : themeData.backgroundColor,
+              boxShadow: [
+                BoxShadow(
+                  color: isUserSent ? themeData.primaryColor : Colors.black,
+                  spreadRadius: 0,
+                  blurRadius: 6,
+                ),
+              ],
             ),
-            child: Text(
-              decrypt(message['text'], sharedKey),
-              style: TextStyle(color: Colors.white),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                message['isMedia'] == true
+                    ? Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              isUserSent ? null : themeData.primaryColor,
+                            ),
+                          ),
+                          Image.network(text),
+                        ],
+                      )
+                    : Text(
+                        text,
+                        style: TextStyle(
+                          color: isUserSent ? Colors.white : null,
+                          fontSize: 16,
+                        ),
+                      ),
+                SizedBox(height: 4),
+                Text(
+                  "${time.hour}:${time.minute}",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
           )
         ],

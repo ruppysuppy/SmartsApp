@@ -7,10 +7,12 @@ import './user_details.dart';
 import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
 import '../providers/dark_mode_provider.dart';
+import '../widgets/send_media_message_btn.dart';
 import '../widgets/user_details_modal.dart';
 
 class ChatPage extends StatelessWidget {
   static const routeName = "/chat";
+  final textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +121,7 @@ class ChatPage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: TextField(
+                            controller: textController,
                             decoration: InputDecoration(
                               hintText: "Type your message",
                               hintStyle: TextStyle(
@@ -128,22 +131,27 @@ class ChatPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.attachment,
-                            color: darkModeProvider.isDarkTheme
-                                ? Colors.white
-                                : Colors.grey,
-                          ),
-                          onPressed: null,
-                        ),
+                        SendMediaMessageBtn(
+                            contact['uid'], contact['sharedKey']),
                         CircleAvatar(
                           child: IconButton(
                               icon: Icon(
                                 Icons.send,
                                 color: Colors.white,
                               ),
-                              onPressed: null),
+                              onPressed: () async {
+                                try {
+                                  await contactProvider.sendMessgae(
+                                    authProvider.auth.uid,
+                                    contact['uid'],
+                                    textController.text,
+                                    contact['sharedKey'],
+                                  );
+                                  textController.clear();
+                                } catch (e) {
+                                  print(e);
+                                }
+                              }),
                         ),
                       ],
                     ),
