@@ -1,12 +1,17 @@
 import 'dart:convert' as convert;
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart' show ChangeNotifier;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart' show Uuid;
 
 import '../base_url.dart';
+import '../util/cipher.dart';
 
 final firestore = FirebaseFirestore.instance;
+final firebaseStorage = FirebaseStorage.instance;
 bool isInitialized = false;
 
 class ContactProvider with ChangeNotifier {
@@ -190,6 +195,57 @@ class ContactProvider with ChangeNotifier {
       isNewUserLoading = false;
       newUserError = error.runtimeType == String ? error : error.message;
       notifyListeners();
+    }
+  }
+
+  Future<void> sendMessgae(
+    String uid,
+    String otherId,
+    String message,
+    String sharedKey,
+  ) async {
+    final encryptedMessage = encrypt(message, sharedKey);
+    final users = [otherId, uid];
+    users.sort();
+
+    final messageData = {
+      'sender': uid,
+      'users': users.join(","),
+      'text': encryptedMessage,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+    };
+    try {
+      await firestore.collection("messages").add(messageData);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<void> sendImage(
+    String uid,
+    String otherId,
+    File image,
+    String sharedKey,
+  ) async {
+    final ref =
+        firebaseStorage.ref().child("media").child("${Uuid().v4()}.jpg");
+    final uploadTask = ref.putFile(image);
+    final url = await (await uploadTask).ref.getDownloadURL();
+    final encryptedMessage = encrypt(url, sharedKey);
+    final users = [otherId, uid];
+    users.sort();
+
+    final messageData = {
+      'sender': uid,
+      'users': users.join(","),
+      'text': encryptedMessage,
+      'timestamp': DateTime.now().millisecondsSinceEpoch,
+      'isMedia': true,
+    };
+    try {
+      await firestore.collection("messages").add(messageData);
+    } catch (error) {
+      throw error;
     }
   }
 }
