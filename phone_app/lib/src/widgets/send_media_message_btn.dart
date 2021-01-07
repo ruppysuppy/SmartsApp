@@ -9,10 +9,10 @@ import '../providers/contact_provider.dart';
 import '../providers/dark_mode_provider.dart';
 
 class SendMediaMessageBtn extends StatelessWidget {
-  final String otherId;
-  final String sharedKey;
+  final String _otherId;
+  final String _sharedKey;
 
-  SendMediaMessageBtn(this.otherId, this.sharedKey);
+  SendMediaMessageBtn(this._otherId, this._sharedKey);
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +37,9 @@ class SendMediaMessageBtn extends StatelessWidget {
         final image = File(pickedFile.path);
         await contactProvider.sendImage(
           authProvider.auth.uid,
-          otherId,
+          _otherId,
           image,
-          sharedKey,
+          _sharedKey,
         );
       },
     );

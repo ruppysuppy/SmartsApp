@@ -1,3 +1,4 @@
+import 'package:Smartsapp/src/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -5,9 +6,8 @@ import './contacts.dart';
 import './user_details.dart';
 import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
-import '../providers/dark_mode_provider.dart';
 import '../widgets/chat_item.dart';
-import '../widgets/send_media_message_btn.dart';
+import '../widgets/date.dart';
 import '../widgets/user_details_modal.dart';
 
 class ChatPage extends StatefulWidget {
@@ -18,16 +18,15 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final textController = TextEditingController();
-  final scrollController = ScrollController();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
 
-    scrollController.addListener(() async {
-      if (scrollController.position.pixels ==
-          scrollController.position.minScrollExtent) {
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.minScrollExtent) {
         final shouldScroll = await Provider.of<ContactProvider>(
           context,
           listen: false,
@@ -35,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
           Provider.of<AuthProvider>(context, listen: false).auth.uid,
         );
         if (shouldScroll) {
-          scrollController.jumpTo(
+          _scrollController.jumpTo(
             MediaQuery.of(context).size.height,
           );
         }
@@ -54,9 +53,15 @@ class _ChatPageState extends State<ChatPage> {
 
       Future.delayed(
           Duration.zero,
-          () => scrollController
-              .jumpTo(scrollController.position.maxScrollExtent));
+          () => _scrollController
+              .jumpTo(_scrollController.position.maxScrollExtent));
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -65,7 +70,6 @@ class _ChatPageState extends State<ChatPage> {
     final deviceSize = MediaQuery.of(context).size;
     final authProvider = Provider.of<AuthProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
-    final darkModeProvider = Provider.of<DarkModeProvider>(context);
 
     Future.delayed(Duration.zero, () {
       if (authProvider.authData == null) {
@@ -113,7 +117,7 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      controller: scrollController,
+                      controller: _scrollController,
                       padding: EdgeInsets.all(16),
                       itemBuilder: (ctx, index) {
                         final dateCurr = DateTime.fromMillisecondsSinceEpoch(
@@ -128,30 +132,11 @@ class _ChatPageState extends State<ChatPage> {
                               if (contactProvider.isMessageLoading &&
                                   index == 0) ...[
                                 SizedBox(height: 8),
-                                CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    themeData.primaryColor,
-                                  ),
-                                ),
+                                CircularProgressIndicator(),
                                 SizedBox(height: 4),
                               ],
                               SizedBox(height: 4),
-                              Container(
-                                child: Text(
-                                  "${dateCurr.day}/${dateCurr.month}/${dateCurr.year}",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 8,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(12),
-                                  ),
-                                  color: Colors.grey,
-                                ),
-                              ),
+                              DateDisplay(dateCurr),
                               SizedBox(height: 4),
                               ChatItem(
                                 contact['messages'][index]
@@ -171,47 +156,7 @@ class _ChatPageState extends State<ChatPage> {
                       itemCount: contact['messages'].length,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: textController,
-                            decoration: InputDecoration(
-                              hintText: "Type your message",
-                              hintStyle: TextStyle(
-                                  color: darkModeProvider.isDarkTheme
-                                      ? Colors.white
-                                      : Colors.grey),
-                            ),
-                          ),
-                        ),
-                        SendMediaMessageBtn(
-                            contact['uid'], contact['sharedKey']),
-                        CircleAvatar(
-                          child: IconButton(
-                              icon: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ),
-                              onPressed: () async {
-                                try {
-                                  await contactProvider.sendMessgae(
-                                    authProvider.auth.uid,
-                                    contact['uid'],
-                                    textController.text,
-                                    contact['sharedKey'],
-                                  );
-                                  textController.clear();
-                                } catch (e) {
-                                  print(e);
-                                }
-                              }),
-                        ),
-                      ],
-                    ),
-                  ),
+                  ChatInput(),
                 ],
               ),
       ),

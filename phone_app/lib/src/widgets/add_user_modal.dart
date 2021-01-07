@@ -53,9 +53,7 @@ class _AddUserModalState extends State<AddUserModal> {
           ],
           if (contactProvider.isNewUserLoading) ...[
             SizedBox(height: 6),
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(themeData.primaryColor),
-            ),
+            CircularProgressIndicator(),
           ] else
             RaisedButton(
               child: Text("Add User"),

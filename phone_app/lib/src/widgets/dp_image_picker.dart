@@ -39,10 +39,7 @@ class _DpImagePickerState extends State<DpImagePicker> {
             "Select Profile Picture",
           ),
         ),
-        if (isLoading)
-          CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation(themeData.primaryColor),
-          ),
+        if (isLoading) CircularProgressIndicator(),
         if (isDone)
           Icon(
             Icons.done,

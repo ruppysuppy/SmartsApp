@@ -30,16 +30,13 @@ const primarySwatch = MaterialColor(0xFF7905FF, {
 
 const blankPage = Scaffold(
   body: Center(
-    child: CircularProgressIndicator(
-      valueColor: AlwaysStoppedAnimation<Color>(primarySwatch),
-    ),
+    child: CircularProgressIndicator(),
   ),
 );
 
 ThemeData generateThemeData(bool isDark) {
   return ThemeData(
     primarySwatch: primarySwatch,
-    accentColor: Colors.tealAccent,
     fontFamily: "Lato",
     backgroundColor: isDark ? Color(0xFF222222) : Color(0xFFF0F0F0),
     errorColor: isDark ? Color(0xFFFF3E3E) : Color(0xFFFF0000),

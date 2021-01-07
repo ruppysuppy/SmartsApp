@@ -72,7 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         bottom: 8,
                         right: 8,
                         child: CircleAvatar(
-                          backgroundColor: themeData.accentColor,
+                          backgroundColor: Colors.tealAccent,
                           child: Icon(
                             Icons.edit,
                             color: Colors.white,
@@ -101,11 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Row(
                   children: [
                     authProvider.isLoading
-                        ? CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              themeData.primaryColor,
-                            ),
-                          )
+                        ? CircularProgressIndicator()
                         : RaisedButton(
                             onPressed: () {
                               authProvider.updateAbout(about);

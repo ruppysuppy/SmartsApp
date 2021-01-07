@@ -35,14 +35,14 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.forward();
+      _controller?.forward();
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -102,7 +102,7 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
                           children: [
                             CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                isUserSent ? null : themeData.primaryColor,
+                                isUserSent ? Colors.tealAccent : null,
                               ),
                             ),
                             GestureDetector(

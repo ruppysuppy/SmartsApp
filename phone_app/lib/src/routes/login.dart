@@ -71,12 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                if (authProvider.isLoading)
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      themeData.primaryColor.withOpacity(0.8),
-                    ),
-                  ),
+                if (authProvider.isLoading) CircularProgressIndicator(),
                 Builder(
                   builder: (ctx) => Visibility(
                     child: RaisedButton(

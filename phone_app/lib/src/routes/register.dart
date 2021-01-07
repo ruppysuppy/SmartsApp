@@ -72,12 +72,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                if (authProvider.isLoading)
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      themeData.primaryColor.withOpacity(0.8),
-                    ),
-                  ),
+                if (authProvider.isLoading) CircularProgressIndicator(),
                 Builder(
                   builder: (ctx) => Visibility(
                     child: RaisedButton(
