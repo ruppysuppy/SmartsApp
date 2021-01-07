@@ -15,7 +15,7 @@ import './routes/settings.dart';
 import './routes/user_details.dart';
 import './routes/view_image.dart';
 
-const primarySwatch = MaterialColor(0xFF7905FF, {
+const _primarySwatch = MaterialColor(0xFF7905FF, {
   50: Color.fromRGBO(121, 5, 255, 0.1),
   100: Color.fromRGBO(121, 5, 255, 0.2),
   200: Color.fromRGBO(121, 5, 255, 0.3),
@@ -28,21 +28,21 @@ const primarySwatch = MaterialColor(0xFF7905FF, {
   900: Color.fromRGBO(121, 5, 255, 1.0),
 });
 
-const blankPage = Scaffold(
+const _blankPage = Scaffold(
   body: Center(
     child: CircularProgressIndicator(),
   ),
 );
 
-ThemeData generateThemeData(bool isDark) {
+ThemeData _generateThemeData(bool isDark) {
   return ThemeData(
-    primarySwatch: primarySwatch,
+    primarySwatch: _primarySwatch,
     fontFamily: "Lato",
     backgroundColor: isDark ? Color(0xFF222222) : Color(0xFFF0F0F0),
     errorColor: isDark ? Color(0xFFFF3E3E) : Color(0xFFFF0000),
     appBarTheme: AppBarTheme(elevation: isDark ? 0 : 4),
     buttonTheme: ButtonThemeData(
-      buttonColor: primarySwatch,
+      buttonColor: _primarySwatch,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       textTheme: ButtonTextTheme.primary,
     ),
@@ -74,11 +74,11 @@ ThemeData generateThemeData(bool isDark) {
     inputDecorationTheme: InputDecorationTheme(
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(
-          color: primarySwatch,
+          color: _primarySwatch,
         ),
       ),
       hintStyle: TextStyle(color: Color(0xFF808080)),
-      labelStyle: TextStyle(color: primarySwatch),
+      labelStyle: TextStyle(color: _primarySwatch),
     ),
     dividerColor: isDark ? Colors.white : Colors.black,
   );
@@ -105,13 +105,13 @@ class App extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return MaterialApp(
                 title: "SmartApp",
-                home: blankPage,
+                home: _blankPage,
               );
             }
             return Consumer<DarkModeProvider>(
               builder: (_, darkModeProvider, _2) => MaterialApp(
                 title: "SmartApp",
-                theme: generateThemeData(darkModeProvider.isDarkTheme),
+                theme: _generateThemeData(darkModeProvider.isDarkTheme),
                 home: StreamBuilder<User>(
                   stream: FirebaseAuth.instance.authStateChanges(),
                   builder: (_, snapshot) {
@@ -127,12 +127,12 @@ class App extends StatelessWidget {
                         builder: (_, snapshotAuthData) =>
                             snapshotAuthData.connectionState ==
                                     ConnectionState.waiting
-                                ? blankPage
+                                ? _blankPage
                                 : ContactsPage(),
                         future: authProvider.getUserData(),
                       );
                     } else {
-                      return blankPage;
+                      return _blankPage;
                     }
                   },
                 ),
