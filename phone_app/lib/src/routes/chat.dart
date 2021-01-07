@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smartsapp/src/widgets/chat_item.dart';
 
 import './contacts.dart';
 import './user_details.dart';
 import '../providers/auth_provider.dart';
 import '../providers/contact_provider.dart';
 import '../providers/dark_mode_provider.dart';
+import '../widgets/chat_item.dart';
 import '../widgets/send_media_message_btn.dart';
 import '../widgets/user_details_modal.dart';
 
@@ -20,32 +20,42 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final textController = TextEditingController();
   final scrollController = ScrollController();
-  bool initailized;
 
   @override
   void initState() {
     super.initState();
 
-    scrollController.addListener(() {
+    scrollController.addListener(() async {
       if (scrollController.position.pixels ==
           scrollController.position.minScrollExtent) {
-        final contactProvider =
-            Provider.of<ContactProvider>(context, listen: false);
-
-        contactProvider.fetchPreviousMessages(
-            Provider.of<AuthProvider>(context, listen: false).auth.uid);
-        contactProvider.resetNewMessages();
+        final shouldScroll = await Provider.of<ContactProvider>(
+          context,
+          listen: false,
+        ).fetchPreviousMessages(
+          Provider.of<AuthProvider>(context, listen: false).auth.uid,
+        );
+        if (shouldScroll) {
+          scrollController.jumpTo(
+            MediaQuery.of(context).size.height,
+          );
+        }
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<ContactProvider>(context, listen: false)
-          .fetchPreviousMessages(
-              Provider.of<AuthProvider>(context, listen: false).auth.uid);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final contactProvider = Provider.of<ContactProvider>(
+        context,
+        listen: false,
+      );
+      contactProvider.resetNewMessages();
+      await contactProvider.fetchPreviousMessages(
+        Provider.of<AuthProvider>(context, listen: false).auth.uid,
+      );
 
-    setState(() {
-      initailized = false;
+      Future.delayed(
+          Duration.zero,
+          () => scrollController
+              .jumpTo(scrollController.position.maxScrollExtent));
     });
   }
 
@@ -66,18 +76,6 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     final contact = contactProvider.contacts[contactProvider.selectedContact];
-
-    if (contact['messages'].length > 0 && !initailized) {
-      Future.delayed(Duration.zero, () {
-        scrollController.jumpTo(
-          scrollController.position.maxScrollExtent,
-        );
-
-        setState(() {
-          initailized = true;
-        });
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(

@@ -21,6 +21,7 @@ class ContactProvider with ChangeNotifier {
   bool isNewUserLoading = false;
   String error = "";
   String newUserError = "";
+  String imageUrl = "";
   int selectedContact;
   bool shouldPlayReceiveAudio = false;
   bool shouldPlaySendAudio = false;
@@ -251,9 +252,9 @@ class ContactProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchPreviousMessages(String uid) async {
+  Future<bool> fetchPreviousMessages(String uid) async {
     if (!_contacts[selectedContact]['hasMore']) {
-      return;
+      return false;
     }
 
     isMessageLoading = true;
@@ -283,6 +284,10 @@ class ContactProvider with ChangeNotifier {
           ...messages.reversed.toList(),
           ..._contacts[selectedContact]['messages'],
         ];
+
+        isMessageLoading = false;
+        notifyListeners();
+        return true;
       } else {
         _contacts[selectedContact]['hasMore'] = false;
       }
@@ -292,10 +297,16 @@ class ContactProvider with ChangeNotifier {
 
     isMessageLoading = false;
     notifyListeners();
+    return false;
   }
 
   void resetNewMessages() {
     _contacts[selectedContact]['newMessages'] = 0;
+    notifyListeners();
+  }
+
+  void selectImage(String url) {
+    imageUrl = url;
     notifyListeners();
   }
 }
