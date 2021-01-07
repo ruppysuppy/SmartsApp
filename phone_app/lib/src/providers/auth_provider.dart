@@ -7,23 +7,78 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../base_url.dart';
 
-final firebaseAuth = FirebaseAuth.instance;
-final firestore = FirebaseFirestore.instance;
+final _firebaseAuth = FirebaseAuth.instance;
+final _firestore = FirebaseFirestore.instance;
 
 class AuthProvider with ChangeNotifier {
-  User auth;
-  Map<String, dynamic> authData;
-  bool isLoading = false;
-  final googleSignIn = GoogleSignIn(
+  User _auth;
+  Map<String, dynamic> _authData;
+  bool _isLoading = false;
+  final _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
     ],
   );
 
+  User get auth {
+    return _auth;
+  }
+
+  Map<String, dynamic> get authData {
+    return {..._authData};
+  }
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  Future<void> getUserData() async {
+    setIsLoading(true);
+    final uid = _firebaseAuth.currentUser.uid;
+
+    final data = await _firestore.collection("users").doc(uid).get();
+    if (!data.exists) {
+      setIsLoading(false);
+      return;
+    }
+
+    final userData = data.data();
+
+    final key = await _firestore.collection("keys").doc(uid).get();
+    userData["privateKey"] = key.data()["privateKey"];
+
+    _authData = userData;
+    setIsLoading(false);
+  }
+
+  void login() {
+    if (_firebaseAuth.currentUser != null) {
+      _auth = _firebaseAuth.currentUser;
+    }
+  }
+
+  Future<void> loginWithCredentails() async {
+    setIsLoading(true);
+
+    await _googleSignIn.signIn();
+    if (_googleSignIn.currentUser != null) {
+      final googleAuth = await _googleSignIn.currentUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await _firebaseAuth.signInWithCredential(credential);
+      login();
+    }
+
+    setIsLoading(false);
+  }
+
   Future<void> loginWithEmail(String email, String password) async {
     setIsLoading(true);
 
-    await firebaseAuth.signInWithEmailAndPassword(
+    await _firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -32,28 +87,19 @@ class AuthProvider with ChangeNotifier {
     setIsLoading(false);
   }
 
-  Future<void> loginWithCredentails() async {
-    setIsLoading(true);
-
-    await googleSignIn.signIn();
-    if (googleSignIn.currentUser != null) {
-      final googleAuth = await googleSignIn.currentUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await firebaseAuth.signInWithCredential(credential);
-      login();
-    }
-
-    setIsLoading(false);
+  void logout() {
+    _firebaseAuth.signOut();
+    _googleSignIn.disconnect();
+    _auth = null;
+    _authData = null;
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> registerWithEmail(String email, String password) async {
     setIsLoading(true);
 
-    await firebaseAuth.createUserWithEmailAndPassword(
+    await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -63,47 +109,13 @@ class AuthProvider with ChangeNotifier {
   }
 
   void setIsLoading(bool value) {
-    isLoading = value;
-    notifyListeners();
-  }
-
-  Future<void> getUserData() async {
-    setIsLoading(true);
-    final uid = firebaseAuth.currentUser.uid;
-
-    final data = await firestore.collection("users").doc(uid).get();
-    if (!data.exists) {
-      setIsLoading(false);
-      return;
-    }
-
-    final userData = data.data();
-
-    final key = await firestore.collection("keys").doc(uid).get();
-    userData["privateKey"] = key.data()["privateKey"];
-
-    authData = userData;
-    setIsLoading(false);
-  }
-
-  void login() {
-    if (firebaseAuth.currentUser != null) {
-      auth = firebaseAuth.currentUser;
-    }
-  }
-
-  void logout() {
-    firebaseAuth.signOut();
-    googleSignIn.disconnect();
-    auth = null;
-    authData = null;
-    isLoading = false;
+    _isLoading = value;
     notifyListeners();
   }
 
   Future<void> setUserData(Map<String, String> userData, String uid) async {
     final username = userData['username'];
-    final userRef = firestore.collection("users").where(
+    final userRef = _firestore.collection("users").where(
           "username",
           isEqualTo: username,
         );
@@ -116,8 +128,8 @@ class AuthProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       final keys = convert.jsonDecode(response.body) as Map<String, dynamic>;
 
-      final setKeyRef = firestore.collection("keys").doc(uid);
-      final setUserRef = firestore.collection("users").doc(uid);
+      final setKeyRef = _firestore.collection("keys").doc(uid);
+      final setUserRef = _firestore.collection("users").doc(uid);
 
       final userDataWithCredential = {...userData};
       userDataWithCredential['uid'] = uid;
@@ -129,28 +141,28 @@ class AuthProvider with ChangeNotifier {
       await setUserRef.set(userDataWithCredential);
 
       userDataWithCredential['privateKey'] = keys['private_key'];
-      authData = userDataWithCredential;
+      _authData = userDataWithCredential;
     } else {
       throw "An Error Occoured!";
     }
   }
 
-  void updateDp(String url) {
-    firestore.collection("users").doc(auth.uid).update({
-      "photoUrl": url,
-    });
-    authData['photoUrl'] = url;
-    notifyListeners();
-  }
-
   Future<void> updateAbout(String about) async {
     setIsLoading(true);
 
-    await firestore.collection("users").doc(auth.uid).update({
+    await _firestore.collection("users").doc(_auth.uid).update({
       "about": about,
     });
-    authData['about'] = about;
+    _authData['about'] = about;
 
     setIsLoading(false);
+  }
+
+  Future<void> updateDp(String url) async {
+    await _firestore.collection("users").doc(_auth.uid).update({
+      "photoUrl": url,
+    });
+    _authData['photoUrl'] = url;
+    notifyListeners();
   }
 }

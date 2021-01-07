@@ -10,168 +10,75 @@ import 'package:uuid/uuid.dart' show Uuid;
 import '../base_url.dart';
 import '../util/cipher.dart';
 
-final firestore = FirebaseFirestore.instance;
-final firebaseStorage = FirebaseStorage.instance;
-bool isInitialized = false;
+final _firestore = FirebaseFirestore.instance;
+final _firebaseStorage = FirebaseStorage.instance;
+bool _isInitialized = false;
 
 class ContactProvider with ChangeNotifier {
   List<Map<String, dynamic>> _contacts = [];
-  bool isLoading = false;
-  bool isMessageLoading = false;
-  bool isNewUserLoading = false;
-  String error = "";
-  String newUserError = "";
-  String imageUrl = "";
-  int selectedContact;
-  bool shouldPlayReceiveAudio = false;
-  bool shouldPlaySendAudio = false;
+  String _error = "";
+  String _imageUrl = "";
+  bool _isLoading = false;
+  bool _isMessageLoading = false;
+  bool _isNewUserLoading = false;
+  String _newUserError = "";
+  int _selectedContact;
 
-  List<Map<String, dynamic>> previousData = [];
-  final userIndexMap = {};
-  final messageSnapshotListeners = Set<String>();
-
-  void getContact(String uid, String privateKey) async {
-    if (isInitialized) {
-      return;
-    }
-    isInitialized = true;
-    setIsLoading(true);
-    final contactsRef = firestore.collection("contacts").doc(uid);
-    contactsRef.snapshots().listen((docSnapshot) async {
-      if (!docSnapshot.exists) {
-        setIsLoading(false);
-        return;
-      }
-
-      List<Map<String, dynamic>> currContacts = [];
-      final List<String> contactList =
-          (docSnapshot.data()['contacts'] as List<dynamic>)
-              .map((e) => e.toString())
-              .toList();
-
-      final userFutureArr = contactList
-          .map((userId) => firestore.collection("users").doc(userId).get())
-          .toList();
-      final users = await Future.wait(userFutureArr);
-      final usersDataArr = users.map((user) => user.data()).toList();
-
-      final List<Future<http.Response>> keyFutureArr = [];
-      final List<List<Map<String, dynamic>>> messagesArr = [];
-      for (var i = 0; i < usersDataArr.length; i++) {
-        final user = usersDataArr[i];
-        if (previousData.length > i && previousData[i]['uid'] == user['uid']) {
-          keyFutureArr.add(
-            Future.delayed(
-                Duration.zero,
-                () => http.Response(
-                    convert.json.encode({
-                      'shared_key': previousData[i]['sharedKey'],
-                    }),
-                    200)),
-          );
-          messagesArr.add([
-            ...previousData[i]['messages'],
-          ]);
-        } else {
-          keyFutureArr.add(http.get(
-              "$BASE_URL/generate-shared-key?local_private_key=$privateKey&remote_public_key=${user['publicKey']}"));
-          messagesArr.add([]);
-        }
-      }
-      final keys = (await Future.wait(keyFutureArr))
-          .map((res) => convert.json.decode(res.body) as Map<String, dynamic>)
-          .toList();
-      for (var i = 0; i < usersDataArr.length; i++) {
-        final user = usersDataArr[i];
-
-        if (i < previousData.length) {
-          currContacts.add({
-            ...previousData[i],
-            ...user,
-          });
-        } else {
-          currContacts.add({
-            ...user,
-            'sharedKey': keys[i]['shared_key'],
-            'messages': messagesArr[i],
-            'hasMore': true,
-            'newMessages': 0,
-          });
-        }
-        userIndexMap[user['uid']] = i;
-      }
-      _contacts = currContacts;
-      previousData = currContacts;
-
-      usersDataArr.forEach((user) {
-        if (!messageSnapshotListeners.contains(user['uid'])) {
-          messageSnapshotListeners.add(user['uid']);
-          final usersField = [uid, user['uid']];
-          usersField.sort();
-          final usersList = usersField.join(",");
-
-          firestore
-              .collection("messages")
-              .where("users", isEqualTo: usersList)
-              .orderBy("timestamp", descending: true)
-              .limit(1)
-              .snapshots()
-              .listen((docSnapshot) {
-            docSnapshot.docs.forEach((snapshot) {
-              final message = {
-                ...snapshot.data(),
-                uid: snapshot.id,
-              };
-              _contacts[userIndexMap[user['uid']]]['messages'] = [
-                ..._contacts[userIndexMap[user['uid']]]['messages'],
-                message
-              ];
-              if (selectedContact != userIndexMap[user['uid']]) {
-                _contacts[userIndexMap[user['uid']]]['newMessages'] += 1;
-              }
-              notifyListeners();
-            });
-          });
-        }
-      });
-
-      setIsLoading(false);
-    });
-  }
-
-  setIsLoading(bool value) {
-    isLoading = value;
-    notifyListeners();
-  }
-
-  selectContact(int index) {
-    selectedContact = index;
-    notifyListeners();
-  }
+  List<Map<String, dynamic>> _previousData = [];
+  final _userIndexMap = {};
+  final _messageSnapshotListeners = Set<String>();
 
   List<Map<String, dynamic>> get contacts {
     return [..._contacts];
+  }
+
+  String get error {
+    return _error;
+  }
+
+  String get imageUrl {
+    return _imageUrl;
+  }
+
+  bool get isLoading {
+    return _isLoading;
+  }
+
+  bool get isMessageLoading {
+    return _isMessageLoading;
+  }
+
+  bool get isNewUserLoading {
+    return _isNewUserLoading;
+  }
+
+  String get newUserError {
+    return _newUserError;
+  }
+
+  int get selectedContact {
+    return _selectedContact;
   }
 
   Future<void> addUser(
     String username,
     String userId,
   ) async {
-    isNewUserLoading = true;
-    newUserError = "";
+    _isNewUserLoading = true;
+    _newUserError = "";
     notifyListeners();
 
     try {
       final userRef =
-          firestore.collection("users").where("username", isEqualTo: username);
+          _firestore.collection("users").where("username", isEqualTo: username);
       final userData = await userRef.get();
       if (userData.size == 0) {
         throw "User does not exist";
       }
 
       final uid = (userData.docs[0].data())['uid'];
-      final userContactsRef = firestore.collection("contacts").doc(userId);
-      final contactContactsRef = firestore.collection("contacts").doc(uid);
+      final userContactsRef = _firestore.collection("contacts").doc(userId);
+      final contactContactsRef = _firestore.collection("contacts").doc(uid);
 
       if (!(await userContactsRef.get()).exists) {
         await userContactsRef.set({
@@ -191,14 +98,187 @@ class ContactProvider with ChangeNotifier {
           'contacts': FieldValue.arrayUnion([userId]),
         });
 
-        isNewUserLoading = false;
+        _isNewUserLoading = false;
         notifyListeners();
       }
-    } catch (error) {
-      isNewUserLoading = false;
-      newUserError = error.runtimeType == String ? error : error.message;
+    } catch (_error) {
+      _isNewUserLoading = false;
+      _newUserError = _error.runtimeType == String ? _error : _error.message;
       notifyListeners();
     }
+  }
+
+  Future<bool> fetchPreviousMessages(String uid) async {
+    if (!_contacts[_selectedContact]['hasMore']) {
+      return false;
+    }
+
+    _isMessageLoading = true;
+    notifyListeners();
+
+    final String otherId = _contacts[_selectedContact]['uid'];
+    final int lastTimestamp =
+        _contacts[_selectedContact]['messages'][0]['timestamp'];
+
+    final users = [otherId, uid];
+    users.sort();
+    final usersList = users.join(",");
+    final query = _firestore
+        .collection("messages")
+        .where("users", isEqualTo: usersList)
+        .where("timestamp", isLessThan: lastTimestamp)
+        .orderBy("timestamp", descending: true)
+        .limit(20);
+
+    try {
+      final docs = await query.get();
+
+      if (docs.docs.length > 0) {
+        final messages = [];
+        docs.docs.forEach((doc) => messages.add({...doc.data(), uid: doc.id}));
+        _contacts[_selectedContact]['messages'] = [
+          ...messages.reversed.toList(),
+          ..._contacts[_selectedContact]['messages'],
+        ];
+
+        _isMessageLoading = false;
+        notifyListeners();
+        return true;
+      } else {
+        _contacts[_selectedContact]['hasMore'] = false;
+      }
+    } catch (_error) {
+      print(_error);
+    }
+
+    _isMessageLoading = false;
+    notifyListeners();
+    return false;
+  }
+
+  void getContact(String uid, String privateKey) async {
+    if (_isInitialized) {
+      return;
+    }
+    _isInitialized = true;
+    setIsLoading(true);
+    final contactsRef = _firestore.collection("contacts").doc(uid);
+    contactsRef.snapshots().listen((docSnapshot) async {
+      if (!docSnapshot.exists) {
+        setIsLoading(false);
+        return;
+      }
+
+      List<Map<String, dynamic>> currContacts = [];
+      final List<String> contactList =
+          (docSnapshot.data()['contacts'] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList();
+
+      final userFutureArr = contactList
+          .map((userId) => _firestore.collection("users").doc(userId).get())
+          .toList();
+      final users = await Future.wait(userFutureArr);
+      final usersDataArr = users.map((user) => user.data()).toList();
+
+      final List<Future<http.Response>> keyFutureArr = [];
+      final List<List<Map<String, dynamic>>> messagesArr = [];
+      for (var i = 0; i < usersDataArr.length; i++) {
+        final user = usersDataArr[i];
+        if (_previousData.length > i &&
+            _previousData[i]['uid'] == user['uid']) {
+          keyFutureArr.add(
+            Future.delayed(
+                Duration.zero,
+                () => http.Response(
+                    convert.json.encode({
+                      'shared_key': _previousData[i]['sharedKey'],
+                    }),
+                    200)),
+          );
+          messagesArr.add([
+            ..._previousData[i]['messages'],
+          ]);
+        } else {
+          keyFutureArr.add(http.get(
+              "$BASE_URL/generate-shared-key?local_private_key=$privateKey&remote_public_key=${user['publicKey']}"));
+          messagesArr.add([]);
+        }
+      }
+      final keys = (await Future.wait(keyFutureArr))
+          .map((res) => convert.json.decode(res.body) as Map<String, dynamic>)
+          .toList();
+      for (var i = 0; i < usersDataArr.length; i++) {
+        final user = usersDataArr[i];
+
+        if (i < _previousData.length) {
+          currContacts.add({
+            ..._previousData[i],
+            ...user,
+          });
+        } else {
+          currContacts.add({
+            ...user,
+            'sharedKey': keys[i]['shared_key'],
+            'messages': messagesArr[i],
+            'hasMore': true,
+            'newMessages': 0,
+          });
+        }
+        _userIndexMap[user['uid']] = i;
+      }
+      _contacts = currContacts;
+      _previousData = currContacts;
+
+      usersDataArr.forEach((user) {
+        if (!_messageSnapshotListeners.contains(user['uid'])) {
+          _messageSnapshotListeners.add(user['uid']);
+          final usersField = [uid, user['uid']];
+          usersField.sort();
+          final usersList = usersField.join(",");
+
+          _firestore
+              .collection("messages")
+              .where("users", isEqualTo: usersList)
+              .orderBy("timestamp", descending: true)
+              .limit(1)
+              .snapshots()
+              .listen((docSnapshot) {
+            docSnapshot.docs.forEach((snapshot) {
+              final message = {
+                ...snapshot.data(),
+                uid: snapshot.id,
+              };
+              _contacts[_userIndexMap[user['uid']]]['messages'] = [
+                ..._contacts[_userIndexMap[user['uid']]]['messages'],
+                message
+              ];
+              if (_selectedContact != _userIndexMap[user['uid']]) {
+                _contacts[_userIndexMap[user['uid']]]['newMessages'] += 1;
+              }
+              notifyListeners();
+            });
+          });
+        }
+      });
+
+      setIsLoading(false);
+    });
+  }
+
+  void resetNewMessages() {
+    _contacts[_selectedContact]['newMessages'] = 0;
+    notifyListeners();
+  }
+
+  selectContact(int index) {
+    _selectedContact = index;
+    notifyListeners();
+  }
+
+  void selectImage(String url) {
+    _imageUrl = url;
+    notifyListeners();
   }
 
   Future<void> sendMessgae(
@@ -218,9 +298,9 @@ class ContactProvider with ChangeNotifier {
       'timestamp': DateTime.now().millisecondsSinceEpoch,
     };
     try {
-      await firestore.collection("messages").add(messageData);
-    } catch (error) {
-      throw error;
+      await _firestore.collection("messages").add(messageData);
+    } catch (_error) {
+      throw _error;
     }
   }
 
@@ -231,7 +311,7 @@ class ContactProvider with ChangeNotifier {
     String sharedKey,
   ) async {
     final ref =
-        firebaseStorage.ref().child("media").child("${Uuid().v4()}.jpg");
+        _firebaseStorage.ref().child("media").child("${Uuid().v4()}.jpg");
     final uploadTask = ref.putFile(image);
     final url = await (await uploadTask).ref.getDownloadURL();
     final encryptedMessage = encrypt(url, sharedKey);
@@ -246,67 +326,14 @@ class ContactProvider with ChangeNotifier {
       'isMedia': true,
     };
     try {
-      await firestore.collection("messages").add(messageData);
-    } catch (error) {
-      throw error;
+      await _firestore.collection("messages").add(messageData);
+    } catch (_error) {
+      throw _error;
     }
   }
 
-  Future<bool> fetchPreviousMessages(String uid) async {
-    if (!_contacts[selectedContact]['hasMore']) {
-      return false;
-    }
-
-    isMessageLoading = true;
-    notifyListeners();
-
-    final String otherId = _contacts[selectedContact]['uid'];
-    final int lastTimestamp =
-        _contacts[selectedContact]['messages'][0]['timestamp'];
-
-    final users = [otherId, uid];
-    users.sort();
-    final usersList = users.join(",");
-    final query = firestore
-        .collection("messages")
-        .where("users", isEqualTo: usersList)
-        .where("timestamp", isLessThan: lastTimestamp)
-        .orderBy("timestamp", descending: true)
-        .limit(20);
-
-    try {
-      final docs = await query.get();
-
-      if (docs.docs.length > 0) {
-        final messages = [];
-        docs.docs.forEach((doc) => messages.add({...doc.data(), uid: doc.id}));
-        _contacts[selectedContact]['messages'] = [
-          ...messages.reversed.toList(),
-          ..._contacts[selectedContact]['messages'],
-        ];
-
-        isMessageLoading = false;
-        notifyListeners();
-        return true;
-      } else {
-        _contacts[selectedContact]['hasMore'] = false;
-      }
-    } catch (error) {
-      print(error);
-    }
-
-    isMessageLoading = false;
-    notifyListeners();
-    return false;
-  }
-
-  void resetNewMessages() {
-    _contacts[selectedContact]['newMessages'] = 0;
-    notifyListeners();
-  }
-
-  void selectImage(String url) {
-    imageUrl = url;
+  setIsLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 }

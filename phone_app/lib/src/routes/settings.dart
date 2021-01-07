@@ -130,10 +130,10 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void setImageUrl(String url, AuthProvider authProvider) {
-    authProvider.updateDp(url);
+  Future<void> setImageUrl(String url, AuthProvider authProvider) async {
+    await authProvider.updateDp(url);
     Future.delayed(
-      Duration(seconds: 1),
+      Duration(milliseconds: 500),
       () => setState(() {
         isUpdating = false;
       }),
