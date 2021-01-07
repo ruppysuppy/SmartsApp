@@ -6,12 +6,44 @@ import '../providers/dark_mode_provider.dart';
 import '../routes/view_image.dart';
 import '../util/cipher.dart';
 
-class ChatItem extends StatelessWidget {
+class ChatItem extends StatefulWidget {
   final Map<String, dynamic> message;
   final String uid;
   final String sharedKey;
 
   ChatItem(this.message, this.uid, this.sharedKey);
+
+  @override
+  _ChatItemState createState() => _ChatItemState();
+}
+
+class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +52,10 @@ class ChatItem extends StatelessWidget {
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
 
-    final isUserSent = uid == message['sender'];
-    final text = decrypt(message['text'], sharedKey);
-    final time = DateTime.fromMillisecondsSinceEpoch(message['timestamp']);
+    final isUserSent = widget.uid == widget.message['sender'];
+    final text = decrypt(widget.message['text'], widget.sharedKey);
+    final time =
+        DateTime.fromMillisecondsSinceEpoch(widget.message['timestamp']);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16, top: 8),
@@ -30,69 +63,75 @@ class ChatItem extends StatelessWidget {
         mainAxisAlignment:
             isUserSent ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            constraints: BoxConstraints(maxWidth: 0.8 * deviceSize.width),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-                bottomLeft:
-                    isUserSent ? Radius.circular(12) : Radius.circular(0),
-                bottomRight:
-                    isUserSent ? Radius.circular(0) : Radius.circular(12),
-              ),
-              color: isUserSent
-                  ? themeData.primaryColor
-                  : darkModeProvider.isDarkTheme
-                      ? Colors.black
-                      : themeData.backgroundColor,
-              boxShadow: [
-                BoxShadow(
-                  color: isUserSent ? themeData.primaryColor : Colors.black,
-                  spreadRadius: 0,
-                  blurRadius: 6,
+          ScaleTransition(
+            scale: _animation,
+            alignment:
+                isUserSent ? Alignment.bottomRight : Alignment.bottomLeft,
+            child: Container(
+              key: Key(widget.message['uid']),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              constraints: BoxConstraints(maxWidth: 0.8 * deviceSize.width),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                  bottomLeft:
+                      isUserSent ? Radius.circular(12) : Radius.circular(0),
+                  bottomRight:
+                      isUserSent ? Radius.circular(0) : Radius.circular(12),
                 ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                message['isMedia'] == true
-                    ? Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              isUserSent ? null : themeData.primaryColor,
-                            ),
-                          ),
-                          GestureDetector(
-                            child: Image.network(text),
-                            onTap: () {
-                              contactProvider.selectImage(text);
-                              Navigator.of(context)
-                                  .pushNamed(ViewImagePage.routeName);
-                            },
-                          ),
-                        ],
-                      )
-                    : Text(
-                        text,
-                        style: TextStyle(
-                          color: isUserSent ? Colors.white : null,
-                          fontSize: 16,
-                        ),
-                      ),
-                SizedBox(height: 4),
-                Text(
-                  "${time.hour}:${time.minute.toString().padLeft(2, '0')}",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
+                color: isUserSent
+                    ? themeData.primaryColor
+                    : darkModeProvider.isDarkTheme
+                        ? Colors.black
+                        : themeData.backgroundColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: isUserSent ? themeData.primaryColor : Colors.black,
+                    spreadRadius: 0,
+                    blurRadius: 6,
                   ),
-                ),
-              ],
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  widget.message['isMedia'] == true
+                      ? Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                isUserSent ? null : themeData.primaryColor,
+                              ),
+                            ),
+                            GestureDetector(
+                              child: Image.network(text),
+                              onTap: () {
+                                contactProvider.selectImage(text);
+                                Navigator.of(context)
+                                    .pushNamed(ViewImagePage.routeName);
+                              },
+                            ),
+                          ],
+                        )
+                      : Text(
+                          text,
+                          style: TextStyle(
+                            color: isUserSent ? Colors.white : null,
+                            fontSize: 16,
+                          ),
+                        ),
+                  SizedBox(height: 4),
+                  Text(
+                    "${time.hour}:${time.minute.toString().padLeft(2, '0')}",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         ],

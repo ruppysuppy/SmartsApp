@@ -128,7 +128,11 @@ class _ChatPageState extends State<ChatPage> {
                               if (contactProvider.isMessageLoading &&
                                   index == 0) ...[
                                 SizedBox(height: 8),
-                                CircularProgressIndicator(),
+                                CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    themeData.primaryColor,
+                                  ),
+                                ),
                                 SizedBox(height: 4),
                               ],
                               SizedBox(height: 4),
