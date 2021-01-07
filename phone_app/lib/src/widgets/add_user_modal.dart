@@ -10,13 +10,25 @@ class AddUserModal extends StatefulWidget {
 }
 
 class _AddUserModalState extends State<AddUserModal> {
+  TextEditingController _textController;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final themeData = Theme.of(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
-
-    final controller = TextEditingController();
+    final themeData = Theme.of(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -28,13 +40,13 @@ class _AddUserModalState extends State<AddUserModal> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Enter Username",
               labelText: "Username",
             ),
-            controller: controller,
+            controller: _textController,
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           if (contactProvider.newUserError.isNotEmpty) ...[
             Row(
               children: [
@@ -42,27 +54,50 @@ class _AddUserModalState extends State<AddUserModal> {
                   Icons.error,
                   color: themeData.errorColor,
                 ),
-                SizedBox(width: 4),
+                const SizedBox(width: 4),
                 Text(
                   contactProvider.newUserError,
                   style: TextStyle(color: themeData.errorColor),
                 ),
               ],
             ),
-            SizedBox(height: 6),
+            const SizedBox(height: 6),
           ],
           if (contactProvider.isNewUserLoading) ...[
-            SizedBox(height: 6),
-            CircularProgressIndicator(),
+            const SizedBox(height: 6),
+            const CircularProgressIndicator(),
           ] else
             RaisedButton(
-              child: Text("Add User"),
+              child: const Text("Add User"),
               onPressed: () async {
-                await contactProvider.addUser(
-                  controller.text,
-                  authProvider.auth.uid,
-                );
+                try {
+                  await contactProvider.addUser(
+                    _textController.text,
+                    authProvider.auth.uid,
+                  );
+                } catch (e) {
+                  final message =
+                      e.message == null ? "An Error Occoured" : e.message;
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        message,
+                        style: TextStyle(
+                          color: themeData.errorColor,
+                        ),
+                      ),
+                      backgroundColor: Colors.black87,
+                      action: SnackBarAction(
+                        label: "Close",
+                        onPressed: Scaffold.of(context).hideCurrentSnackBar,
+                        textColor: themeData.errorColor,
+                      ),
+                    ),
+                  );
+                  return;
+                }
                 if (contactProvider.newUserError.isEmpty) {
+                  _textController.clear();
                   Navigator.pop(context);
                 }
               },

@@ -271,8 +271,8 @@ class ContactProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  selectContact(int index) {
-    _selectedContact = index;
+  selectContact(String uid) {
+    _selectedContact = _userIndexMap[uid];
     notifyListeners();
   }
 

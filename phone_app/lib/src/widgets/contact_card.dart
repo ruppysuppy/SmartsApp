@@ -25,10 +25,11 @@ class ContactCard extends StatelessWidget {
     final navigator = Navigator.of(context);
 
     return Column(
+      key: Key(userData['uid']),
       children: [
         ListTile(
           onTap: () {
-            contactProvider.selectContact(index);
+            contactProvider.selectContact(userData['uid']);
             navigator.pushNamed(ChatPage.routeName);
           },
           leading: CircleAvatar(

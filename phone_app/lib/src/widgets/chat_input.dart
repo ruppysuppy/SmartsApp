@@ -32,11 +32,12 @@ class _ChatInputState extends State<ChatInput> {
     final authProvider = Provider.of<AuthProvider>(context);
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
+    final themeData = Theme.of(context);
 
     final contact = contactProvider.contacts[contactProvider.selectedContact];
 
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           Expanded(
@@ -54,23 +55,41 @@ class _ChatInputState extends State<ChatInput> {
           SendMediaMessageBtn(contact['uid'], contact['sharedKey']),
           CircleAvatar(
             child: IconButton(
-                icon: Icon(
-                  Icons.send,
-                  color: Colors.white,
-                ),
-                onPressed: () async {
-                  try {
-                    await contactProvider.sendMessgae(
-                      authProvider.auth.uid,
-                      contact['uid'],
-                      _textController.text,
-                      contact['sharedKey'],
-                    );
-                    _textController.clear();
-                  } catch (e) {
-                    print(e);
-                  }
-                }),
+              icon: const Icon(
+                Icons.send,
+                color: Colors.white,
+              ),
+              onPressed: () async {
+                try {
+                  await contactProvider.sendMessgae(
+                    authProvider.auth.uid,
+                    contact['uid'],
+                    _textController.text,
+                    contact['sharedKey'],
+                  );
+                  _textController.clear();
+                } catch (e) {
+                  final message =
+                      e.message == null ? "An Error Occoured" : e.message;
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        message,
+                        style: TextStyle(
+                          color: themeData.errorColor,
+                        ),
+                      ),
+                      backgroundColor: Colors.black87,
+                      action: SnackBarAction(
+                        label: "Close",
+                        onPressed: Scaffold.of(context).hideCurrentSnackBar,
+                        textColor: themeData.errorColor,
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),
