@@ -13,6 +13,7 @@ import './routes/login.dart';
 import './routes/register.dart';
 import './routes/settings.dart';
 import './routes/user_details.dart';
+import './routes/view_image.dart';
 
 const primarySwatch = MaterialColor(0xFF7905FF, {
   50: Color.fromRGBO(121, 5, 255, 0.1),
@@ -145,6 +146,7 @@ class App extends StatelessWidget {
                   RegisterPage.routeName: (ctx) => RegisterPage(),
                   SettingsPage.routeName: (ctx) => SettingsPage(),
                   UserDetailsPage.routeName: (ctx) => UserDetailsPage(),
+                  ViewImagePage.routeName: (ctx) => ViewImagePage(),
                 },
               ),
             );

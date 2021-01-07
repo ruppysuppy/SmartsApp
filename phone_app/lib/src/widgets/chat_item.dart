@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/contact_provider.dart';
 import '../providers/dark_mode_provider.dart';
+import '../routes/view_image.dart';
 import '../util/cipher.dart';
 
 class ChatItem extends StatelessWidget {
@@ -16,6 +18,7 @@ class ChatItem extends StatelessWidget {
     final themeData = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
+    final contactProvider = Provider.of<ContactProvider>(context);
 
     final isUserSent = uid == message['sender'];
     final text = decrypt(message['text'], sharedKey);
@@ -64,7 +67,14 @@ class ChatItem extends StatelessWidget {
                               isUserSent ? null : themeData.primaryColor,
                             ),
                           ),
-                          Image.network(text),
+                          GestureDetector(
+                            child: Image.network(text),
+                            onTap: () {
+                              contactProvider.selectImage(text);
+                              Navigator.of(context)
+                                  .pushNamed(ViewImagePage.routeName);
+                            },
+                          ),
                         ],
                       )
                     : Text(
@@ -76,7 +86,7 @@ class ChatItem extends StatelessWidget {
                       ),
                 SizedBox(height: 4),
                 Text(
-                  "${time.hour}:${time.minute}",
+                  "${time.hour}:${time.minute.toString().padLeft(2, '0')}",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12,

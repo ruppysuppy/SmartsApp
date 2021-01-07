@@ -1,4 +1,4 @@
-name: smartsapp
+name: Smartsapp
 description: SmartApp - Cross-Platform Messenger
 
 publish_to: "none"
@@ -24,6 +24,7 @@ dependencies:
     image_picker: ^0.6.7+17
     shared_preferences: ^0.5.12+4
     uuid: ^2.2.2
+    photo_view: ^0.10.3
 
 dev_dependencies:
     flutter_test:
