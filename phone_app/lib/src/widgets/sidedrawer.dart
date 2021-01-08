@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import '../providers/contact_provider.dart';
 import '../providers/dark_mode_provider.dart';
 import '../routes/contacts.dart';
 import '../routes/login.dart';
@@ -14,6 +15,7 @@ class SideDrawer extends StatelessWidget {
     final navigator = Navigator.of(context);
     final themeData = Theme.of(context);
     final authProvider = Provider.of<AuthProvider>(context);
+    final contactProvider = Provider.of<ContactProvider>(context);
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
 
     return Drawer(
@@ -36,15 +38,22 @@ class SideDrawer extends StatelessWidget {
                 ),
                 width: 180,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              Divider(),
+              const Divider(),
               if (authProvider.auth == null)
-                ...getUnauthenticatedWidgets(navigator, darkModeProvider),
+                ...getUnauthenticatedWidgets(
+                  navigator,
+                  darkModeProvider,
+                ),
               if (authProvider.auth != null)
                 ...getAuthenticatedWidgets(
-                    navigator, darkModeProvider, authProvider),
+                  navigator,
+                  darkModeProvider,
+                  contactProvider,
+                  authProvider,
+                ),
             ],
           ),
         ),
@@ -58,34 +67,35 @@ class SideDrawer extends StatelessWidget {
   ) {
     return [
       ListTile(
-        title: Text("Login"),
+        title: const Text("Login"),
         leading: Icon(
           Icons.login,
           color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
         ),
         onTap: () => navigator.pushReplacementNamed(LoginPage.routeName),
       ),
-      Divider(),
+      const Divider(),
       ListTile(
-        title: Text("Register"),
+        title: const Text("Register"),
         leading: Icon(
           Icons.person_add,
           color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
         ),
         onTap: () => navigator.pushReplacementNamed(RegisterPage.routeName),
       ),
-      Divider(),
+      const Divider(),
     ];
   }
 
   List<Widget> getAuthenticatedWidgets(
     NavigatorState navigator,
     DarkModeProvider darkModeProvider,
+    ContactProvider contactProvider,
     AuthProvider authProvider,
   ) {
     return [
       ListTile(
-        title: Text("Chats"),
+        title: const Text("Chats"),
         leading: Icon(
           Icons.chat,
           color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
@@ -94,9 +104,9 @@ class SideDrawer extends StatelessWidget {
           navigator.pushReplacementNamed(ContactsPage.routeName);
         },
       ),
-      Divider(),
+      const Divider(),
       ListTile(
-        title: Text("Settings"),
+        title: const Text("Settings"),
         leading: Icon(
           Icons.settings,
           color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
@@ -105,19 +115,20 @@ class SideDrawer extends StatelessWidget {
           navigator.pushReplacementNamed(SettingsPage.routeName);
         },
       ),
-      Divider(),
+      const Divider(),
       ListTile(
-        title: Text("Logout"),
+        title: const Text("Logout"),
         leading: Icon(
           Icons.logout,
           color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
         ),
         onTap: () {
+          contactProvider.resetContacts();
           authProvider.logout();
           navigator.pushReplacementNamed(LoginPage.routeName);
         },
       ),
-      Divider(),
+      const Divider(),
     ];
   }
 }

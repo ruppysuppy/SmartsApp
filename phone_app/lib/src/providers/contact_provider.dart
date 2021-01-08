@@ -271,6 +271,18 @@ class ContactProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void resetContacts() {
+    _contacts = [];
+    _error = "";
+    _imageUrl = "";
+    _isLoading = false;
+    _isMessageLoading = false;
+    _isNewUserLoading = false;
+    _newUserError = "";
+    _selectedContact = null;
+    notifyListeners();
+  }
+
   selectContact(String uid) {
     _selectedContact = _userIndexMap[uid];
     notifyListeners();
