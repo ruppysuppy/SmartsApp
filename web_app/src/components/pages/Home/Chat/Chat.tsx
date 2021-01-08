@@ -135,8 +135,12 @@ function Chat({
 					const lastDateString =
 						lastDate === ""
 							? ""
-							: `${lastDate.getDate()}/${lastDate.getMonth()}/${lastDate.getFullYear()}`;
-					const currDateString = `${currDate.getDate()}/${currDate.getMonth()}/${currDate.getFullYear()}`;
+							: `${lastDate.getDate()}/${
+									lastDate.getMonth() + 1
+							  }/${lastDate.getFullYear()}`;
+					const currDateString = `${currDate.getDate()}/${
+						currDate.getMonth() + 1
+					}/${currDate.getFullYear()}`;
 					const shouldDisplayDate =
 						lastDate === "" || lastDateString !== currDateString;
 
