@@ -135,7 +135,9 @@ function ImageSelection({ uid, setImgUrl, setUserDataFail }: IProps) {
 						))}
 				</span>
 			</div>
-			{inputImg && <ImageCropper getBlob={getBlob} inputImg={inputImg} />}
+			{inputImg && !done && (
+				<ImageCropper getBlob={getBlob} inputImg={inputImg} />
+			)}
 		</>
 	);
 }

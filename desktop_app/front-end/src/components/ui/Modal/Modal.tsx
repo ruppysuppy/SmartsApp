@@ -37,7 +37,7 @@ export default function Modal({
 					</span>
 				</div>
 				<hr />
-				{children}
+				<div className={styles.ChildHolder}>{children}</div>
 			</div>
 		</>,
 		document.querySelector("#root-container")!

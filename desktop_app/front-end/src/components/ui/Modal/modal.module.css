@@ -27,6 +27,11 @@
 	z-index: 30;
 }
 
+.ChildHolder {
+	max-height: 70vh;
+	overflow-y: scroll;
+}
+
 .Visible {
 	visibility: visible;
 	opacity: 1;
