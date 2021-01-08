@@ -29,6 +29,13 @@ dependencies:
 dev_dependencies:
     flutter_test:
         sdk: flutter
+    flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+    android: true
+    ios: true
+    image_path: "assets/img/icon.png"
+    adaptive_icon_foreground: "assets/img/icon.png"
 
 flutter:
     uses-material-design: true
@@ -46,4 +53,5 @@ flutter:
                 weight: 900
     assets:
         - assets/img/chat_full.png
+        - assets/img/icon.png
         - assets/img/loading.gif
