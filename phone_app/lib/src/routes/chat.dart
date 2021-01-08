@@ -1,3 +1,5 @@
+import 'dart:math' show min;
+
 import 'package:Smartsapp/src/widgets/chat_input.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +37,10 @@ class _ChatPageState extends State<ChatPage> {
         );
         if (shouldScroll) {
           _scrollController.jumpTo(
-            MediaQuery.of(context).size.height,
+            min(
+              MediaQuery.of(context).size.height,
+              _scrollController.position.maxScrollExtent,
+            ),
           );
         }
       }

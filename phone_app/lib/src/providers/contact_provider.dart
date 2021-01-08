@@ -109,7 +109,8 @@ class ContactProvider with ChangeNotifier {
   }
 
   Future<bool> fetchPreviousMessages(String uid) async {
-    if (!_contacts[_selectedContact]['hasMore']) {
+    if (!_contacts[_selectedContact]['hasMore'] ||
+        _contacts[_selectedContact]['messages'].isEmpty) {
       return false;
     }
 

@@ -31,7 +31,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _node = FocusScope.of(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _node = FocusScope.of(context);
+    });
   }
 
   @override

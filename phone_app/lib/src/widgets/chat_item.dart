@@ -48,7 +48,7 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    final deviceSize = MediaQuery.of(context).size;
+    final mediaQuery = MediaQuery.of(context);
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
 
@@ -70,7 +70,11 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
             child: Container(
               key: Key(widget._message['uid']),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              constraints: BoxConstraints(maxWidth: 0.8 * deviceSize.width),
+              constraints: BoxConstraints(
+                maxWidth: mediaQuery.orientation == Orientation.portrait
+                    ? 0.8 * mediaQuery.size.width
+                    : 0.6 * mediaQuery.size.width,
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(12),
