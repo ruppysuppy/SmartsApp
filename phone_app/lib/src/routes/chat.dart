@@ -96,7 +96,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 backgroundImage: AssetImage("assets/img/loading.gif"),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(contact['username']),
             ],
           ),
@@ -108,10 +108,7 @@ class _ChatPageState extends State<ChatPage> {
         color: themeData.backgroundColor,
         child: authProvider.isLoading || contactProvider.isLoading
             ? Center(
-                child: CircularProgressIndicator(
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(themeData.primaryColor),
-                ),
+                child: const CircularProgressIndicator(),
               )
             : Column(
                 children: [
@@ -131,13 +128,13 @@ class _ChatPageState extends State<ChatPage> {
                             children: [
                               if (contactProvider.isMessageLoading &&
                                   index == 0) ...[
-                                SizedBox(height: 8),
-                                CircularProgressIndicator(),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 8),
+                                const CircularProgressIndicator(),
+                                const SizedBox(height: 4),
                               ],
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               DateDisplay(dateCurr),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               ChatItem(
                                 contact['messages'][index]
                                     as Map<String, dynamic>,

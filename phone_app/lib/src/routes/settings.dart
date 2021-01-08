@@ -15,10 +15,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool isUpdating = false;
-  bool isImageValid = true;
-  bool modified = false;
-  String about = "";
+  bool _isUpdating = false;
+  bool _modified = false;
+  String _about = "";
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +31,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("SETTINGS"),
+        title: const Text("SETTINGS"),
       ),
       drawer: SideDrawer(),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         height: deviceSize.height,
         width: deviceSize.width,
         color: themeData.backgroundColor,
@@ -44,18 +43,18 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (isUpdating) ...[
-                SizedBox(height: 8),
+              if (_isUpdating) ...[
+                const SizedBox(height: 8),
                 DpImagePicker(
                   (String url) => setImageUrl(url, authProvider),
                   setImageValid,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
               ] else
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      isUpdating = true;
+                      _isUpdating = true;
                     });
                   },
                   child: Stack(
@@ -68,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         radius: deviceSize.width > 350 ? 120 : 100,
                         backgroundImage: AssetImage("assets/img/loading.gif"),
                       ),
-                      Positioned(
+                      const Positioned(
                         bottom: 8,
                         right: 8,
                         child: CircleAvatar(
@@ -82,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   hintText: "Enter About",
@@ -91,22 +90,22 @@ class _SettingsPageState extends State<SettingsPage> {
                 initialValue: authProvider.authData['about'],
                 onChanged: (value) {
                   setState(() {
-                    about = value;
-                    modified = true;
+                    _about = value;
+                    _modified = true;
                   });
                 },
               ),
-              if (about != authProvider.authData['about'] && modified) ...[
-                SizedBox(height: 8),
+              if (_about != authProvider.authData['about'] && _modified) ...[
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     authProvider.isLoading
-                        ? CircularProgressIndicator()
+                        ? const CircularProgressIndicator()
                         : RaisedButton(
                             onPressed: () {
-                              authProvider.updateAbout(about);
+                              authProvider.updateAbout(_about);
                             },
-                            child: Text("Update"),
+                            child: const Text("Update"),
                           ),
                     Expanded(
                       child: Container(),
@@ -115,11 +114,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   ],
                 ),
               ],
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Dark Mode"),
+                  const Text("Dark Mode"),
                   DarkModeToggler(),
                 ],
               ),
@@ -135,14 +134,10 @@ class _SettingsPageState extends State<SettingsPage> {
     Future.delayed(
       Duration(milliseconds: 500),
       () => setState(() {
-        isUpdating = false;
+        _isUpdating = false;
       }),
     );
   }
 
-  void setImageValid(bool value) {
-    setState(() {
-      isImageValid = value;
-    });
-  }
+  void setImageValid(bool value) {}
 }

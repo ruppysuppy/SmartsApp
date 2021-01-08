@@ -16,15 +16,29 @@ class UserDetailsPage extends StatefulWidget {
 
 class _UserDetailsPageState extends State<UserDetailsPage> {
   final GlobalKey<FormState> formKey = GlobalKey();
-  bool isUsernameValid = true;
-  bool isAboutValid = true;
-  bool isImageValid = false;
-  bool shouldDisplayErrorMessage = false;
-  Map<String, String> userData = {
+  FocusScopeNode _node;
+
+  bool _isUsernameValid = true;
+  bool _isAboutValid = true;
+  bool _isImageValid = false;
+  bool _shouldDisplayErrorMessage = false;
+  Map<String, String> _userData = {
     'username': '',
     'about': '',
     'photoUrl': '',
   };
+
+  @override
+  void initState() {
+    super.initState();
+    _node = FocusScopeNode();
+  }
+
+  @override
+  void dispose() {
+    _node.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +46,10 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     final themeData = Theme.of(context);
     final navigator = Navigator.of(context);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final node = FocusScope.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("USER DETAILS"),
+        title: const Text("USER DETAILS"),
       ),
       drawer: SideDrawer(),
       body: Container(
@@ -53,34 +66,34 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                createUsernameField(themeData, node),
-                createAboutField(themeData, node),
-                SizedBox(height: 4),
+                createUsernameField(themeData),
+                createAboutField(themeData),
+                const SizedBox(height: 4),
                 DpImagePicker(setImageUrl, setImageValid),
-                if (!isImageValid && shouldDisplayErrorMessage) ...[
-                  SizedBox(height: 4),
+                if (!_isImageValid && _shouldDisplayErrorMessage) ...[
+                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Icon(
                         Icons.error,
                         color: themeData.errorColor,
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
                         "Please add an image",
                         style: TextStyle(color: themeData.errorColor),
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                 ],
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Visibility(
                   child: Builder(
                     builder: (ctx) => RaisedButton(
                       onPressed: () =>
                           submit(authProvider, ctx, themeData, navigator),
-                      child: Text(
+                      child: const Text(
                         "Submit",
                         style: TextStyle(
                           color: Colors.white,
@@ -98,74 +111,74 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     );
   }
 
-  Widget createUsernameField(ThemeData themeData, FocusNode node) {
+  Widget createUsernameField(ThemeData themeData) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'Username',
         hintText: 'Enter your username',
         labelStyle: TextStyle(
           color:
-              isUsernameValid ? themeData.primaryColor : themeData.errorColor,
+              _isUsernameValid ? themeData.primaryColor : themeData.errorColor,
         ),
       ),
       validator: (username) {
         if (username.trim().length < 4) {
           setState(() {
-            isUsernameValid = false;
+            _isUsernameValid = false;
           });
           return 'Username must contain at least 4 characters';
         } else if (username.trim().length > 14) {
           setState(() {
-            isUsernameValid = false;
+            _isUsernameValid = false;
           });
           return "Maximum Username length is 14 characters";
         } else if (username.trim().indexOf(" ") >= 0) {
           setState(() {
-            isUsernameValid = false;
+            _isUsernameValid = false;
           });
           return "Username cannot contain spaces";
         }
         setState(() {
-          isUsernameValid = true;
+          _isUsernameValid = true;
         });
         return null;
       },
-      onEditingComplete: () => node.nextFocus(),
+      onEditingComplete: () => _node.nextFocus(),
       onSaved: (value) {
-        userData['username'] = value;
+        _userData['username'] = value;
       },
     );
   }
 
-  Widget createAboutField(ThemeData themeData, FocusNode node) {
+  Widget createAboutField(ThemeData themeData) {
     return TextFormField(
       decoration: InputDecoration(
         labelText: 'About',
         hintText: 'Enter something about you',
         labelStyle: TextStyle(
-          color: isAboutValid ? themeData.primaryColor : themeData.errorColor,
+          color: _isAboutValid ? themeData.primaryColor : themeData.errorColor,
         ),
       ),
       validator: (about) {
         if (about.trim().length == 0) {
           setState(() {
-            isAboutValid = false;
+            _isAboutValid = false;
           });
           return 'About cannot be blank';
         } else if (about.trim().length > 80) {
           setState(() {
-            isAboutValid = false;
+            _isAboutValid = false;
           });
           return "Maximum About length is 80 characters";
         }
         setState(() {
-          isAboutValid = true;
+          _isAboutValid = true;
         });
         return null;
       },
-      onEditingComplete: () => node.unfocus(),
+      onEditingComplete: () => _node.unfocus(),
       onSaved: (value) {
-        userData['about'] = value;
+        _userData['about'] = value;
       },
     );
   }
@@ -177,7 +190,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     NavigatorState navigator,
   ) async {
     setState(() {
-      shouldDisplayErrorMessage = true;
+      _shouldDisplayErrorMessage = true;
     });
     formKey.currentState.save();
     if (!formKey.currentState.validate()) {
@@ -185,7 +198,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
     }
     try {
       await authProvider.setUserData(
-        userData,
+        _userData,
         authProvider.auth.uid,
       );
       navigator.pushReplacementNamed(ContactsPage.routeName);
@@ -211,14 +224,14 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
 
   void setImageUrl(String url) {
     setState(() {
-      userData['photoUrl'] = url;
+      _userData['photoUrl'] = url;
     });
   }
 
   void setImageValid(bool value) {
     setState(() {
-      isImageValid = value;
-      shouldDisplayErrorMessage = !value;
+      _isImageValid = value;
+      _shouldDisplayErrorMessage = !value;
     });
   }
 }

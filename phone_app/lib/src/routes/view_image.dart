@@ -17,7 +17,7 @@ class ViewImagePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Image"),
+        title: const Text("Image"),
       ),
       body: Container(
         child: PhotoView(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class UserDetailsModal extends StatelessWidget {
-  final Map<String, dynamic> contact;
+  final Map<String, dynamic> _contact;
 
-  UserDetailsModal(this.contact);
+  UserDetailsModal(this._contact);
 
   @override
   Widget build(BuildContext context) {
@@ -11,18 +11,18 @@ class UserDetailsModal extends StatelessWidget {
     final themeData = Theme.of(context);
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       color: themeData.backgroundColor,
       child: Column(
         children: [
           CircleAvatar(
             radius: deviceSize.width > 350 ? 120 : 100,
             child: ClipOval(
-              child: Image.network(contact['photoUrl']),
+              child: Image.network(_contact['photoUrl']),
             ),
             backgroundImage: AssetImage("assets/img/loading.gif"),
           ),
-          SizedBox(
+          const SizedBox(
             height: 24,
           ),
           Row(
@@ -36,7 +36,9 @@ class UserDetailsModal extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [Text(contact['about'])],
+            children: [
+              Text(_contact['about']),
+            ],
           ),
         ],
       ),

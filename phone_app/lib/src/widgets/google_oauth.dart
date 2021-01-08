@@ -14,9 +14,9 @@ class GoogleOAuth extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text("OR"),
+          const Text("OR"),
           Container(
-            padding: EdgeInsets.all(4),
+            padding: const EdgeInsets.all(4),
             child: RaisedButton.icon(
               color: themeData.backgroundColor,
               shape: RoundedRectangleBorder(
@@ -40,7 +40,7 @@ class GoogleOAuth extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
           ),
         ],

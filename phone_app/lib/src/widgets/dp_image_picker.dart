@@ -9,20 +9,20 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 
 class DpImagePicker extends StatefulWidget {
-  final Function setImageUrl;
-  final Function setImageValid;
+  final Function _setImageUrl;
+  final Function _setImageValid;
 
-  DpImagePicker(this.setImageUrl, this.setImageValid);
+  DpImagePicker(this._setImageUrl, this._setImageValid);
 
   @override
   _DpImagePickerState createState() => _DpImagePickerState();
 }
 
 class _DpImagePickerState extends State<DpImagePicker> {
-  final firebaseStorage = FirebaseStorage.instance;
-  final picker = ImagePicker();
-  bool isLoading = false;
-  bool isDone = false;
+  final _firebaseStorage = FirebaseStorage.instance;
+  final _picker = ImagePicker();
+  bool _isLoading = false;
+  bool _isDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +35,13 @@ class _DpImagePickerState extends State<DpImagePicker> {
           color: Colors.grey,
           textColor: Colors.white,
           onPressed: () => selectImage(themeData),
-          child: Text(
+          child: const Text(
             "Select Profile Picture",
           ),
         ),
-        if (isLoading) CircularProgressIndicator(),
-        if (isDone)
-          Icon(
+        if (_isLoading) const CircularProgressIndicator(),
+        if (_isDone)
+          const Icon(
             Icons.done,
             color: Colors.green,
           ),
@@ -51,16 +51,16 @@ class _DpImagePickerState extends State<DpImagePicker> {
 
   selectImage(ThemeData themeData) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    widget.setImageValid(false);
+    widget._setImageValid(false);
     setState(() {
-      isLoading = true;
-      isDone = false;
+      _isLoading = true;
+      _isDone = false;
     });
-    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    final pickedImage = await _picker.getImage(source: ImageSource.gallery);
     if (pickedImage == null) {
       setState(() {
-        isLoading = false;
-        isDone = false;
+        _isLoading = false;
+        _isDone = false;
       });
       return;
     }
@@ -77,25 +77,25 @@ class _DpImagePickerState extends State<DpImagePicker> {
 
     if (croppedImageFile == null) {
       setState(() {
-        isLoading = false;
-        isDone = false;
+        _isLoading = false;
+        _isDone = false;
       });
       return;
     }
 
-    final ref = firebaseStorage
+    final ref = _firebaseStorage
         .ref()
         .child("profilepic")
         .child("${authProvider.auth.uid}.jpg");
     final uploadTask = ref.putFile(croppedImageFile);
     final url = await (await uploadTask).ref.getDownloadURL();
 
-    widget.setImageUrl(url);
-    widget.setImageValid(true);
+    widget._setImageUrl(url);
+    widget._setImageValid(true);
 
     setState(() {
-      isLoading = false;
-      isDone = true;
+      _isLoading = false;
+      _isDone = true;
     });
   }
 }

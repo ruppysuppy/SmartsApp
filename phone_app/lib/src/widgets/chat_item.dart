@@ -7,11 +7,11 @@ import '../routes/view_image.dart';
 import '../util/cipher.dart';
 
 class ChatItem extends StatefulWidget {
-  final Map<String, dynamic> message;
-  final String uid;
-  final String sharedKey;
+  final Map<String, dynamic> _message;
+  final String _uid;
+  final String _sharedKey;
 
-  ChatItem(this.message, this.uid, this.sharedKey);
+  ChatItem(this._message, this._uid, this._sharedKey);
 
   @override
   _ChatItemState createState() => _ChatItemState();
@@ -52,10 +52,10 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
 
-    final isUserSent = widget.uid == widget.message['sender'];
-    final text = decrypt(widget.message['text'], widget.sharedKey);
+    final isUserSent = widget._uid == widget._message['sender'];
+    final text = decrypt(widget._message['text'], widget._sharedKey);
     final time =
-        DateTime.fromMillisecondsSinceEpoch(widget.message['timestamp']);
+        DateTime.fromMillisecondsSinceEpoch(widget._message['timestamp']);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16, top: 8),
@@ -68,13 +68,13 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
             alignment:
                 isUserSent ? Alignment.bottomRight : Alignment.bottomLeft,
             child: Container(
-              key: Key(widget.message['uid']),
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              key: Key(widget._message['uid']),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               constraints: BoxConstraints(maxWidth: 0.8 * deviceSize.width),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
+                  topLeft: const Radius.circular(12),
+                  topRight: const Radius.circular(12),
                   bottomLeft:
                       isUserSent ? Radius.circular(12) : Radius.circular(0),
                   bottomRight:
@@ -96,7 +96,7 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  widget.message['isMedia'] == true
+                  widget._message['isMedia'] == true
                       ? Stack(
                           alignment: Alignment.center,
                           children: [
@@ -122,7 +122,7 @@ class _ChatItemState extends State<ChatItem> with TickerProviderStateMixin {
                             fontSize: 16,
                           ),
                         ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
                     "${time.hour}:${time.minute.toString().padLeft(2, '0')}",
                     style: TextStyle(

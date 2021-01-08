@@ -11,6 +11,7 @@ import '../providers/dark_mode_provider.dart';
 class SendMediaMessageBtn extends StatelessWidget {
   final String _otherId;
   final String _sharedKey;
+  final _picker = ImagePicker();
 
   SendMediaMessageBtn(this._otherId, this._sharedKey);
 
@@ -19,7 +20,6 @@ class SendMediaMessageBtn extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context);
     final contactProvider = Provider.of<ContactProvider>(context);
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
-    final picker = ImagePicker();
 
     return IconButton(
       icon: Icon(
@@ -27,7 +27,7 @@ class SendMediaMessageBtn extends StatelessWidget {
         color: darkModeProvider.isDarkTheme ? Colors.white : Colors.grey,
       ),
       onPressed: () async {
-        final pickedFile = await picker.getImage(
+        final pickedFile = await _picker.getImage(
           source: ImageSource.gallery,
           imageQuality: 65,
         );

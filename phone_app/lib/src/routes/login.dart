@@ -18,13 +18,27 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> formKey = GlobalKey();
-  bool isEmailValid = true;
-  bool isPasswordValid = true;
-  Map<String, String> authData = {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  FocusScopeNode _node;
+
+  bool _isEmailValid = true;
+  bool _isPasswordValid = true;
+  Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
+
+  @override
+  void initState() {
+    super.initState();
+    _node = FocusScope.of(context);
+  }
+
+  @override
+  void dispose() {
+    _node.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
     final navigator = Navigator.of(context);
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    final node = FocusScope.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
         color: themeData.backgroundColor,
         height: deviceSize.height,
         child: Form(
-          key: formKey,
+          key: _formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -54,20 +67,20 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                createEmailField(themeData, node),
-                createPasswordField(themeData, node),
+                createEmailField(themeData),
+                createPasswordField(themeData),
                 SizedBox(
                   height: 4,
                 ),
                 Row(
                   children: [
-                    Text("Not a member yet?"),
+                    const Text("Not a member yet?"),
                     FlatButton(
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
                         navigator.pushReplacementNamed(RegisterPage.routeName);
                       },
-                      child: Text("Register"),
+                      child: const Text("Register"),
                     ),
                   ],
                 ),
@@ -82,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                         authProvider,
                         navigator,
                       ),
-                      child: Text(
+                      child: const Text(
                         "Login",
                         style: TextStyle(
                           color: Colors.white,
@@ -101,13 +114,13 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget createEmailField(ThemeData themeData, FocusNode node) {
+  Widget createEmailField(ThemeData themeData) {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'E-Mail',
           hintText: 'Enter your email',
           labelStyle: TextStyle(
-              color: isEmailValid
+              color: _isEmailValid
                   ? themeData.primaryColor
                   : themeData.errorColor)),
       keyboardType: TextInputType.emailAddress,
@@ -116,47 +129,47 @@ class _LoginPageState extends State<LoginPage> {
             !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(email)) {
           setState(() {
-            isEmailValid = false;
+            _isEmailValid = false;
           });
           return 'Invalid email';
         }
         setState(() {
-          isEmailValid = true;
+          _isEmailValid = true;
         });
         return null;
       },
-      onEditingComplete: () => node.nextFocus(),
+      onEditingComplete: () => _node.nextFocus(),
       onSaved: (value) {
-        authData['email'] = value;
+        _authData['email'] = value;
       },
     );
   }
 
-  Widget createPasswordField(ThemeData themeData, FocusNode node) {
+  Widget createPasswordField(ThemeData themeData) {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Password',
           hintText: 'Enter your password',
           labelStyle: TextStyle(
-              color: isPasswordValid
+              color: _isPasswordValid
                   ? themeData.primaryColor
                   : themeData.errorColor)),
       obscureText: true,
       validator: (password) {
         if (password.length < 6) {
           setState(() {
-            isPasswordValid = false;
+            _isPasswordValid = false;
           });
           return 'Password must contain at least 6 characters';
         }
         setState(() {
-          isPasswordValid = true;
+          _isPasswordValid = true;
         });
         return null;
       },
-      onEditingComplete: () => node.unfocus(),
+      onEditingComplete: () => _node.unfocus(),
       onSaved: (value) {
-        authData['password'] = value;
+        _authData['password'] = value;
       },
     );
   }
@@ -168,14 +181,14 @@ class _LoginPageState extends State<LoginPage> {
     AuthProvider authProvider,
     NavigatorState navigator,
   ) async {
-    formKey.currentState.save();
-    if (!formKey.currentState.validate()) {
+    _formKey.currentState.save();
+    if (!_formKey.currentState.validate()) {
       return;
     }
     try {
       await authProvider.loginWithEmail(
-        authData['email'],
-        authData['password'],
+        _authData['email'],
+        _authData['password'],
       );
       await authProvider.getUserData();
       if (authProvider.authData.isNotEmpty) {

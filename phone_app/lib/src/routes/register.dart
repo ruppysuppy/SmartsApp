@@ -16,15 +16,29 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final GlobalKey<FormState> formKey = GlobalKey();
-  bool isEmailValid = true;
-  bool isPasswordValid = true;
-  bool isPasswordConfirmValid = true;
-  Map<String, String> authData = {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  FocusScopeNode _node;
+
+  bool _isEmailValid = true;
+  bool _isPasswordValid = true;
+  bool _isPasswordConfirmValid = true;
+  Map<String, String> _authData = {
     'email': '',
     'password': '',
     'passwordConfirm': '',
   };
+
+  @override
+  void initState() {
+    super.initState();
+    _node = FocusScope.of(context);
+  }
+
+  @override
+  void dispose() {
+    _node.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +47,6 @@ class _RegisterPageState extends State<RegisterPage> {
     final navigator = Navigator.of(context);
     final darkModeProvider = Provider.of<DarkModeProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    final node = FocusScope.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
         color: themeData.backgroundColor,
         height: deviceSize.height,
         child: Form(
-          key: formKey,
+          key: _formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -54,21 +67,21 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                createEmailField(themeData, node),
-                createPasswordField(themeData, node),
-                createPasswordConfirmField(themeData, node),
-                SizedBox(
+                createEmailField(themeData),
+                createPasswordField(themeData),
+                createPasswordConfirmField(themeData),
+                const SizedBox(
                   height: 4,
                 ),
                 Row(
                   children: [
-                    Text("Already a member?"),
+                    const Text("Already a member?"),
                     FlatButton(
                       padding: const EdgeInsets.all(0),
                       onPressed: () {
                         navigator.pushReplacementNamed(LoginPage.routeName);
                       },
-                      child: Text("Login"),
+                      child: const Text("Login"),
                     ),
                   ],
                 ),
@@ -83,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         authProvider,
                         navigator,
                       ),
-                      child: Text(
+                      child: const Text(
                         "Register",
                         style: TextStyle(
                           color: Colors.white,
@@ -102,13 +115,13 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget createEmailField(ThemeData themeData, FocusNode node) {
+  Widget createEmailField(ThemeData themeData) {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'E-Mail',
           hintText: 'Enter your email',
           labelStyle: TextStyle(
-              color: isEmailValid
+              color: _isEmailValid
                   ? themeData.primaryColor
                   : themeData.errorColor)),
       keyboardType: TextInputType.emailAddress,
@@ -117,76 +130,76 @@ class _RegisterPageState extends State<RegisterPage> {
             !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                 .hasMatch(email)) {
           setState(() {
-            isEmailValid = false;
+            _isEmailValid = false;
           });
           return 'Invalid email';
         }
         setState(() {
-          isEmailValid = true;
+          _isEmailValid = true;
         });
         return null;
       },
-      onEditingComplete: () => node.nextFocus(),
+      onEditingComplete: () => _node.nextFocus(),
       onSaved: (value) {
-        authData['email'] = value;
+        _authData['email'] = value;
       },
     );
   }
 
-  Widget createPasswordField(ThemeData themeData, FocusNode node) {
+  Widget createPasswordField(ThemeData themeData) {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Password',
           hintText: 'Enter your password',
           labelStyle: TextStyle(
-              color: isPasswordValid
+              color: _isPasswordValid
                   ? themeData.primaryColor
                   : themeData.errorColor)),
       obscureText: true,
       validator: (password) {
         if (password.length < 6) {
           setState(() {
-            isPasswordValid = false;
+            _isPasswordValid = false;
           });
           return 'Password must contain at least 6 characters';
         }
         setState(() {
-          isPasswordValid = true;
+          _isPasswordValid = true;
         });
         return null;
       },
-      onEditingComplete: () => node.unfocus(),
+      onEditingComplete: () => _node.unfocus(),
       onSaved: (value) {
-        authData['password'] = value;
+        _authData['password'] = value;
       },
     );
   }
 
-  Widget createPasswordConfirmField(ThemeData themeData, FocusNode node) {
+  Widget createPasswordConfirmField(ThemeData themeData) {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Confirm Password',
           hintText: 'Enter your password again',
           labelStyle: TextStyle(
-              color: isPasswordValid
+              color: _isPasswordConfirmValid
                   ? themeData.primaryColor
                   : themeData.errorColor)),
       obscureText: true,
       validator: (password) {
-        if (authData['password'] != password) {
+        if (_authData['password'] != password) {
           setState(() {
-            isPasswordValid = false;
+            _isPasswordConfirmValid = false;
           });
           return 'Password and Confirm Passwords must match';
         }
         setState(() {
-          isPasswordValid = true;
+          _isPasswordConfirmValid = true;
         });
         return null;
       },
-      onEditingComplete: () => node.unfocus(),
+      onEditingComplete: () => _node.unfocus(),
       onSaved: (value) {
-        authData['passwordConfirm'] = value;
+        _authData['passwordConfirm'] = value;
       },
     );
   }
@@ -198,14 +211,14 @@ class _RegisterPageState extends State<RegisterPage> {
     AuthProvider authProvider,
     NavigatorState navigator,
   ) async {
-    formKey.currentState.save();
-    if (!formKey.currentState.validate()) {
+    _formKey.currentState.save();
+    if (!_formKey.currentState.validate()) {
       return;
     }
     try {
       await authProvider.registerWithEmail(
-        authData['email'],
-        authData['password'],
+        _authData['email'],
+        _authData['password'],
       );
       navigator.pushReplacementNamed(UserDetailsPage.routeName);
     } catch (e) {

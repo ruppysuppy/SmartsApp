@@ -20,14 +20,25 @@ int sortContacts(Map<String, dynamic> user1, Map<String, dynamic> user2) {
 
 class ContactsPage extends StatefulWidget {
   static const routeName = "/contacts";
-  final inputController = TextEditingController();
 
   @override
   _ContactsPageState createState() => _ContactsPageState();
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  String searchQuery = "";
+  TextEditingController _textController;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,40 +57,36 @@ class _ContactsPageState extends State<ContactsPage> {
       }
     });
 
-    final filteredContacts = searchQuery == ""
+    final filteredContacts = _textController.text == ""
         ? contactProvider.contacts
         : contactProvider.contacts
             .where((contact) => (contact['username'] as String)
                 .toLowerCase()
-                .contains(searchQuery.toLowerCase()))
+                .contains(_textController.text.toLowerCase()))
             .toList();
     filteredContacts.sort(sortContacts);
 
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          controller: widget.inputController,
-          style: TextStyle(color: Colors.white),
+          controller: _textController,
+          style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: "Search Contacts",
-            contentPadding: EdgeInsets.only(bottom: 0),
+            contentPadding: const EdgeInsets.only(bottom: 0),
             focusColor: Colors.white,
             suffix: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () {
-                widget.inputController.clear();
-                setState(() => searchQuery = "");
+                _textController.clear();
               },
             ),
           ),
-          onChanged: (value) {
-            setState(() => searchQuery = value);
-          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: themeData.primaryColor,
-        child: Icon(
+        child: const Icon(
           Icons.person_add,
           color: Colors.white,
         ),
@@ -94,25 +101,24 @@ class _ContactsPageState extends State<ContactsPage> {
       body: Container(
         color: themeData.backgroundColor,
         child: authProvider.isLoading || contactProvider.isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(themeData.primaryColor),
-                ),
+            ? const Center(
+                child: CircularProgressIndicator(),
               )
             : contactProvider.contacts.length == 0
-                ? Center(
+                ? const Center(
                     child: Text("You don't have any contact"),
                   )
                 : filteredContacts.length == 0
-                    ? Center(
+                    ? const Center(
                         child: Text("No contact matched"),
                       )
                     : ListView.builder(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         itemBuilder: (ctx, index) =>
-                            ContactCard(filteredContacts[index], index),
+                            ContactCard(filteredContacts[index]),
                         itemCount: filteredContacts.length,
                       ),
       ),
