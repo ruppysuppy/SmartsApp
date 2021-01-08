@@ -17,7 +17,6 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  FocusScopeNode _node;
 
   bool _isEmailValid = true;
   bool _isPasswordValid = true;
@@ -27,20 +26,6 @@ class _RegisterPageState extends State<RegisterPage> {
     'password': '',
     'passwordConfirm': '',
   };
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _node = FocusScope.of(context);
-    });
-  }
-
-  @override
-  void dispose() {
-    _node.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +126,6 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         return null;
       },
-      onEditingComplete: () => _node.nextFocus(),
       onSaved: (value) {
         _authData['email'] = value;
       },
@@ -170,7 +154,6 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         return null;
       },
-      onEditingComplete: () => _node.unfocus(),
       onSaved: (value) {
         _authData['password'] = value;
       },
@@ -199,7 +182,6 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         return null;
       },
-      onEditingComplete: () => _node.unfocus(),
       onSaved: (value) {
         _authData['passwordConfirm'] = value;
       },

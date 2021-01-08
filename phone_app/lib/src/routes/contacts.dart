@@ -73,15 +73,20 @@ class _ContactsPageState extends State<ContactsPage> {
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: "Search Contacts",
+            hintStyle: TextStyle(color: Colors.white),
             contentPadding: const EdgeInsets.only(bottom: 0),
             focusColor: Colors.white,
             suffix: IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
                 _textController.clear();
+                setState(() {});
               },
             ),
           ),
+          onChanged: (_) {
+            setState(() {});
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
