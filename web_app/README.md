@@ -34,3 +34,7 @@ To use the project follow the steps given below:
     ```
 
 4. Use `npm start` to run the react app
+
+## Packaging App
+
+1. Use `npm run build` to package the react app

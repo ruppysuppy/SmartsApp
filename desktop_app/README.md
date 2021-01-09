@@ -39,3 +39,10 @@ To use the project follow the steps given below:
     - **PRODUCTION (default)**: Use `npm run build-front-end` to build the react app
     - **DEVELOPMENT**: Use `npm run start-front-end` to start the react app
 6. Use `npm start` to run the electron app
+
+## Packaging App
+
+1. Make sure the app is in **PRODUCTION** mode
+2. Make sure the javascript files have been generated (Use `npm run watch` at least once or use `tsc`)
+3. Use `npm run build-front-end` to package the front-end react app
+4. Use `npm run build-installer` to package the app

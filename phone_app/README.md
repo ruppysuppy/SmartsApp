@@ -22,3 +22,8 @@ To use the project follow the steps given below:
 3. Add the `google-services.json` in `./android/app/` and `GoogleService-Info.plist` in `./ios/Runner/`
 4. Open up a virtual device
 5. Use `flutter run` to run the phone app
+
+## Packaging App
+
+1. Use `flutter build apk --release` to package the android app
+2. Use `flutter build ios --release` to package the ios app (click [here](https://flutter.dev/docs/deployment/ios) for more info)
