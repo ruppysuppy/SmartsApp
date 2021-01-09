@@ -1,10 +1,12 @@
 {
   "name": "smartsapp",
+  "productName": "Smartsapp",
   "version": "1.0.0",
   "description": "SmartApp: Cross-Platform Messenger",
   "main": "./dist/main.js",
   "scripts": {
     "build-front-end": "cd front-end && npm run build",
+    "build-installer": "electron-builder",
     "start": "nodemon --exec electron .",
     "start-front-end": "cd front-end && npm run start",
     "watch": "tsc --watch"
@@ -18,10 +20,52 @@
   "author": "Tapajyoti Bose",
   "license": "MIT",
   "devDependencies": {
+    "electron": "^11.0.2",
+    "electron-builder": "^22.9.1",
     "nodemon": "^2.0.6",
     "typescript": "^4.1.2"
   },
-  "dependencies": {
-    "electron": "^11.0.2"
+  "dependencies": {},
+  "build": {
+    "appId": "Smartsapp",
+    "directories": {
+      "output": "app-build"
+    },
+    "files": [
+      "**/*",
+      "!*.ts",
+      "!front-end/node_modules/",
+      "!package.json",
+      "!package-lock.json",
+      "!src/",
+      "!tsconfig.json"
+    ],
+    "win": {
+      "icon": "icons/icon.ico",
+      "target": [
+        "portable"
+      ]
+    },
+    "mac": {
+      "icon": "icons/icon.icns",
+      "target": [
+        "dmg"
+      ]
+    },
+    "linux": {
+      "icon": "icons/icon.png",
+      "target": [
+        "AppImage"
+      ]
+    },
+    "icon": "icons/icon.ico",
+    "nsis": {
+      "installerIcon": "icons/icon.ico",
+      "uninstallerIcon": "icons/icon.ico",
+      "uninstallDisplayName": "Smartsapp",
+      "license": "../LICENSE",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }
