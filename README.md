@@ -6,6 +6,14 @@
 
 A fully **cross-platform messenger** app with **End to End Encryption (E2EE)**.
 
+## Demo
+
+<div align="center">
+    <img src="./readme_img/demo.gif" style="width: 640px" />
+</div>
+
+**NOTE:** The features shown in the demo is not exhaustive. Only the core features are showcased in the demo.
+
 ## Platforms Supported
 
 1. **Desktop:** Windows, Linux, MacOS
