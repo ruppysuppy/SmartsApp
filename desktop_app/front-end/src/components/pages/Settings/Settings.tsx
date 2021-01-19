@@ -15,6 +15,8 @@ import styles from "./settings.module.css";
 
 import backgroundLoader from "../../../assets/img/Loading.gif";
 
+const { ipcRenderer } = window.require("electron");
+
 interface IProps {
 	isDarkModeEnabled: boolean;
 	user?: firebase.User;
@@ -95,7 +97,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 	setImgFail: (error: string) => dispatch(actions.setImgFail(error)),
 	setIsDarkModeEnabled: (value: boolean) => {
 		dispatch(actions.setIsDarkModeEnabled(value));
-		window.localStorage.setItem("isDarkModeEnabled", `${value}`);
+		ipcRenderer.send("darkMode:set", value);
 	},
 });
 

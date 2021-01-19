@@ -15,6 +15,8 @@ import "font-awesome/css/font-awesome.min.css";
 import "material-icons/iconfont/material-icons.css";
 import "./shared/styles/colors.css";
 
+const { ipcRenderer } = window.require("electron");
+
 const Home = lazy(() => import("./components/pages/Home/Home"));
 const Login = lazy(() => import("./components/pages/Login/Login"));
 const Register = lazy(() => import("./components/pages/Register/Register"));
@@ -50,14 +52,14 @@ function App({
 			getUserData(user.uid).then(() => setIsLoading(false));
 			authChangedHandler(user ? user : undefined);
 		});
-		const isDarkModeEnabled = window.localStorage.getItem(
-			"isDarkModeEnabled"
-		);
-		if (isDarkModeEnabled === "true") {
-			setIsDarkModeEnabled(true);
-		} else {
-			setIsDarkModeEnabled(false);
-		}
+
+		ipcRenderer.on("darkMode:get", (_: any, isEnabled: boolean) => {
+			if (isEnabled) {
+				setIsDarkModeEnabled(true);
+			} else {
+				setIsDarkModeEnabled(false);
+			}
+		});
 	}, []);
 
 	return (

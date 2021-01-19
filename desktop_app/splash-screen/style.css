@@ -11,6 +11,10 @@ body {
 	overflow: hidden;
 }
 
+.dark {
+	background-color: #222222;
+}
+
 .splash-loader {
 	position: relative;
 	height: 100%;
