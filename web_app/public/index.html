@@ -4,13 +4,15 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#000000" />
+		<meta name="theme-color" content="#7905ff" />
 		<meta
 			name="description"
 			content="Smartsapp: Cross-Platform End to End Encrypted Messenger"
 		/>
 		<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+		<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo512.png" />
 		<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+		<meta name="apple-mobile-web-app-status-bar" content="#db4938" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" />
 		<link
 			href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap"
@@ -70,5 +72,12 @@
 			integrity="sha384-popRpmFF9JQgExhfw5tZT4I9/CI5e2QcuUZPOVXb1m7qUmeR2b50u+YFEYe1wgzy"
 			crossorigin="anonymous"
 		></script>
+		<script>
+			if ("serviceWorker" in navigator) {
+				navigator.serviceWorker.register("/service-worker.js");
+			} else {
+				console.log("Service worker is not supported");
+			}
+		</script>
 	</body>
 </html>
