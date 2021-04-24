@@ -9,6 +9,7 @@ import Logout from "./components/pages/Logout/Logout";
 import firebase, { auth } from "./firebase/firebase";
 import { IState } from "./shared/interfaces/interfaces";
 import * as actions from "./store/actions/actions";
+import { storeDeferredPrompt } from "./serviceWorkerUtils";
 
 const Home = lazy(() => import("./components/pages/Home/Home"));
 const Login = lazy(() => import("./components/pages/Login/Login"));
@@ -53,6 +54,15 @@ function App({
 		} else {
 			setIsDarkModeEnabled(false);
 		}
+
+		window.addEventListener("beforeinstallprompt", storeDeferredPrompt);
+
+		return () => {
+			window.removeEventListener(
+				"beforeinstallprompt",
+				storeDeferredPrompt
+			);
+		};
 	}, []);
 
 	return (

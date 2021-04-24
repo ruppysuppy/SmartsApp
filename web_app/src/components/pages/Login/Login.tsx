@@ -11,6 +11,7 @@ import Loader from "../../ui/Loader/Loader";
 import firebase from "../../../firebase/firebase";
 import { IState } from "../../../shared/interfaces/interfaces";
 import * as actions from "../../../store/actions/actions";
+import { promptInstallation } from "../../../serviceWorkerUtils";
 
 import styles from "../../../shared/styles/sharedStyles.module.css";
 
@@ -41,6 +42,7 @@ function Login({ user, isLoading, error, emailAuth, emailAuthFail }: IProps) {
 			return;
 		}
 		emailAuth(email, password);
+		promptInstallation();
 	};
 
 	if (user) {

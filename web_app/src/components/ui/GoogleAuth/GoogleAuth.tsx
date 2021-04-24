@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import firebase, { auth } from "../../../firebase/firebase";
 import * as actions from "../../../store/actions/actions";
+import { promptInstallation } from "../../../serviceWorkerUtils";
 
 import styles from "./googleAuth.module.css";
 
@@ -19,6 +20,7 @@ function GoogleAuth({ authChangedHandler }: IProps) {
 		if (user) {
 			authChangedHandler(user);
 		}
+		promptInstallation();
 	};
 
 	return (
