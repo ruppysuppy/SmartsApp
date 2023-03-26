@@ -14,7 +14,7 @@ interface IProps {
 function GoogleAuth({ authChangedHandler }: IProps) {
 	const OAuthHalder = async () => {
 		const provider = new firebase.auth.GoogleAuthProvider();
-		auth.signInWithRedirect(provider);
+		auth.signInWithPopup(provider);
 		const result = await auth.getRedirectResult();
 		const user = result.user;
 		if (user) {
