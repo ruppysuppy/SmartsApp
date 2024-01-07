@@ -44,7 +44,7 @@ The back-end of the app is handled by `Firebase`.
 
 1. Go to the project `Firestore` section
 2. Create firestore provisions for the project (choose the server nearest to your location)
-3. Go to the `Rules` tab and use the fillowing rules:
+3. Go to the `Rules` tab and use the following rules:
     ```c++
     rules_version = '2';
     service cloud.firestore {
@@ -81,7 +81,7 @@ The back-end of the app is handled by `Firebase`.
 
 1. Go to the project `Storage` section
 2. Create storage provisions for the project (choose the server nearest to your location)
-3. Go to the rules tab and use the fillowing rules:
+3. Go to the rules tab and use the following rules:
     ```c++
     rules_version = '2';
     service firebase.storage {
