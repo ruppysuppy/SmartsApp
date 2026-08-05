@@ -70,7 +70,7 @@ class _ChatInputState extends State<ChatInput> {
                   _textController.clear();
                 } catch (e) {
                   final message =
-                      e.message == null ? "An Error Occoured" : e.message;
+                      e.message == null ? "An Error [Oo]ccurred" : e.message;
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
                       content: Text(

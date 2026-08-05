@@ -143,7 +143,7 @@ class AuthProvider with ChangeNotifier {
       userDataWithCredential['privateKey'] = keys['private_key'];
       _authData = userDataWithCredential;
     } else {
-      throw "An Error Occoured!";
+      throw "An Error [Oo]ccurred!";
     }
   }
 

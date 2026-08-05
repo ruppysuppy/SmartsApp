@@ -207,7 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
       navigator.pushReplacementNamed(UserDetailsPage.routeName);
     } catch (e) {
       authProvider.setIsLoading(false);
-      final message = e.message == null ? "An Error Occoured" : e.message;
+      final message = e.message == null ? "An Error [Oo]ccurred" : e.message;
       Scaffold.of(ctx).showSnackBar(
         SnackBar(
           content: Text(

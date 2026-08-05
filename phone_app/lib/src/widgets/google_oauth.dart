@@ -60,7 +60,7 @@ class GoogleOAuth extends StatelessWidget {
       Scaffold.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "An Error Occoured",
+            "An Error [Oo]ccurred",
             style: TextStyle(
               color: themeData.errorColor,
             ),

@@ -77,7 +77,7 @@ class _AddUserModalState extends State<AddUserModal> {
                   );
                 } catch (e) {
                   final message =
-                      e.message == null ? "An Error Occoured" : e.message;
+                      e.message == null ? "An Error [Oo]ccurred" : e.message;
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
